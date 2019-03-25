@@ -34,13 +34,126 @@
 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc"'>
 
-                    <p>doc overview</p>
+                    <p>Vugu is Go library which makes it easy to write web user interfaces in Go.</p>
+
+                    <p>The basic idea is as follows:</p>
+
+                    <ul>
+
+                      <li><strong>You write UI components in .vugu files</strong>.  These files are similar to UI components you might see in
+                        JavaScript frameworks (e.g. .vue files).  However, they contain no JavaScript and instead have Go language expressions for
+                        <code>if</code>, <code>for</code> and other such functionality.<br/>&nbsp;
+                      </li>
+
+                      <li>
+                        <strong>Each .vugu file is converted to a corresponding .go file.</strong>  There is a development server in the Vugu project
+                        which can do this for you automatically on page reload, or the <code>vugugen</code> command line tool can be used to integrate
+                        with <code>go generate</code>.  The code generation also attempts to provide sensible defaults where needed so your .vugu
+                        files contain as little boilerplate as possible, while still allowing extensive customization if desired.
+                         <br/>&nbsp;
+                      </li>
+
+                      <li>
+                        <strong>Your project is compiled to a WebAssembly module and run in the browser.</strong>  Again, the development server makes this easy to 
+                        do when starting a project.  As your project evolves and you need to customize parts of this process you can easily do so.<br/>&nbsp;
+                      </li>
+
+                      <li>
+                        <strong>The Vugu library</strong> (package: <a target="_blank" href="https://github.com/vugu/vugu">github.com/vugu/vugu</a>)
+                        <strong>provides functionality to efficiently synchronize the HTML DOM</strong> on the web page according to the markup 
+                        in your .vugu files.  Features like attaching DOM event handlers (click, etc.) and breaking large pages up into components 
+                        are supported.
+                      </li>
+
+                    </ul>
 
                 </article>
 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/start"'>
 
-                    <p>getting starterd</p>
+                    <p>
+                      Let's make a basic working Vugu application that runs your browser.  It 
+                      only takes three small files to start.  Make sure you have at least <strong>Go 1.12</strong> installed.
+                    </p>
+
+                  <section id="section-1">
+                    <!-- <h2 class="section-title-2">Quick Start <a data-scroll href="#section-2" class="anchor" data-toggle="tooltip" data-placement="top" title="Copy URL"><i class="icon-hash"></i></a></h2> -->
+                    <ol class="step-list">
+                      <li><div>
+                        <p>
+                          <strong>Create a new empty folder anywhere you like.</strong>  We'll use the name <code>testapp</code> as an example. 
+                          Each file you create will be directly in this folder, no subfolders are needed.
+                        </p>
+                      </div></li>
+                      <li><div>
+                        <p><strong>Create</strong> <code>go.mod</code> containing only the line:</p>
+                        <p>
+                          <pre><code>module main
+</code></pre>
+                        </p>
+                      </div></li>
+                      <li><div>
+                        <p>
+                          <strong>Create a Vugu component file.</strong>
+                          We'll put a click handler and an element that toggles to demonstrate some basic functionality.
+                          This first component should be called <code>root.vugu</code>:
+                          <pre><code>&lt;div class="my-first-vugu-comp">
+    &lt;button @click="data.Toggle()">Test&lt;/button>
+    &lt;div vg-if="data.Show">I am here!&lt;/div>
+&lt;/div>
+
+&lt;style>
+.my-first-vugu-comp { background: #eee; }
+&lt;/style>
+
+&lt;script type="application/x-go">
+type RootData struct { Show bool }
+func (data *RootData) Toggle() { data.Show = !data.Show }
+&lt;/script>
+</code></pre>
+                        </p>
+                      </div></li>
+                      <li><div>
+                        <p><strong>Create a development server file.</strong>  Note that this file does not get compiled to WebAssembly,
+                          this is just to make it easy to build and serve your program up to the browser during development.
+                          <code>devserver.go</code>:
+                        <p><pre><code>// +build ignore
+
+package main
+
+import (
+    "os"
+    "log"
+    "net/http"
+
+    "github.com/vugu/vugu"
+)
+
+func main() {
+    wd, _ := os.Getwd()
+    l := "127.0.0.1:8844"
+    log.Printf("Starting HTTP Server at %q", l)
+    h := vugu.NewDevHTTPHandler(wd, http.Dir(wd))
+    log.Fatal(http.ListenAndServe(l, h))
+}
+</code></pre>
+                        </p>
+                      </div></li>
+                      <li><div>
+                        <p><strong>Run the development server</strong>.
+                          While in the same directory, run the command <code>go run devserver.go</code></p>
+                        <p>After a few brief moments, the server should start.  It works the same on 
+                          Windows, Linux or Mac.</p>
+                      </div></li>
+                      <li><div>
+                          <p><strong>Browse to it</strong>: <a target="_blank" href="http://127.0.0.1:8844/">http://127.0.0.1:8844/</a>
+                        </div></li>
+                      <li><div>
+                          <p>Marvel at the wonder you have created.
+                        </div></li>
+  
+                    </ol>
+                  </section>
 
                 </article>
 
