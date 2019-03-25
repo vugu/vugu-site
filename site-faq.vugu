@@ -1,0 +1,243 @@
+
+<section>
+
+    <!-- hero -->
+    <section class="pb-0 pt-3">
+      <!-- <div class="image image-gradient-vertical" style="background-image:url(../../assets/images/image.jpg)"></div> -->
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col">
+            <h1 class="mb-3">FAQ</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- / hero -->
+
+    <!-- accordions -->
+    <section class="pb-3">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col">
+            <div class="accordion accordion-fluid" id="accordion-1">
+              <div class="card">
+                  
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="browser-support" @click='data.HandleClick("browser-support")'>
+                        What browers does this work in?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="browser-support"'>
+                  <div class="card-body">
+                    <p>Recent versions of Chrome, Firefox and Microsft Edge support WebAssembly and have been tested with basic Vugu functionality.</p>
+                    <p>Any browser that supports WebAssembly and is targetable by the Go compiler should work.</p>
+                  </div>
+                </div>
+
+                <!--
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="how-does-it-work" @click='data.HandleClick("how-does-it-work")'>
+                        In a nutshell, how does Vugu work?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="how-does-it-work"'>
+                  <div class="card-body">
+                    <p>
+                        Vugu is a regular Go library that uses the <a target="_blank" href="https://golang.org/pkg/syscall/js/">syscall/js</a> package 
+                        to 
+                    </p>
+                  </div>
+                </div>
+                -->
+
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="does-it-use-js" @click='data.HandleClick("does-it-use-js")'>
+                        Does this project use JavaScript at all?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="does-it-use-js"'>
+                  <div class="card-body">
+                    <p>
+                        Vugu files (.vugu) do not contain any JS at all, only Go code is allowed.  (Whether or not it's a good idea to support JS
+                        in .vugu files in the future is open to debate.)
+                    </p>
+                    <p>
+                        That said, access from a WebAssembly program to the Document Object Model does require calls to JavaScript methods.  Also, Go's WebAssembly
+                        support currently requires wasm_exec.js to be loaded, a relatively small file that provides some needed support and integration
+                        for the Go runtime.
+                    </p>
+                    <p>
+                        But everything else is just Go code running as WebAssembly.  For example when a handler for a click is registered, Vugu will
+                        call the appropriate <code>addEventListener</code> method on the DOM, but when the event is fired the Go WASM runtime immediately 
+                        translates this call into a Go method call and everything else is Go from there.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="too-big-and-slow" @click='data.HandleClick("too-big-and-slow")'>
+                        Are the binaries too big?  Is it slow?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="too-big-and-slow"'>
+                  <div class="card-body">
+                      <p>
+                          The binaries can be big, yes.  However, they gzip better than one might expect for a binary.  The average 
+                          browser download of compressed content for a reasonably sized-program is several megabytes.
+                          For some use cases this is completely workable, others it's a problem.
+                          Future improvements in size can be expected as the WebAssembly spec and Go's support for it both evolve.
+                      </p>
+                      <p>
+                          The calls between the Go WebAssembly binary at the browser to access DOM are not terribly fast.
+                          Last I checked it was around ~75µs per call (although it might be faster calling the same method over and over)
+                          and while it tries to minimize those calls it does have
+                          to do a lot of them when it builds out the DOM on the page.  But so far, 
+                          overall UI speeds have generally been managable.  For many applications speed won't be a problem, and it will only get faster 
+                          as things improve.
+                      </p>
+                  </div>
+                </div>
+
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="stability" @click='data.HandleClick("stability")'>
+                        What is the stability of the API of Vugu?  What compatibility issues can I expect?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="stability"'>
+                  <div class="card-body">
+                    <p>For now, <strong>everything is experimental</strong>.</p>
+                    <p>
+                        Vugu uses Go Modules which helps give developers expections on API compatibility.  No release date is set for 1.0, so
+                        if you need some guarantee of API stability you can lock to a specific development version.
+                    </p>
+                    <p>
+                        WebAssembly support in Go itself is also currently experimental and breaking changes may arrive with each new release.
+                        We'll do our best to update Vugu following Go releases as quickly as possible.
+                    </p>
+                    <p>
+                        Once WebAssembly is no longer experimental in Go, Vugu 1.0 will probably be released at that time.
+                    </p>
+                  </div>
+                </div>
+
+                
+
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="why-u-no-use-templates" @click='data.HandleClick("why-u-no-use-templates")'>
+                        Why doesn't Vugu use Go templates (html/template)?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="why-u-no-use-templates"'>
+                  <div class="card-body">
+                    <p>Short answer: Because <strong>templates do not provide type safety</strong> or other compile-time checks.</p>
+                    <p>
+                        This was a major decision in Vugu's overall design and was not made lightly.  There are certainly arguments in favor
+                        of using templates, such as the fact that some expressions are shorter to represent and easier to understand.  Templates 
+                        also can be evaluated at runtime and do not require a Go compiler.
+                    </p>
+                    <p>
+                        This is contrasted by the fact that one of the major drawbacks to building a large user interface in JS is the 
+                        lack of type safety and other compile-time checks.  The TypeScript people invented a whole new language to address the problem. 
+                        The larger
+                        the code base, the more you need types and a compiler.  Modern UIs can be very sophisticated and Vugu intends
+                        to support complex projects well.  To do that, we need to leverage the Go compiler, which means that templates have
+                        Go expressions in them, not template code.
+                    </p>
+                    <p>
+                        That said, it is entirely possibly that template support will be added to Vugu as an additional feature.
+                        It's also possible for a fully-templated implementation of
+                        components to be made (after all, <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComponentType">ComponentType</a> is just an interface, 
+                        and anything that can generate virtual DOM and instantiate some data can be a component);
+                        this could potentially be of use for components that are loaded dynamically at runtime.  These ideas certainly warrant 
+                        further discussion and exploration.
+                    </p>
+                  </div>
+                </div>
+
+                
+                
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="roadmap" @click='data.HandleClick("roadmap")'>
+                        Where is this project headed?  What are the plans for its future?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="roadmap"'>
+                  <div class="card-body">
+                    <p>The intention is to provide feature parity with Vue and React.</p>
+                    <p>
+                        A lot of the basic functionality for templates, components and DOM events is already working well.
+                        See the <a target="_blank" href="https://github.com/vugu/vugu/blob/master/README.md">GitHub Readme</a> for the roadmap.
+                    </p>
+                    <p>
+                        Some features don't translate well (like data binding), but still, the idea is that by the time we 
+                        get to 1.0 "pretty much anything you can do in Vue, you can do in Vugu". 
+                    </p>
+                  </div>
+                </div>
+                
+                
+                
+                
+                
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="can-i-just-go-build" @click='data.HandleClick("can-i-just-go-build")'>
+                        Can I just "go build" my project?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="can-i-just-go-build"'>
+                  <div class="card-body">
+                    <p>You'll also need to use <code>go generate</code> with <code>vugugen</code> to convert your your .vugu files to .go before building.
+                        But otherwise, <strong>yes</strong>, no special build tools are required.</p>
+                    <p>However, for convenience, there is a development webserver (implements the standard http.Handler)
+                        which can be used to rapidly prototype new projects and takes care of building your project to a .wasm file on the fly and serving
+                        it to the browser.</p>
+                    <p>Read more in the <a href="/doc/build-and-dist">Build and Dist</a> section.</p>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- / accordions -->
+
+
+
+</section>
+
+
+<script type="application/x-go">
+
+type SiteFaqData struct {
+    SelectedID string
+}
+
+func (data *SiteFaqData) HandleClick(id string) {
+    if data.SelectedID == id {
+        data.SelectedID = "" // toggle
+        return
+    }
+    data.SelectedID = id
+}
+
+</script>

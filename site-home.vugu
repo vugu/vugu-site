@@ -1,0 +1,345 @@
+<div class="site-home">
+
+    <!-- hero -->
+    <section class="bg-primary">
+        <br/>&nbsp;
+        <br/>&nbsp;
+        <br/>&nbsp;
+      <div class="container">
+      	<div class="row justify-content-center">
+      	  <div class="col-lg-10 text-white text-center">
+              <h1 class="font-weight-light">Build a web front-end in Go that runs in your browser, today.</h1>
+              <div>Don't think it'll run in your browser?  View Source on this page ;) </div>
+      	  </div>
+      	</div>
+        <div class="row">
+          <div class="col text-center">
+            <a href="/doc/start" @click='router.BrowseTo("/doc/start", event)' class="btn btn-white">Start Now &gt;</a>
+          </div>
+          <br/>&nbsp;
+          <br/>&nbsp;
+        </div>
+      </div>
+    </section>
+    <!-- / hero -->
+
+
+
+
+    <!-- components -->
+    <section class="pt-0 pb-3">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center">
+            <br/>&nbsp;
+            <h2>
+                <b>Vugu:</b> A modern UI library for <b>Go+WebAssembly</b>
+             </h2>
+
+            <p>Inspired by tools like <b>Vue</b> and <b>React</b>, Vugu is a small library written enitrely in Go and 
+                able to run in modern browsers using WebAssembly.</p>
+
+            <hr/>
+
+            <p><strong>PLEASE NOTE: This is <span style="color:red">experimental</span> technology!  <a href="/faq#stability" @click='router.BrowseTo("/faq#stability", event)'>(read more)</a></strong></p>
+
+
+            <hr/>
+
+            <!-- <ul class="pt-2"> -->
+                <p>Inspired by modern web UI libraries like Vue and React.</p>
+                <p>Single-file components.</p>
+                <p>Runs in most modern browsers.</p>
+                <p>Simple and sane dev and build environment.  (Say goodbye to that node_modules folder!)</p>
+                <p>Write UIs with the ease of HTML+CSS for presentation, and the facility of Go for interface logic.
+                    It's pretty cool!  See the <a href="/doc/start" @click='router.BrowseTo("/doc/start", event)'>Getting Started</a> page.</p>
+            <!-- </ul> -->
+
+          </div>
+        </div>
+
+
+        <!--
+        <div class="row gutter-3 align-items-center">
+          <div class="col-lg-5">
+            <div class="row justify-content-center justify-content-lg-end">
+              <div class="col-8">
+                <ul class="list-group list-group-minimal">
+                  <li class="list-group-item d-flex align-items-center">
+                    <div>
+                      <i class="fs-24 icon-check2 bg-blue text-white icon-boxed mr-2"></i>
+                    </div>
+                    Advanced Layout
+                  </li>
+                  <li class="list-group-item d-flex align-items-center">
+                    <div>
+                      <i class="fs-24 icon-check2 bg-blue text-white icon-boxed mr-2"></i>
+                    </div>
+                    Exclusive Design
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row mt-3 d-none d-lg-block">
+              <div class="col">
+                <div class="boxed p-3">
+                  <ul class="file-tree">
+                    <li class="file-tree-folder empty">Images
+                      <span>description</span>
+                    </li>
+                    <li class="file-tree-folder">CSS
+                      <span>description</span>
+                      <ul>
+                        <li>file name <span>description</span></li>
+                        <li>file name <span>description</span></li>
+                      </ul>
+                    </li>
+                    <li class="file-tree-folder">HTML
+                      <span>description</span>
+                      <ul>
+                        <li class="file-tree-folder">PAGES
+                          <span>description</span>
+                          <ul>
+                            <li>file name <span>description</span></li>
+                            <li>file name <span>description</span></li>
+                            <li>file name <span>description</span></li>
+                          </ul>
+                        </li>
+                        <li>file name <span>description</span></li>
+                        <li>file name <span>description</span></li>
+                      </ul>
+                    </li>
+                    <li>index.html <span>description</span></li>
+                    <li>components.html <span>description</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="row justify-content-center justify-content-lg-start">
+              <div class="col-6 col-md-4">
+                <div class="type boxed">
+                  <div>
+                    <span class="badge badge-green">New</span>
+                    <h5 class="type-title">Open Sans</h5>
+                    <div class="type-example">
+                      <span>Ab</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-md-4">
+                <div class="type bordered">
+                  <div>
+                    <h5 class="type-title">Open Sans Bold</h5>
+                    <div class="type-example">
+                      <span class="font-weight-bold">Ab</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col">
+                <div class="card">
+                  <div class="card-header no-border bg-white pb-0">
+                    <ul class="nav nav-pills card-header-pills lavalamp" id="myTab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">HTML</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">CSS</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <pre><code class="language-markup">&lt;div class="image image-overlay">&lt;/div></code></pre>
+                      </div>
+                      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <pre><code class="language-css">body {
+  > section,
+  > footer {
+    position: relative;
+    margin: 0 auto;
+    padding: 6.25rem 0;
+    overflow: hidden;
+  }
+}</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3 justify-content-center justify-content-lg-start">
+              <div class="col-md-6">
+                <div class="color bordered">
+                  <span class="color-example bg-blue"></span>
+                  <div class="color-info">
+                    <h5 class="color-title">Active Blue</h5>
+                    <span>#064CDB</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+
+
+
+      </div>
+    </section>
+    <!-- / components -->
+
+
+
+    <!-- categories 
+    <section class="bg-white">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center">
+            <h2>What's <b>in the box</b> ?</h2>
+            <p>Everything you might need to build a super intuitive & readable documentation. Missing something ? <a href="mailto:support@webuildthemes.com" class="action text-dark">Request</a></p>
+          </div>
+        </div>
+        <div class="row gutter-1">
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/accordions.html" title="Accordions" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Accordions</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/alerts.html" title="Alerts" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Alerts</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/widgets.html" title="Widgets" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Widgets</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/content/typography.html" title="Typography" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Typography</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/video.html" title="Video" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Video</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/cards.html" title="Cards" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Cards</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/carousels.html" title="Carousels" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Carousels</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/code.html" title="Code" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Code</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/forms.html" title="Forms" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Forms</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/accordions.html" title="Lists" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Lists</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/components/steps.html" title="Steps" class="card bordered highlight">
+              <div class="card-body text-center px-0 py-1 py-md-2 py-lg-3">
+                <h5 class="fs-18">Steps</h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="documentation/index.html" title="View All Components" class="card bordered highlight">
+              <div class="card-body text-center py-1 py-md-2 py-lg-3 action">
+                <h5 class="fs-18 text-primary">View all</h5>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+     / categories -->
+
+
+
+    <!-- cta 
+    <div class="half bg-white">
+      <span class="half-bg bg-dark"></span>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="cta boxed no-border bg-primary p-3 p-md-5">
+              <i class="icon-shopping-cart2 icon-background text-white"></i>
+              <div class="row">
+                <div class="col text-white">
+                  <h2>Next Level of <b>Documentation</b></h2>
+                  <p class="lead">Purchase Guidebook now, and make documenting your project piece of cake. <a href="" class="action text-white">Buy Now</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+     / cta -->
+
+
+</div>
+
+<script type="application/x-go">
+/* notes:
+
+
+VUGU: The Go+WebAssembly UI Library
+
+Vugu is experimental technology, but a surprising amount of functionality works in your browser right now:
+
+
+Inspired by modern web UI libraries like Vue and React.
+Single-file components.
+Runs in most modern browsers.
+Simple and sane dev and build environment.  (Say goodbye to that node_modules folder!)
+
+Write UIs with the ease of HTML+CSS for presentation, and the facility of Go for interface logic.  Trust me, it's pretty cool.  See the Getting Started page.
+
+
+Create an app in 
+
+*/
+</script>
