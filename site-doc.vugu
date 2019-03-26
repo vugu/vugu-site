@@ -60,7 +60,7 @@
 
                       <li>
                         <strong>The Vugu library</strong> (package: <a target="_blank" href="https://github.com/vugu/vugu">github.com/vugu/vugu</a>)
-                        <strong>provides functionality to efficiently synchronize the HTML DOM</strong> on the web page according to the markup 
+                        <strong>provides functionality to efficiently synchronize HTML DOM</strong> on a web page according to the markup 
                         in your .vugu files.  Features like attaching DOM event handlers (click, etc.) and breaking large pages up into components 
                         are supported.
                       </li>
@@ -86,9 +86,9 @@
                         </p>
                       </div></li>
                       <li><div>
-                        <p><strong>Create</strong> <code>go.mod</code> containing only the line:</p>
+                        <p><strong>Create</strong> <code>go.mod</code> which specifies a Go module name.  For example:</p>
                         <p>
-                          <pre><code>module main
+                          <pre><code>module example.org/someone/testapp
 </code></pre>
                         </p>
                       </div></li>
@@ -97,6 +97,20 @@
                           <strong>Create a Vugu component file.</strong>
                           We'll put a click handler and an element that toggles to demonstrate some basic functionality.
                           This first component should be called <code>root.vugu</code>:
+                          <div vg-html='showCode("html",`<div class="my-first-vugu-comp">
+    <button @click="data.Toggle()">Test</button>
+    <div vg-if="data.Show">I am here!</div>
+</div>
+
+<style>
+.my-first-vugu-comp { background: #eee; }
+</style>
+
+<script type="application/x-go">
+type RootData struct { Show bool }
+func (data *RootData) Toggle() { data.Show = !data.Show }
+</script>`)'></div>
+                          <!--
                           <pre><code>&lt;div class="my-first-vugu-comp">
     &lt;button @click="data.Toggle()">Test&lt;/button>
     &lt;div vg-if="data.Show">I am here!&lt;/div>
@@ -110,14 +124,14 @@
 type RootData struct { Show bool }
 func (data *RootData) Toggle() { data.Show = !data.Show }
 &lt;/script>
-</code></pre>
+</code></pre>-->
                         </p>
                       </div></li>
                       <li><div>
-                        <p><strong>Create a development server file.</strong>  Note that this file does not get compiled to WebAssembly,
-                          this is just to make it easy to build and serve your program up to the browser during development.
-                          <code>devserver.go</code>:
-                        <p><pre><code>// +build ignore
+                        <p><strong>Create a server file.</strong>  Note that this does not get compiled to WebAssembly,
+                          this is a server which serves your program up to the browser.
+                          <code>server.go</code>:
+                        <p><div vg-html='showCode("go",`// +build !wasm
 
 package main
 
@@ -136,12 +150,13 @@ func main() {
     h := vugu.NewDevHTTPHandler(wd, http.Dir(wd))
     log.Fatal(http.ListenAndServe(l, h))
 }
-</code></pre>
+`)'></div>
+<!-- </code></pre> -->
                         </p>
                       </div></li>
                       <li><div>
-                        <p><strong>Run the development server</strong>.
-                          While in the same directory, run the command <code>go run devserver.go</code></p>
+                        <p><strong>Run the server</strong>.
+                          While in the same directory, run the command <code>go run .</code></p>
                         <p>After a few brief moments, the server should start.  It works the same on 
                           Windows, Linux or Mac.</p>
                       </div></li>
@@ -159,13 +174,424 @@ func main() {
 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/files"'>
 
-                    <p>Vugu Files</p>
+                  <p>Vugu files have three sections: Markup, Style and Code</p>
+
+                  <p>
+                    <strong>Markup</strong> is the HTML element which is the display portion of your file.
+                    More often than not it is a simple div tag, such as: <code>&lt;div class="some-name">...&lt;/div></code>.
+                    It is displayed at the appropriate location in the document.  For the
+                    root component (by default named "root" and living in root.vugu), this is usually immediately
+                    inside the <code>&lt;body></code> tag of the page.  The element can be of any type except
+                    <code>&lt;script></code> or <code>&lt;style></code>.
+                  </p>
+
+                  <p>
+                    <strong>Style</strong> is a regular <code>&lt;style></code> tag and includes CSS which is 
+                    output with this component.  To avoid collisions, styles should be appropriately
+                    prefixed (corresponding to an <code>id</code> or <code>class</code> on the top level markup 
+                    element above).
+                  </p>
+
+                  <p>
+                    <strong>Code</strong> is Go language code which is copied verbatim into the final .go file.
+                    It is put into a script tag with a specific content type, like so:
+                    <code>&lt;script type="application/x-go">/* Go code */&lt;script></code>.
+                    Note that JavaScript is not supported, only Go code.  There can be only one.
+                  </p>
+
+                </article>
+
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/files/markup"'>
+
+
+                  <p>
+                      The Markup section is an element which has the HTML that is displayed for this file (each file is a "component",
+                      following the parlance of other UI libraries).
+                    </p>
+
+                    <p>In addition to regular HTML, some specific attributes have special meaning in Vugu and allow you to introduce 
+                      logic into your component's display.
+                    </p>
+
+                    <div class="alert alert-warning" role="alert">
+                      <i class="icon-alert-circle"></i>
+                      <h4 class="fs-22">Tip</h4>
+                      <p>Component files are parsed first using a regular HTML parser, before any Go expressions are considered.
+                        As such, using single quotes when writing attribute values can help with HTML escaping issues.  
+                        For example, you can write <code>&lt;div vg-if='myvar == "myval"'></code> or
+                        <code>&lt;div vg-if="myvar == &amp;#34;myval&amp;#34;"></code>, but the former is easier to read. </p>
+                    </div>
+
+                    <h3>Conditionals with <code>vg-if</code></h3>
+
+                    <p>
+                      You can choose a condition for an element to be displayed using <code>vg-if='condition'</code>. The 
+                      condition is regular Go code and during code generation is put directly between <nobr><code>if</code> and <code>{</code></nobr>
+                      in the resulting .go file.  While the expression itself can be any valid Go code for an if statement,
+                      a common case is to reference a member variable of your 
+                      <a href="/doc/components" @click='router.BrowseTo("/doc/components", event)'>Component</a>'s Data struct.
+                      For example:
+                    </p>
+<div vg-html='showCode("html",`<div>
+    <p vg-if=&apos;data.ShowText&apos;>
+        Conditional text here.
+    </p>
+</div>
+
+<script type="application/x-go">
+type RootData struct { // component data for "root"
+    ShowText bool
+}
+</script>`)'></div>
+
+                    <h3>Loops with <code>vg-for</code></h3>
+
+                    <p>Loops correspond directly to <code>for</code> blocks in Go code.  All forms of loops are supported
+                      including the <code>init; condition; post</code> syntax as well as <code>range</code> expressions.
+                      For example:
+                    </p>
+
+<div vg-html='showCode("html",`<div>
+    <p vg-for=&apos;i := 0; i < 10; i++&apos;>
+        <div vg-html="i"></div>
+    </p>
+</div>`)'></div>
+
+<div vg-html='showCode("html",`<div>
+    <p vg-for=&apos;_, item := range data.Items&apos;>
+        <div vg-html="item"></div>
+    </p>
+</div>
+
+<script type="application/x-go">
+type RootData struct { // component data for "root"
+    Items []string
+}
+</script>`)'></div>
+
+                    <p>Note that the vg-html attribute outputs the value as HTML, using <code>fmt.Print()</code>, see below.</p>
+
+                    <p>
+                      As a special case and for convenience, if the expression contains no whitespace it will be expanded to
+                      <code>for key, value := range expr { _, _ = key, value; ...</code>. Example:
+                    </p>
+
+<div vg-html='showCode("html",`<div>
+    <p vg-for=&apos;data.Items&apos;>
+        <div>
+          Key: <span vg-html="key"></span>
+          Value: <span vg-html="value"></span>
+        </div>
+    </p>
+</div>
+
+<script type="application/x-go">
+type RootData struct { // component data for "root"
+    Items []string
+}
+</script>`)'></div>
+
+                    <h3>Raw HTML with <code>vg-html</code></h3>
+
+                    <p>The vg-html attribute is used to output an expression as HTML into the contents of an element.
+                      (It corresponds to the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML">innerHTML</a> property.)
+                      The expression converted to a string using 
+                      <a target="_blank" href="https://golang.org/pkg/fmt/#Print">fmt.Print()</a>.  Example:
+                    </p>
+
+<div vg-html='showCode("html",`<div>
+    <p vg-html=&apos;"<b>an HTML string</b>"&apos;>
+    <p vg-html=&apos;123&apos;> &lt;!-- will be output according to fmt.Print rules -->
+    <p vg-html=&apos;html.EscapeString("escaping & arbitrary text is easy like so")&apos;>
+</div>
+
+<script type="application/x-go">
+import "html"
+</script>`)'></div>
+
+                    <p>
+                        You may use variable names declared in earlier constructs (such as <code>key</code> or <code>value</code> from a for/range loop).
+                        Regular Go variable scoping rules apply, where each nested DOM element is equivalent to a Go <code>{</code> code block <code>}</code>.
+                      </p>
+
+                    <h3>Dynamic Attributes with <code>:</code></h3>
+
+                    <p>
+                      The values of HTML attributes can be made dynamic and accept Go expressions.  
+                      Dynamically changing attribute values has many uses such as applying CSS dynamically styles with the class attribute.
+                    </p>
+
+<div vg-html='showCode("html",`<div>
+    <p :style=&apos;"background:"+data.BgColor&apos;></p>
+</div>
+
+<script type="application/x-go">
+type RootData struct {
+  BgColor string // e.g. "blue"
+}
+</script>`)'></div>
+
+<p>
+    You may use variable names declared in earlier constructs (such as <code>key</code> or <code>value</code> from a for/range loop).
+    Regular Go variable scoping rules apply, where each nested DOM element is equivalent to a Go <code>{</code> code block <code>}</code>.
+  </p>
+
+                    <p>Note that in addition to the above use, dynamic attributes are frequently used in conjuction with 
+                      components, where the attributes 
+                      become properties that are passed into a component when it is instantiated.  In this case,
+                      the attributes are not converted to strings but are kept as regular Go values (store as <code>interface{}</code>).  See the 
+                      <a href="/doc/components" @click='router.BrowseTo("/doc/components", event)'>Components</a> page for more info.
+                    </p>
+
+                    <h3>DOM Events with <code>@</code></h3>
+
+                    <p>Event handlers can be attached to HTML elements (à la 
+                      <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">addEventListener</a>)
+                      using special attributes prefixed with an @ symbol.
+                    </p>
+
+                    <p>The attribute name after the @ indicates the event name, e.g. "click".  The attribute value must be a Go function/method 
+                      call.  Other Go statements are not currently allowed.  The arguments to the function call can be anything valid in Go,
+                      including literals.</p>
+                      <p>Note that these values must hash properly with 
+                          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComputeHash">ComputeHash()</a>,
+                          as this is needed by Vugu 
+                      to keep track of its events internally. Most primitive types that just store data are fine, but please, no channels.
+                    </p>
+                      <p>
+                      You may use variable names declared in earlier constructs (such as <code>key</code> or <code>value</code> from a for/range loop).
+                      Regular Go variable scoping rules apply, where each nested DOM element is equivalent to a Go <code>{</code> code block <code>}</code>.
+                      The special variable <code>event</code> which is of type 
+                      <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a>
+                      can be used a placeholder and is replaced when the method is invoked with an appropriate event object. 
+                      See <a href="/doc/dom-events" @click='router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> for more info.
+                      Example:
+                    </p>
+
+<div vg-html='showCode("html",`<div>
+    <div vg-if=&apos;data.Show&apos;>I am here!</div>
+    <button @click=&apos;&apos;>Toggle me Silly</button>
+</div>
+
+<script type="application/x-go">
+func (comp *RootData) 
+type RootData struct {
+  Show bool
+}
+</script>`)'></div>
+
+                    <h3>Special Variable Names</h3>
+
+                    <p>
+                      Several variable names have special meaning and are useful when writing .vugu files:
+                    </p>
+
+                    <ul>
+                      <li><code>data</code> - Refers to the instance of your Component.  
+                        It is typically 
+                      a struct pointer.  This is the proper place to house the state of your component.
+                      By default this is an empty struct but it is common to create your own struct with 
+                      the data you need on it.  See more at <a href="/doc/components" @click='router.BrowseTo("/doc/components", event)'>Components</a></li>
+                      <li><code>comp</code> - Refers to the component type.  Unless you write something 
+                      specific for this it will be an empty struct.  However it can be useful if you need to
+                      store configuration info that is determined at app startup and is the same for each 
+                      instance of a component.</li>
+                      <li><code>event</code> - This is a placeholder for a 
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a> 
+                        instance that is 
+                        created when a DOM event is triggered and your handler is called.  This also provides 
+                        some other needed functionality such as the 
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv</a>, which is important for synchronizing 
+                        goroutines that need to update data after an event completes.  See more at 
+                        <a href="/doc/dom-events" @click='router.BrowseTo("/doc/dom-events", event)'>DOM Events</a>.</li>
+                      <li><code>key</code> and <code>value</code> - See section covering vg-for above.  These are the 
+                        default names used for implied range expressions.
+                    </ul>
+
+                    <p>Please note that variables that your code declares, e.g. in a vg-for loop, should not end with an underscore in order 
+                      to avoid conflicting with generated code.
+                    </p>
+ 
+                </article>
+
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/files/style"'>
+
+                  <p>Style blocks are simply a way to express CSS that corresponds to your component and is output
+                    along with your component markup. Example:</p>
+
+<div vg-html='showCode("html",`<div class="some-component-here">
+    <strong>"Fashions fade, style is eternal."</strong> —Yves Saint Laurent
+</div>
+
+<style>
+.some-component-here strong {
+  color: #7c5a9e;
+}
+</style>`)'></div>
+
+
+                  <p>
+                    A few words of widsom and caution regarding style blocks:
+                    <ul>
+                      <li>
+                        It is good practice to <strong>prefix your styles</strong> and make them correspond to your component's main HTML element - 
+                        either a <strong>class</strong> or <strong>id</strong>.  In the example above you can see we use <code>.some-component-here</code>
+                        as a prefix to avoid style collisions.  Generally, using the exact component name (the name of the .vugu file minus the extension)
+                        is a good way to go.
+                      </li>
+                      <li><strong>Styles are deduplicated</strong> as literal strings of the entire contents of the <code>&lt;style></code> tag, 
+                        so only one of the same block of styles is ever output.</li>
+                      <li>
+                        <strong>Styles are inserted in one place at the top of the root component</strong> and in the order that components are 
+                        rendered.   This usually produces the right effect but it's worth knowing when you are debugging style issues.
+                      </li>
+                      <li>You probably do <strong>not want to use @import to load external style sheets.</strong>
+                        If your component is shown and then
+                        hidden and shown again it will cause the import to be removed from the page and then re-added and 
+                        most likely your browser will load the stylesheet again.  For styles which should always be 
+                        present, it is better to add them to the overall page markup outside of the root component. <!-- TODO link to where this is documented -->
+                      </li>
+                      <li>
+                        Go expressions or other <strong>dynamic elements are not currently supported in styles</strong>.
+                        It is entirely possible such functionality will be added in the future if it can be made to work cleanly.
+                      </li>
+                    </ul>
+
+                </article>
+
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/files/code"'>
+
+                    <p>
+                      Go code can be included in your component with in a
+                      <nobr><code>&lt;script type="application/x-go"></code></nobr> tag.
+                      This code is simply copied from your .vugu file into the resulting code generated .go file.
+                    </p>
+
+                    <p>
+                      For every component there are two structs which must be defined.
+                      One which implements 
+                      <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComponentType">ComponentType</a>, 
+                      and one which is the "data"
+                      for your component.
+                      If you do not define them
+                      in your Go code block the code generator will output empty structs
+                      and missing methods for you (as a convenience
+                      to make it easy to rapidly create simple components).
+                    </p>
+
+                    <p>
+                      Most components will use the Go code block to, aside from adding import statements, 
+                      define the data struct for their component and add any needed methods to it.
+                    </p>
+
+                    <p>
+                      The naming convention is that ...
+                    </p>
+
+                    <p>
+                      Let's take a look at a working example of a component that makes more use of the Go code 
+                      section and see all the parts:
+                    </p>
+
+                    <p>
+                      As you can see ... if, for, html, bound properties, DOM events, data struct holds the state.
+                      a goroutine gatches data in the background (under the hood this correponds to fetch), 
+                      and uses EventEnv() to synchronize access to data.
+                    </p>
+
+                    <!--
+                    <p>
+                      code should cover: 
+
+                      mention Comp struct, CompData struct, NewData method, in brief, with link to components page
+                      events in brief with link to dom events page
+
+                    </p>
+                    -->
 
                 </article>
 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/program"'>
 
-                    <p>Program Overview (incl: Render loop)</p>
+                  <p>
+                    When you use the development server (as shown on the 
+                    <a href="/doc/start" @click='router.BrowseTo("/doc/start", event)'>Getting Started</a> page), Vugu 
+                    will code generate some important parts of your application for you if they 
+                    don't exist.  <strong>Let's take a look at what's in these files</strong> and gain a better understanding 
+                    of what is going on.
+                  </p>
+
+                  <p>(mention that we have two outputs here - a wasm program and a server tnat serves it to the browser,
+                    this covers the wasm program, see the build and dist page for more inf on the server
+                  </p>
+
+                  <p>Like any Go program, ours <strong>starts with a <code>main</code> function</strong>.  Vugu's convention is to put
+                    this in a <code>main.go</code> file.  Note that Vugu will not generate this file if it already exists 
+                    or if the package name is not "main".</p>
+                    
+                  <p>
+                    <strong>You are perfectly welcome to customize this file.</strong>  The code generator only writes it out to save 
+                    you the work when you're getting started.
+                  </p>
+
+                  <p>TODO: we need to explain key concepts here like the rneder loop and touch upon lock with EventEnv - 
+                    maybe not the deep dive through every line.  Also touch upon the build tags producing two programs - one for wasm 
+                    and one that's the server (default setup, normal GO package and module system applies and we're not doing 
+                    anything that isn't standard Go.)  
+
+                    An example of http.Get and the locking should probably go here 
+                  </p>
+
+                  <h2>Main</h2>
+
+                  <p>
+                    Here is an example of a working <code>main.go</code>:
+                  </p>
+                  
+                  <p><pre><code>// +build wasm
+
+package main
+
+import (
+	"log"
+	"os"
+
+	"github.com/vugu/vugu"
+)
+
+func main() {
+
+	println("Entering main()")
+	defer println("Exiting main()")
+
+	rootInst, err := vugu.New(&Root{}, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	env := vugu.NewJSEnv("#root_mount_parent", rootInst, vugu.RegisteredComponentTypes())
+	env.DebugWriter = os.Stdout
+
+	for ok := true; ok; ok = env.EventWait() {
+		err = env.Render()
+		if err != nil {
+			panic(err)
+		}
+	}
+
+}
+</code></pre></p>
+
+
+
+                  <p>That's a fair bit to take in.  Let's go through each part.</p>
+
+                  <p>
+                    The first line is a <a target="_blank" href="https://golang.org/pkg/go/build/#hdr-Build_Constraints">build tag</a>,
+                    indicating that this program should only be compiled for WebAssembly:
+                    <pre><code>// +build wasm</code></pre></p>
+
+                  <p>Program Overview (incl: Render loop)</p>
 
                 </article>
 
@@ -173,14 +599,55 @@ func main() {
 
                     <p>DOM events</p>
 
-                </article>
+                    <p>
+                      Event handling and event name, *vugu.DOMEvent type
+                      locking, done automatically or EventEnv() for separate gorountines
+                      Show example of processing in background using http.Get()
+                    </p>
 
+                </article>
+                
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/components"'>
 
                     <p>Components</p>
 
+                    <p>
+
+                      talk about the root component
+
+                      component names with a dash
+
+                      NewData method 
+
+                      explain props
+
+                      CompData struct, feel free to add fields, per instance
+                      methods can and should go on CompData
+
+                      DOM event handling and variable names
+
+                      Component Events (explain difference between DOM events) are planned as a feature.
+                    </p>
+
                 </article>
-                
+
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/components-in-depth"'>
+                  components in depth
+
+                  mention generated BuildVDOM and that you can look at a generated .go file to see, but it's done automatically
+                  variables available - comp, data, event 
+
+                  explain for loops and bound attributes and how these end up in go code 
+
+                  NewData method  and in which cases it's called
+
+                  Comp struct, only one instance for the whole app, corresponds to the component type, can have config here if needed for complex cases, but often this is just empty
+                  
+                  show component written manually in Go, with all it's parts - comments to show what is auto generated and 
+                  what would normally be copied from the vugu file
+
+                </article>
+
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/build-and-dist"'>
 
                     <p>Build and Dist</p>
@@ -377,7 +844,8 @@ func main() {
             <!-- <h4 class="interpost interpost-prev"><a href="">Forwarding your incoming support email to Zendesk using Yahoo</a></h4> -->
           </div>
           <div class="col-12 col-md-6 text-right">
-            <h4 class="interpost interpost-next" vg-if='data.nextSiteDocPage().Path!=""'>
+              <!-- interpost-next  - this class was causing some funk, took it out -->
+            <h4 class="interpost " vg-if='data.nextSiteDocPage().Path!=""'>
               <a :href="data.nextSiteDocPage().Path" @click='router.BrowseTo(data.nextSiteDocPage().Path, event)' vg-html="data.nextSiteDocPage().LongTitle"></a>
             </h4>
           </div>
@@ -415,7 +883,22 @@ var siteDocPages = []siteDocPage {
   siteDocPage {
     Path: "/doc/files",
     ShortTitle: "Vugu Files",
-    LongTitle: "Vugu Files",
+    LongTitle: "Vugu Files - Overview",
+  },
+  siteDocPage {
+    Path: "/doc/files/markup",
+    ShortTitle: "Markup (HTML/Go)",
+    LongTitle: "Vugu Files - Markup (HTML/Go)",
+  },
+  siteDocPage {
+    Path: "/doc/files/style",
+    ShortTitle: "Styles (CSS)",
+    LongTitle: "Vugu Files - Styles (CSS)",
+  },
+  siteDocPage {
+    Path: "/doc/files/code",
+    ShortTitle: "Code (Go)",
+    LongTitle: "Vugu Files - Code (Go)",
   },
   siteDocPage {
     Path: "/doc/program",
@@ -429,8 +912,13 @@ var siteDocPages = []siteDocPage {
   },
   siteDocPage {
     Path: "/doc/components",
-    ShortTitle: "Components",
-    LongTitle: "Components",
+    ShortTitle: "Using Components",
+    LongTitle: "Using Components",
+  },
+  siteDocPage {
+    Path: "/doc/components-in-depth",
+    ShortTitle: "Components in Depth",
+    LongTitle: "Components in Depth",
   },
   siteDocPage {
     Path: "/doc/build-and-dist",

@@ -32,7 +32,8 @@
                 <div vg-if='data.SelectedID=="browser-support"'>
                   <div class="card-body">
                     <p>Recent versions of Chrome, Firefox and Microsft Edge support WebAssembly and have been tested with basic Vugu functionality.</p>
-                    <p>Any browser that supports WebAssembly and is targetable by the Go compiler should work.</p>
+                    <p>Any browser that supports WebAssembly and is targetable by the Go compiler should work.  Although not well tested, this 
+                      should include mobile platforms.</p>
                   </div>
                 </div>
 

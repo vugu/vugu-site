@@ -200,7 +200,7 @@ func (comp *SiteFaq) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 											parent.AppendChild(n)
 											{
 												parent := n
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Any browser that supports WebAssembly and is targetable by the Go compiler should work.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Any browser that supports WebAssembly and is targetable by the Go compiler should work.  Although not well tested, this \n                      should include mobile platforms.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
