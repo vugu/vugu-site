@@ -816,10 +816,142 @@ type RootData struct {
                 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/components"'>
 
-                    <p>Components</p>
+                    <p>
+                      <strong>Components are individual files which are used to organize your user interface code.</strong>
+                      Each component lives in a .vugu file.  Each .vugu file is processed to produce 
+                      a .go file.  Like all Go code, each directory is a package and you may add 
+                      additional .go files to it and use them as part of your component.
+                      Vugu does some 
+                      code generation, but otherwise does not interfere with the regular Go build 
+                      process at all.
+                    </p>
 
                     <p>
+                      Under the hood, components implement the 
+                      <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComponentType">ComponentType</a> 
+                      interface.  Although this is 
+                      unimportant to most developers as the code generator does the work to 
+                      implement it based on your .vugu file.
+                    </p>
 
+                    <p>
+                      By default, the component named <strong>root</strong> (and thus living in root.vugu) <strong>is the top 
+                      level component</strong> and is rendered just inside the <code>&lt;body></code> tag on your page.
+                      In this case, there is only one instance of your root component, which is created in your <code>main()</code> function.
+                      (If you've followed the 
+                      <a href="/doc/files/start" @click='router.BrowseTo("/doc/files/start", event)'>Getting Started</a>
+                      instructions you can find this code in main_wasm.go)
+                    </p>
+
+                    <p>
+                      Things get interesting when we introduce the idea of <strong>multiple components</strong> into an application.
+                      Each component goes in it's own .vugu file.  Use at least one hyphen to avoid name conflicts with regular 
+                      HTML tags.
+                    </p>
+
+                    <p>
+                      One component can include an <strong>HTML tag with the name of another component</strong>.  
+                      When this happens, it indicates than an instance 
+                      of this other component should be created.  Let's look at an example:
+                    </p>
+
+<div vg-html='showCode("html",`<!-- root.vugu -->
+<div class="root">
+    <ul>
+      <my-line file-name="example.txt" :line-number="math.Int63n(100)">
+    </li>
+</div>
+
+<script type="application/x-go">
+import "math/rand"
+</script>
+`)'></div>
+
+<div vg-html='showCode("html",`<!-- my-line.vugu -->
+
+<li class="my-line">
+  <strong vg-html=&apos;data.FileName&apos;></strong>:<span vg-html=&apos;data.LineNumber&apos;></span>
+</li>
+
+<script type="application/x-go">
+type MyLineData struct {
+  FileName string
+  LineNumber int
+}
+func (comp *MyLine) NewData(props vugu.Props) (interface{}, error) { 
+  ret := &MyLineData{}
+  ret.FileName, _ = props["file-name"].(string)
+  ret.LineNumber, _ = props["line-number"].(int)
+  return ret, nil
+}
+</script>`)'></div>
+
+                      <p>In this case the <code>&lt;my-line></code> tag gets replaced with the <code>&lt;li></code> tag and its contents as 
+                        rendered by the my-line component.
+                      </p>
+
+                      <p>
+                        As shown in the example, the HTML attributes of the tag are passed as properties 
+                        (<a target="_blank" href="https://godoc.org/github.com/vugu/vugu#Props">vugu.Props</a>, which is just a 
+                        <code>map[string]interface{}</code>) to the component instance.  
+                        Attributes with a colon (<code>:</code>)
+                        will be evaluated as Go code and then the result passed as-is (not converted in any way). 
+                        This allows you to pass arbitrarily complex data, or pointers, etc. into components if needed.
+                      </p>
+
+                      <p>
+                        The <code>NewData</code> method on the component type is responsible for reading the props 
+                        passed into it and populating the data struct for this component instance.
+                        (This method is part of satisfying the
+                         <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComponentType">ComponentType</a> interface.)
+                      </p>
+
+                      <p>
+                        Components can be instantiated as many times as needed. Each one causes a new instance 
+                        to be created.  Like so:
+                      </p>
+
+<div vg-html='showCode("html",`<!-- root.vugu -->
+
+<div class="root">
+    <ul>
+      <my-line vg-for=&apos;i := 0; i < 10; i++&apos; 
+        file-name="example.txt" :line-number="i">
+    </li>
+</div>
+
+<script type="application/x-go">
+import "math/rand"
+</script>
+`)'></div>
+
+                      <p>
+                        Vugu needs a way to determine, when re-rendering the HTML, which components are the same and which 
+                        are now different and should be re-created.  This is determined by calling 
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComputeHash">ComputeHash</a>
+                        on the attributes (including dynamically evaluted/colon prefixed ones after evaluation) and if the hash 
+                        is different a new instance is created.  If it's the same, the same one is re-used.
+                      </p>
+                      
+                      <p>
+                        Any component can include any other registered component. But if components include each other 
+                        in a loop the behavior is undefined (but I can promise you it won't be good).
+                      </p>
+
+                    <div class="alert alert-warning" role="alert">
+                        <i class="icon-alert-circle"></i>
+                        <h4 class="fs-22">Note</h4>
+                        <p>By default components register themselves in an <code>init()</code> function by calling 
+                          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#RegisterComponentType">RegisterComponentType</a>.
+                          And by default in <code>main()</code> all registered components are retrieved and made available.
+                          So you can place <code>import _ "your/package"</code> in any file and if that package contains components 
+                          they will be available for use.  This behavior can also easily be changed by modifying the appropriate 
+                          behavior in main_wasm.go, in case you need more control over what components are available
+                          under what names.</p>
+                      </div>
+    
+                      <!--
+                    <p>
                       talk about the root component
 
                       component names with a dash
@@ -835,9 +967,11 @@ type RootData struct {
 
                       Component Events (explain difference between DOM events) are planned as a feature.
                     </p>
+                    -->
 
                 </article>
 
+                <!--
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/components-in-depth"'>
                   components in depth
 
@@ -854,6 +988,7 @@ type RootData struct {
                   what would normally be copied from the vugu file
 
                 </article>
+                -->
 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/build-and-dist"'>
 
@@ -1117,11 +1252,11 @@ var siteDocPages = []siteDocPage {
     ShortTitle: "Using Components",
     LongTitle: "Using Components",
   },
-  siteDocPage {
-    Path: "/doc/components-in-depth",
-    ShortTitle: "Components in Depth",
-    LongTitle: "Components in Depth",
-  },
+//  siteDocPage {
+//    Path: "/doc/components-in-depth",
+//    ShortTitle: "Components in Depth",
+//    LongTitle: "Components in Depth",
+//  },
   siteDocPage {
     Path: "/doc/program",
     ShortTitle: "Program Structure",
