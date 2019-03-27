@@ -5,6 +5,8 @@ vugu.org website
 
 * Finish writing docs
 
+* Spell check everything
+
 * Put in some basic server-side rendering
 
 * Consider making the convention be main_wasm.go, since the same package could be used in different ways DONE

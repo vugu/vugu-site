@@ -15,7 +15,7 @@ type siteDocPage struct {
 var siteDocPages = []siteDocPage{
 	siteDocPage{
 		Path:       "/doc",
-		ShortTitle: "Docs",
+		ShortTitle: "What is Vugu?",
 		LongTitle:  "What is Vugu?",
 	},
 	siteDocPage{
@@ -1698,11 +1698,11 @@ type RootData struct {
 										parent.AppendChild(n)
 										n.InnerHTML = fmt.Sprint(showCode("html", `<div>
     <div vg-if='data.Show'>I am here!</div>
-    <button @click=''>Toggle me Silly</button>
+    <button @click='data.Toggle()'>Toggle me Silly</button>
 </div>
 
 <script type="application/x-go">
-func (comp *RootData) 
+func (data *RootData) Toggle() { data.Show = !data.Show }
 type RootData struct {
   Show bool
 }
@@ -2850,11 +2850,38 @@ func (data *RootData) HandleClick(event *vugu.DOMEvent) {
 										parent := n
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: " <p>DOM events</p> ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
 										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "DOM events", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Events can be attached to HTML elements by providing an attribute of the event name\n                      prefixed with ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "@", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".  For example ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "nobr", DataAtom: vugu.VGAtom(14084), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "<div @click='data.HandleClick()'>", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -2863,9 +2890,289 @@ func (data *RootData) HandleClick(event *vugu.DOMEvent) {
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      Event handling and event name, *vugu.DOMEvent type\n                      do not block the callback method, you should attempt to only do \n                      variable comparisons and assignments and delegate longer running tasks to a goroutine.  this specifically applies to calling http.Get() (which calls the browser's fetch() implementation) and other such calls to retrieve data.\n                      locking, done automatically or EventEnv() for separate gorountines\n                      Show example of processing in background using http.Get()\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "The name event correspoonds to a regular DOM event as would be provided to\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "addEventListener", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "The Go expression provided must be a Go function/method \n                        call.  Other Go statements are not currently allowed.  The arguments to the function call can be anything valid in Go,\n                        including literals.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n.InnerHTML = fmt.Sprint(showCode("html", `<div>
+    <div vg-if='data.Show'>I am here!</div>
+    <button @click='data.Toggle()'>Toggle me Silly</button>
+</div>
+
+<script type="application/x-go">
+func (data *RootData) Toggle() { data.Show = !data.Show }
+type RootData struct {
+  Show bool
+}
+</script>`))
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "ul", DataAtom: vugu.VGAtom(42754), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "The special variable ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													{
+														parent := n
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "event", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+													}
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " (of type \n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://godoc.org/github.com/vugu/vugu#DOMEvent"}}}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "*vugu.DOMEvent", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ") \n                          corresponds to the event data sent to us by the browser. It also provides some useful functionality \n                          such as a ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "PreventDefault()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " method which corresponds to \n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault"}}}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "preventDefault", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "For operations that involve blocking", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " (waiting for I/O - such as fetching data from a URL), \n                        you should create a goroutine and use\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://godoc.org/github.com/vugu/vugu#EventEnv"}}}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "event.EventEnv()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " to acquire \n                        a lock before modifying data, and release it afterward.  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "br", DataAtom: vugu.VGAtom(514), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\u00a0\n\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "alert alert-warning"}, vugu.VGAttribute{Namespace: "", Key: "role", Val: "alert"}}}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "i", DataAtom: vugu.VGAtom(1537), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "icon-alert-circle"}}}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "h4", DataAtom: vugu.VGAtom(214274), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "fs-22"}}}
+													parent.AppendChild(n)
+													{
+														parent := n
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Important", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+													}
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													{
+														parent := n
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                              When your event handler method is called, an exclusive lock is already acquired \n                              against the rendering environment. It is released automatically when your handler method exits.\n                              Do not block waiting for I/O inside your handler directly, instead use a goroutine.\n                              Inside the goroutine (and ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														{
+															parent := n
+															n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "only inside goroutines, not directly in your handler method", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+															parent.AppendChild(n)
+														}
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ")\n                              you must\n                              use \n                              ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://godoc.org/github.com/vugu/vugu#EventEnv"}}}
+														parent.AppendChild(n)
+														{
+															parent := n
+															n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+															parent.AppendChild(n)
+															{
+																parent := n
+																n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "event.EventEnv().Lock()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+																parent.AppendChild(n)
+															}
+														}
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                               and ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														{
+															parent := n
+															n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "event.EventEnv().UnlockRender()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+															parent.AppendChild(n)
+														}
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                              (or ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														{
+															parent := n
+															n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "UnlockOnly()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+															parent.AppendChild(n)
+														}
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ") to ensure only one thing is accessing your information at a time.\n                              You can also use ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														{
+															parent := n
+															n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "RLock()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+															parent.AppendChild(n)
+														}
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " and ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														{
+															parent := n
+															n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "RUnlock()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+															parent.AppendChild(n)
+														}
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " for read-only access from a goroutine.  \n                              These methods behave exactly as you would expect from \n                              ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+														n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://golang.org/pkg/sync/#RWMutex"}}}
+														parent.AppendChild(n)
+														{
+															parent := n
+															n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "RWMutex", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+															parent.AppendChild(n)
+														}
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                              and if you have never used one of those, now would be a great time to bone up on them.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+													}
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                          \n                          See ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/doc/files/code"}}}
+												parent.AppendChild(n)
+												// @click = { router.BrowseTo("/doc/files/code", event) }
+												{
+													var i_ interface{} = router
+													idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
+													var i2_ interface{} = router.BrowseTo
+													i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
+													n.SetDOMEventHandler("click", vugu.DOMEventHandler{
+														ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
+														Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+														Args:                  []interface{}{"/doc/files/code", event},
+													})
+												}
+												if false {
+													// force compiler to check arguments for type safety
+													router.BrowseTo("/doc/files/code", event)
+												}
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Code", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                           for an example of using a goroutine to fetch data and locking/unlocking when \n                          handling the results.\n\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Note that the method call arguments must hash properly", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " with \n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://godoc.org/github.com/vugu/vugu#ComputeHash"}}}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "ComputeHash()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ",\n                          as this is needed by Vugu \n                      to keep track of its events internally. Most primitive types that just store data are fine, but please, no channels.\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: " <p>\n                      Event handling and event name, *vugu.DOMEvent type\n                      evaluation\n                      do not block the callback method, you should attempt to only do \n                      variable comparisons and assignments and delegate longer running tasks to a goroutine.  this specifically applies to calling http.Get() (which calls the browser's fetch() implementation) and other such calls to retrieve data.\n                      locking, done automatically or EventEnv() for separate gorountines\n                      Show example of processing in background using http.Get()\n                    </p> ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 									}

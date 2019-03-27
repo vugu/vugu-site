@@ -378,11 +378,11 @@ type RootData struct {
 
 <div vg-html='showCode("html",`<div>
     <div vg-if=&apos;data.Show&apos;>I am here!</div>
-    <button @click=&apos;&apos;>Toggle me Silly</button>
+    <button @click=&apos;data.Toggle()&apos;>Toggle me Silly</button>
 </div>
 
 <script type="application/x-go">
-func (comp *RootData) 
+func (data *RootData) Toggle() { data.Show = !data.Show }
 type RootData struct {
   Show bool
 }
@@ -729,15 +729,88 @@ func main() {
 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/dom-events"'>
 
-                    <p>DOM events</p>
+                    <!-- <p>DOM events</p> -->
 
-                    <p>
+                    <p>Events can be attached to HTML elements by providing an attribute of the event name
+                      prefixed with <code>@</code>.  For example <nobr><code>&lt;div @click='data.HandleClick()'></code></nobr>
+                    </p>
+
+                    <p>The name event correspoonds to a regular DOM event as would be provided to
+                        <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">addEventListener</a>.
+                    </p>
+
+                    <p>The Go expression provided must be a Go function/method 
+                        call.  Other Go statements are not currently allowed.  The arguments to the function call can be anything valid in Go,
+                        including literals.</p>
+
+<div vg-html='showCode("html",`<div>
+    <div vg-if=&apos;data.Show&apos;>I am here!</div>
+    <button @click=&apos;data.Toggle()&apos;>Toggle me Silly</button>
+</div>
+
+<script type="application/x-go">
+func (data *RootData) Toggle() { data.Show = !data.Show }
+type RootData struct {
+  Show bool
+}
+</script>`)'></div>
+
+
+                    <ul>
+                      <li class="pb-2">
+                          <strong>The special variable <code>event</code></strong> (of type 
+                          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a>) 
+                          corresponds to the event data sent to us by the browser. It also provides some useful functionality 
+                          such as a <code>PreventDefault()</code> method which corresponds to 
+                          <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault">preventDefault</a>
+                      </li>
+                      <li class="pb-2">
+                        <strong>For operations that involve blocking</strong> (waiting for I/O - such as fetching data from a URL), 
+                        you should create a goroutine and use
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">event.EventEnv()</a> to acquire 
+                        a lock before modifying data, and release it afterward.  <br/>&nbsp;
+
+                        <div class="alert alert-warning" role="alert">
+                            <i class="icon-alert-circle"></i>
+                            <h4 class="fs-22">Important</h4>
+                            <p>
+                              When your event handler method is called, an exclusive lock is already acquired 
+                              against the rendering environment. It is released automatically when your handler method exits.
+                              Do not block waiting for I/O inside your handler directly, instead use a goroutine.
+                              Inside the goroutine (and <strong>only inside goroutines, not directly in your handler method</strong>)
+                              you must
+                              use 
+                              <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv"><code>event.EventEnv().Lock()</code></a>
+                               and <code>event.EventEnv().UnlockRender()</code>
+                              (or <code>UnlockOnly()</code>) to ensure only one thing is accessing your information at a time.
+                              You can also use <code>RLock()</code> and <code>RUnlock()</code> for read-only access from a goroutine.  
+                              These methods behave exactly as you would expect from 
+                              <a target="_blank" href="https://golang.org/pkg/sync/#RWMutex">RWMutex</a>
+                              and if you have never used one of those, now would be a great time to bone up on them.</p>
+                          </div>
+
+                          
+                          See <a href="/doc/files/code" @click='router.BrowseTo("/doc/files/code", event)'>Code</a>
+                           for an example of using a goroutine to fetch data and locking/unlocking when 
+                          handling the results.
+
+                      </li>
+                      <li class="pb-2">
+                          <strong>Note that the method call arguments must hash properly</strong> with 
+                          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComputeHash">ComputeHash()</a>,
+                          as this is needed by Vugu 
+                      to keep track of its events internally. Most primitive types that just store data are fine, but please, no channels.
+                      </li>
+                    </ul>
+
+                    <!-- <p>
                       Event handling and event name, *vugu.DOMEvent type
+                      evaluation
                       do not block the callback method, you should attempt to only do 
                       variable comparisons and assignments and delegate longer running tasks to a goroutine.  this specifically applies to calling http.Get() (which calls the browser's fetch() implementation) and other such calls to retrieve data.
                       locking, done automatically or EventEnv() for separate gorountines
                       Show example of processing in background using http.Get()
-                    </p>
+                    </p> -->
 
                 </article>
                 
@@ -1006,7 +1079,7 @@ type siteDocPage struct {
 var siteDocPages = []siteDocPage {
   siteDocPage {
     Path: "/doc",
-    ShortTitle: "Docs",
+    ShortTitle: "What is Vugu?",
     LongTitle: "What is Vugu?",
   },
   siteDocPage {
