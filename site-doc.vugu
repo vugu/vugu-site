@@ -178,7 +178,12 @@ func main() {
 
                   <p>
                     <strong>Markup</strong> is the HTML element which is the display portion of your file.
-                    More often than not it is a simple div tag, such as: <code>&lt;div class="some-name">...&lt;/div></code>.
+                    More often than not it is a simple div tag, such as: </p>
+<div vg-html='showCode("html",`<div class="some-name">
+  <!-- ... -->
+</div>`)'></div>
+
+                    <p>
                     It is displayed at the appropriate location in the document.  For the
                     root component (by default named "root" and living in root.vugu), this is usually immediately
                     inside the <code>&lt;body></code> tag of the page.  The element can be of any type except
@@ -194,8 +199,11 @@ func main() {
 
                   <p>
                     <strong>Code</strong> is Go language code which is copied verbatim into the final .go file.
-                    It is put into a script tag with a specific content type, like so:
-                    <code>&lt;script type="application/x-go">/* Go code */&lt;script></code>.
+                    It is put into a script tag with a specific content type, like so:</p>
+<div vg-html='showCode("html",`<script type="application/x-go">
+// Go code here
+</script>`)'></div>
+                  <p>
                     Note that JavaScript is not supported, only Go code.  There can be only one.
                   </p>
 
@@ -464,7 +472,9 @@ type RootData struct {
                     <p>
                       Go code can be included in your component with in a
                       <nobr><code>&lt;script type="application/x-go"></code></nobr> tag.
-                      This code is simply copied from your .vugu file into the resulting code generated .go file.
+                      This code is copied from your .vugu file into the resulting code generated .go file.
+                      It is the appropriate place to include structs, methods and imports needed by
+                      your component.
                     </p>
 
                     <p>
@@ -485,19 +495,134 @@ type RootData struct {
                     </p>
 
                     <p>
-                      The naming convention is that ...
+                      In writing Go code blocks in your components, it is important to observe the following 
+                      naming conventions:
+                      <ul>
+                        <li class="pb-2"><strong>component-name.vugu</strong> results in a code generated file called <strong>component-name.go</strong> in the same directory</li>
+                        <li class="pb-2"><strong>component-name.vugu</strong> implies a struct called <strong>ComponentName</strong> which corresponds to the type of the component,
+                          and a struct called <strong>ComponentNameData</strong>, which is the data for each instance of the component.<br/>&nbsp;</li>
+                        <li><strong>ComponentNameData</strong> is normally where you want to add data and methods.<br/>&nbsp;</li>
+                      </ul>
                     </p>
 
                     <p>
                       Let's take a look at a working example of a component that makes more use of the Go code 
-                      section and see all the parts:
+                      section and see all of this work together.  This example shows a button which, when clicked,
+                      will cause the browser to fetch data from the 
+                      <a target="_blank" href="https://www.coindesk.com/api">CoinDesk Bitcoin Price Index API</a>, parse 
+                      the result, and display it.
                     </p>
+                    <p>root.vugu:</p>
 
-                    <p>
+<div vg-html='showCode("html",`<div class="demo">
+    <div vg-if=&apos;data.isLoading&apos;>Loading...</div>
+    <div vg-if=&apos;len(data.bpi.BPI) > 0&apos;>
+        <div>Updated: <span vg-html=&apos;data.bpi.Time.Updated&apos;></span></div>
+        <ul>
+            <li vg-for=&apos;data.bpi.BPI&apos;>
+                <span vg-html=&apos;key&apos;></span> <span vg-html=&apos;fmt.Sprint(value.Symbol, value.RateFloat)&apos;></span>
+            </li>
+        </ul>
+    </div>
+    <button @click="data.HandleClick(event)">Fetch Bitcoin Price Index</button>
+</div>
+
+<script type="application/x-go">
+import "encoding/json"
+import "net/http"
+import "log"
+
+type RootData struct {
+    bpi bpi
+    isLoading bool
+}
+
+type bpi struct {
+    Time struct { Updated string `+"`"+`json:"updated"`+"`"+` } `+"`"+`json:"time"`+"`"+`
+    BPI map[string]struct { Code string `+"`"+`json:"code"`+"`"+`; Symbol string  `+"`"+`json:"symbol"`+"`"+`; RateFloat float64 `+"`"+`json:"rate_float"`+"`"+` } `+"`"+`json:"bpi"`+"`"+`
+}
+
+func (data *RootData) HandleClick(event *vugu.DOMEvent) {
+
+    data.bpi = bpi{}
+
+    ee := event.EventEnv()
+
+    go func() {
+
+        ee.Lock()
+        data.isLoading = true
+        ee.UnlockRender()
+        
+        res, err := http.Get("https://api.coindesk.com/v1/bpi/currentprice.json")
+        if err != nil {
+            log.Printf("Error fetch()ing: %v", err)
+            return
+        }
+        defer res.Body.Close()
+
+        var newb bpi
+        err = json.NewDecoder(res.Body).Decode(&newb)
+        if err != nil {
+            log.Printf("Error JSON decoding: %v", err)
+            return
+        }
+
+        ee.Lock()
+        defer ee.UnlockRender()
+        data.bpi = newb
+        data.isLoading = false
+
+    }()
+}
+
+</script>`)'></div>
+
+                    <ul class="pt-2">
+                      <li class="pb-2">
+                        <strong>Since this example lives in root.vugu, the data struct is called RootData</strong>.
+                        (And for example in a component in file sample-comp.vugu, this would be SampleCompData.)
+                        This is where a component's instance data is stored.
+                      </li>
+                      <li class="pb-2">
+                          <strong>On RootData we have a variable called isLoading</strong> of type <code>bool</code>.
+                        This provides a simple way to <code>vg-if</code> a div, which then shows only during loading.
+                        (More below on how <code>isLoading</code> is updated.)
+                      </li>
+                      <li class="pb-2">
+                        <strong>A struct <code>bpi</code> is defined</strong> for the data we're getting from the API call.  This makes it easy 
+                        to read and display.  Remember, components are converted to <strong>regular Go code</strong>, and
+                        heeding the fact that your code runs in the browser, many of the usual approaches you would do 
+                        in any Go program apply here.
+                      </li>
+                      <li class="pb-2">
+                          <strong>We're looping over one of the members of <code>bpi</code></strong> using <code>vg-for</code> in our markup to display each individual 
+                          item returned.
+                      </li>
+                      <li class="pb-2">
+                          <strong>A handler for the DOM click event</strong> is enabled with <code>@click</code>.  Notice that the method 
+                          it calls is a member of <code>data</code> (of type <code>*RootData</code>).  This call does not
+                          have to be to a methd on <code>data</code>, but this is the most common case.
+                      </li>
+                      <li class="pb-2">
+                        <strong>When the click handler is invoked, we start a goroutine</strong> to fetch data from the server in the background.
+                          It is important we don't block here and return from this method quickly.
+                      </li>
+                      <li class="pb-2">
+                          <strong>The EventEnv is used to synchronize access</strong> to data, and works well from goroutines.  When we modify 
+                          any information on <code>data</code> or that could potentially have concurrency issues, you can use <code>EventEnv.Lock()</code>
+                          to get an exclusive lock, and <code>EventEnv.UnlockRender()</code> to release the lock and tell render loop that the page needs 
+                          to be updated.
+                          See <a href="/doc/dom-events" @click='router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> for more info.
+                      </li>
+
+                    </ul>
+
+                    <!-- <p>
                       As you can see ... if, for, html, bound properties, DOM events, data struct holds the state.
                       a goroutine gatches data in the background (under the hood this correponds to fetch), 
                       and uses EventEnv() to synchronize access to data.
-                    </p>
+                    </p> -->
 
                     <!--
                     <p>
@@ -512,6 +637,13 @@ type RootData struct {
                 </article>
 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/program"'>
+
+                  <p>Vugu takes a number of steps to make the development process easy to rapidly 
+                    get started and prototype user interfaces.  That said, it's important to 
+                    understand the overall preogram structure and how a Vugu program works (at least by
+                    default), so you can customize it to your needs when building a sophisticated 
+                    application.
+                  </p>
 
                   <p>
                     When you use the development server (as shown on the 
@@ -601,6 +733,8 @@ func main() {
 
                     <p>
                       Event handling and event name, *vugu.DOMEvent type
+                      do not block the callback method, you should attempt to only do 
+                      variable comparisons and assignments and delegate longer running tasks to a goroutine.  this specifically applies to calling http.Get() (which calls the browser's fetch() implementation) and other such calls to retrieve data.
                       locking, done automatically or EventEnv() for separate gorountines
                       Show example of processing in background using http.Get()
                     </p>
@@ -901,11 +1035,6 @@ var siteDocPages = []siteDocPage {
     LongTitle: "Vugu Files - Code (Go)",
   },
   siteDocPage {
-    Path: "/doc/program",
-    ShortTitle: "Program Structure",
-    LongTitle: "Vugu Program Structure",
-  },
-  siteDocPage {
     Path: "/doc/dom-events",
     ShortTitle: "DOM Events",
     LongTitle: "DOM Events",
@@ -919,6 +1048,11 @@ var siteDocPages = []siteDocPage {
     Path: "/doc/components-in-depth",
     ShortTitle: "Components in Depth",
     LongTitle: "Components in Depth",
+  },
+  siteDocPage {
+    Path: "/doc/program",
+    ShortTitle: "Program Structure",
+    LongTitle: "Vugu Program Structure",
   },
   siteDocPage {
     Path: "/doc/build-and-dist",

@@ -474,7 +474,16 @@ func (comp *SiteFaq) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 											parent.AppendChild(n)
 											{
 												parent := n
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        Vugu uses Go Modules which helps give developers expections on API compatibility.  No release date is set for 1.0, so\n                        if you need some guarantee of API stability you can lock to a specific development version.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        Vugu uses ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://github.com/golang/go/wiki/Modules"}}}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Go Modules", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " \n                        which helps give developers expectations on API compatibility.  No release date is set for Vugu 1.0, so\n                        if you need some guarantee of API stability you can lock to a specific development version.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -483,7 +492,16 @@ func (comp *SiteFaq) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 											parent.AppendChild(n)
 											{
 												parent := n
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        WebAssembly support in Go itself is also currently experimental and breaking changes may arrive with each new release.\n                        We'll do our best to update Vugu following Go releases as quickly as possible.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://github.com/golang/go/wiki/WebAssembly"}}}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "WebAssembly support in Go", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " itself is also currently experimental and breaking changes may arrive with each new release.\n                        We'll do our best to update Vugu following Go releases as quickly as possible.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -492,7 +510,16 @@ func (comp *SiteFaq) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 											parent.AppendChild(n)
 											{
 												parent := n
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        Once WebAssembly is no longer experimental in Go, Vugu 1.0 will probably be released at that time.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        Once WebAssembly is no longer experimental in Go, and \n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://webassembly.org/docs/future-features/"}}}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "more mature in general", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", Vugu 1.0 will probably be released at that time.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}

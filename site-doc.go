@@ -44,11 +44,6 @@ var siteDocPages = []siteDocPage{
 		LongTitle:  "Vugu Files - Code (Go)",
 	},
 	siteDocPage{
-		Path:       "/doc/program",
-		ShortTitle: "Program Structure",
-		LongTitle:  "Vugu Program Structure",
-	},
-	siteDocPage{
 		Path:       "/doc/dom-events",
 		ShortTitle: "DOM Events",
 		LongTitle:  "DOM Events",
@@ -62,6 +57,11 @@ var siteDocPages = []siteDocPage{
 		Path:       "/doc/components-in-depth",
 		ShortTitle: "Components in Depth",
 		LongTitle:  "Components in Depth",
+	},
+	siteDocPage{
+		Path:       "/doc/program",
+		ShortTitle: "Program Structure",
+		LongTitle:  "Vugu Program Structure",
 	},
 	siteDocPage{
 		Path:       "/doc/build-and-dist",
@@ -888,14 +888,21 @@ func main() {
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " is the HTML element which is the display portion of your file.\n                    More often than not it is a simple div tag, such as: ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
-											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-											parent.AppendChild(n)
-											{
-												parent := n
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "<div class=\"some-name\">...</div>", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-												parent.AppendChild(n)
-											}
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".\n                    It is displayed at the appropriate location in the document.  For the\n                    root component (by default named \"root\" and living in root.vugu), this is usually immediately\n                    inside the ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n.InnerHTML = fmt.Sprint(showCode("html", `<div class="some-name">
+  <!-- ... -->
+</div>`))
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    It is displayed at the appropriate location in the document.  For the\n                    root component (by default named \"root\" and living in root.vugu), this is usually immediately\n                    inside the ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
@@ -985,16 +992,23 @@ func main() {
 												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Code", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " is Go language code which is copied verbatim into the final .go file.\n                    It is put into a script tag with a specific content type, like so:\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " is Go language code which is copied verbatim into the final .go file.\n                    It is put into a script tag with a specific content type, like so:", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
-											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-											parent.AppendChild(n)
-											{
-												parent := n
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "<script type=\"application/x-go\">/* Go code */<script>", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-												parent.AppendChild(n)
-											}
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".\n                    Note that JavaScript is not supported, only Go code.  There can be only one.\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n.InnerHTML = fmt.Sprint(showCode("html", `<script type="application/x-go">
+// Go code here
+</script>`))
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    Note that JavaScript is not supported, only Go code.  There can be only one.\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -2074,7 +2088,7 @@ type RootData struct {
 													parent.AppendChild(n)
 												}
 											}
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " tag.\n                      This code is simply copied from your .vugu file into the resulting code generated .go file.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " tag.\n                      This code is copied from your .vugu file into the resulting code generated .go file.\n                      It is the appropriate place to include structs, methods and imports needed by\n                      your component.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -2092,7 +2106,7 @@ type RootData struct {
 												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "ComponentType", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", \n                      and one which is the \"data\"\n                      for your component.\n                      If you do not define them\n                      in your Go code block the code generator will output empty structs\n                      and missing methods for you (as a convenience\n                      to make it easy to rapidly create simple components)\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", \n                      and one which is the \"data\"\n                      for your component.\n                      If you do not define them\n                      in your Go code block the code generator will output empty structs\n                      and missing methods for you (as a convenience\n                      to make it easy to rapidly create simple components).\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -2101,7 +2115,7 @@ type RootData struct {
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      Most components will use the Go code block to, aside from adding import statements, \n                      define the data struct for thier component \n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      Most components will use the Go code block to, aside from adding import statements, \n                      define the data struct for their component and add any needed methods to it.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -2110,9 +2124,489 @@ type RootData struct {
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      code should cover: \n\n                      imports\n                      explain for loops and bound attributes and how these end up in go code \n                      mention Comp struct, CompData struct, NewData method, in brief, with link to components page\n                      events in brief with link to dom events page\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      In writing Go code blocks in your components, it is important to observe the following \n                      naming conventions:\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "ul", DataAtom: vugu.VGAtom(42754), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "component-name.vugu", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " results in a code generated file called ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "component-name.go", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " in the same directory", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "component-name.vugu", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " implies a struct called ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "ComponentName", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " which corresponds to the type of the component,\n                          and a struct called ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "ComponentNameData", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", which is the data for each instance of the component.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "br", DataAtom: vugu.VGAtom(514), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\u00a0", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "ComponentNameData", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " is normally where you want to add data and methods.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "br", DataAtom: vugu.VGAtom(514), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\u00a0", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      Let's take a look at a working example of a component that makes more use of the Go code \n                      section and see all of this work together.  This example shows a button which, when clicked,\n                      will cause the browser to fetch data from the \n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://www.coindesk.com/api"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "CoinDesk Bitcoin Price Index API", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", parse \n                      the result, and display it.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "root.vugu:", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n.InnerHTML = fmt.Sprint(showCode("html", `<div class="demo">
+    <div vg-if='data.isLoading'>Loading...</div>
+    <div vg-if='len(data.bpi.BPI) > 0'>
+        <div>Updated: <span vg-html='data.bpi.Time.Updated'></span></div>
+        <ul>
+            <li vg-for='data.bpi.BPI'>
+                <span vg-html='key'></span> <span vg-html='fmt.Sprint(value.Symbol, value.RateFloat)'></span>
+            </li>
+        </ul>
+    </div>
+    <button @click="data.HandleClick(event)">Fetch Bitcoin Price Index</button>
+</div>
+
+<script type="application/x-go">
+import "encoding/json"
+import "net/http"
+import "log"
+
+type RootData struct {
+    bpi bpi
+    isLoading bool
+}
+
+type bpi struct {
+    Time struct { Updated string `+"`"+`json:"updated"`+"`"+` } `+"`"+`json:"time"`+"`"+`
+    BPI map[string]struct { Code string `+"`"+`json:"code"`+"`"+`; Symbol string  `+"`"+`json:"symbol"`+"`"+`; RateFloat float64 `+"`"+`json:"rate_float"`+"`"+` } `+"`"+`json:"bpi"`+"`"+`
+}
+
+func (data *RootData) HandleClick(event *vugu.DOMEvent) {
+
+    data.bpi = bpi{}
+
+    ee := event.EventEnv()
+
+    go func() {
+
+        ee.Lock()
+        data.isLoading = true
+        ee.UnlockRender()
+        
+        res, err := http.Get("https://api.coindesk.com/v1/bpi/currentprice.json")
+        if err != nil {
+            log.Printf("Error fetch()ing: %v", err)
+            return
+        }
+        defer res.Body.Close()
+
+        var newb bpi
+        err = json.NewDecoder(res.Body).Decode(&newb)
+        if err != nil {
+            log.Printf("Error JSON decoding: %v", err)
+            return
+        }
+
+        ee.Lock()
+        defer ee.UnlockRender()
+        data.bpi = newb
+        data.isLoading = false
+
+    }()
+}
+
+</script>`))
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "ul", DataAtom: vugu.VGAtom(42754), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pt-2"}}}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Since this example lives in root.vugu, the data struct is called RootData", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".\n                        (And for example in a component in file sample-comp.vugu, this would be SampleCompData.)\n                        This is where a component's instance data is stored.\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "On RootData we have a variable called isLoading", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " of type ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "bool", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".\n                        This provides a simple way to ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "vg-if", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " a div, which then shows only during loading.\n                        (More below on how ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "isLoading", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " is updated.)\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "A struct ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													{
+														parent := n
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "bpi", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+													}
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " is defined", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " for the data we're getting from the API call.  This makes it easy \n                        to read and display.  Remember, components are converted to ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "regular Go code", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", and\n                        heeding the fact that your code runs in the browser, many of the usual approaches you would do \n                        in any Go program apply here.\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "We're looping over one of the members of ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													{
+														parent := n
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "bpi", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+													}
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " using ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "vg-for", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " in our markup to display each individual \n                          item returned.\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "A handler for the DOM click event", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " is enabled with ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "@click", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".  Notice that the method \n                          it calls is a member of ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "data", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " (of type ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "*RootData", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ").  This call does not\n                          have to be to a methd on ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "data", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", but this is the most common case.\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "When the click handler is invoked, we start a goroutine", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " to fetch data from the server in the background.\n                          It is important we don't block here and return from this method quickly.\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "pb-2"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "The EventEnv is used to synchronize access", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " to data, and works well from goroutines.  When we modify \n                          any information on ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "data", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " or that could potentially have concurrency issues, you can use ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "EventEnv.Lock()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                          to get an exclusive lock, and ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "EventEnv.UnlockRender()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " to release the lock and tell render loop that the page needs \n                          to be updated.\n                          See ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/doc/dom-events"}}}
+												parent.AppendChild(n)
+												// @click = { router.BrowseTo("/doc/dom-events", event) }
+												{
+													var i_ interface{} = router
+													idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
+													var i2_ interface{} = router.BrowseTo
+													i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
+													n.SetDOMEventHandler("click", vugu.DOMEventHandler{
+														ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
+														Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+														Args:                  []interface{}{"/doc/dom-events", event},
+													})
+												}
+												if false {
+													// force compiler to check arguments for type safety
+													router.BrowseTo("/doc/dom-events", event)
+												}
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "DOM Events", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " for more info.\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+										}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: " <p>\n                      As you can see ... if, for, html, bound properties, DOM events, data struct holds the state.\n                      a goroutine gatches data in the background (under the hood this correponds to fetch), \n                      and uses EventEnv() to synchronize access to data.\n                    </p> ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: "\n                    <p>\n                      code should cover: \n\n                      mention Comp struct, CompData struct, NewData method, in brief, with link to components page\n                      events in brief with link to dom events page\n\n                    </p>\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 									}
@@ -2124,6 +2618,15 @@ type RootData struct {
 									parent.AppendChild(n)
 									{
 										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+										{
+											parent := n
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Vugu takes a number of steps to make the development process easy to rapidly \n                    get started and prototype user interfaces.  That said, it's important to \n                    understand the overall preogram structure and how a Vugu program works (at least by\n                    default), so you can customize it to your needs when building a sophisticated \n                    application.\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 										n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "p", DataAtom: vugu.VGAtom(3073), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -2360,7 +2863,7 @@ type RootData struct {
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      Event handling and event name, *vugu.DOMEvent type\n                      locking, done automatically or EventEnv() for separate gorountines\n                      Show example of processing in background using http.Get()\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      Event handling and event name, *vugu.DOMEvent type\n                      do not block the callback method, you should attempt to only do \n                      variable comparisons and assignments and delegate longer running tasks to a goroutine.  this specifically applies to calling http.Get() (which calls the browser's fetch() implementation) and other such calls to retrieve data.\n                      locking, done automatically or EventEnv() for separate gorountines\n                      Show example of processing in background using http.Get()\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -2403,7 +2906,7 @@ type RootData struct {
 									parent.AppendChild(n)
 									{
 										parent := n
-										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  components in depth\n\n                  mention generated BuildVDOM and that you can look at a generated .go file to see, but it's done automatically\n                  variables available - comp, data, event \n\n\n                  NewData method  and in which cases it's called\n\n                  Comp struct, only one instance for the whole app, corresponds to the component type, can have config here if needed for complex cases, but often this is just empty\n                  \n                  show component written manually in Go, with all it's parts - comments to show what is auto generated and \n                  what would normally be copied from the vugu file\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  components in depth\n\n                  mention generated BuildVDOM and that you can look at a generated .go file to see, but it's done automatically\n                  variables available - comp, data, event \n\n                  explain for loops and bound attributes and how these end up in go code \n\n                  NewData method  and in which cases it's called\n\n                  Comp struct, only one instance for the whole app, corresponds to the component type, can have config here if needed for complex cases, but often this is just empty\n                  \n                  show component written manually in Go, with all it's parts - comments to show what is auto generated and \n                  what would normally be copied from the vugu file\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 									}
 								}

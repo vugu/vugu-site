@@ -118,15 +118,17 @@
                   <div class="card-body">
                     <p>For now, <strong>everything is experimental</strong>.</p>
                     <p>
-                        Vugu uses Go Modules which helps give developers expections on API compatibility.  No release date is set for 1.0, so
+                        Vugu uses <a target="_blank" href="https://github.com/golang/go/wiki/Modules">Go Modules</a> 
+                        which helps give developers expectations on API compatibility.  No release date is set for Vugu 1.0, so
                         if you need some guarantee of API stability you can lock to a specific development version.
                     </p>
                     <p>
-                        WebAssembly support in Go itself is also currently experimental and breaking changes may arrive with each new release.
+                        <a target="_blank" href="https://github.com/golang/go/wiki/WebAssembly">WebAssembly support in Go</a> itself is also currently experimental and breaking changes may arrive with each new release.
                         We'll do our best to update Vugu following Go releases as quickly as possible.
                     </p>
                     <p>
-                        Once WebAssembly is no longer experimental in Go, Vugu 1.0 will probably be released at that time.
+                        Once WebAssembly is no longer experimental in Go, and 
+                        <a target="_blank" href="https://webassembly.org/docs/future-features/">more mature in general</a>, Vugu 1.0 will probably be released at that time.
                     </p>
                   </div>
                 </div>
