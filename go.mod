@@ -6,5 +6,5 @@ replace github.com/vugu/vugu => ../vugu
 
 require (
 	github.com/alecthomas/chroma v0.6.3
-	github.com/vugu/vugu v0.0.0-00010101000000-000000000000
+	github.com/vugu/vugu v0.0.0-20190328050928-270b710779e9
 )

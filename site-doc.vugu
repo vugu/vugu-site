@@ -1149,8 +1149,178 @@ import "math/rand"
 
                 <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/build-and-dist"'>
 
-                    <p>Build and Dist</p>
+                    <!-- <p>Building and Distribution</p> -->
 
+                    <p>The development setup described in 
+                      <a href="/doc/start" @click='data.Router.BrowseTo("/doc/start", event)'>Getting Started</a>
+                      is a great way to get going with Vugu. But 
+                      when you're ready to move your application to a staging or production environment (or you need
+                      to do development work on the Go server part of your web application), additional steps 
+                      are in order.
+                    </p>
+
+                    <h2>Adding a Server</h2>
+
+                    <p>The server you created on the Getting Started page is only a single file, it does not
+                      compile as part of your application (due to the <code>// +build ignore</code> at the top).
+                      The main reason for this is that it makes things simpler when you are just hacking away
+                      on your user interface.  If you enter bad code into a .vugu file (which ends up 
+                      in a .go file and breaks your build), <code>go run devserver.go</code>
+                      will still run.
+                    </p>
+
+                    <p>To make a proper server suitable for staging or production, or to start adding more 
+                      server-side functionality to, you'll want to create a server.go file, and place separate 
+                      web server code in here.  It is suggested you leave devserver.go where it is and you can 
+                      use it if/when needed, it won't conflict with server.go.
+                    </p>
+
+                    <p>Note that server.go looks really similar to devserver.go in the beginning.  But 
+                      as you add server-side functionality other things to server.go, the need for it 
+                      becomes more apparent.  We also have some additional command line flags that 
+                      are useful for an application running on a server.</p>
+                    <p>This example includes a <code>-dev</code> flag to 
+                    enable automatically performing Vugu code generation and rebuilding your 
+                    wasm (same as devserver.go), which you can turn on and off.
+                    Running without <code>-dev</code>, this can also serve as a viable production server.
+                    (Obviously you need to be aware of your specific prouction environment requirements,
+                    but this will get you pointed in the right direction.)</p>
+                    <p>Command line flags for the HTTP listener and the directory to look for files in are 
+                    also included. <strong>server.go</strong>:</p>
+                    
+<div vg-html='showCode("go",`// +build !wasm
+
+package main
+
+//go:generate vugugen .
+
+import (
+	"flag"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+
+	"github.com/vugu/vugu/simplehttp"
+)
+
+func main() {
+	dev := flag.Bool("dev", false, "Enable development features")
+	dir := flag.String("dir", ".", "Project directory")
+	httpl := flag.String("http", "127.0.0.1:8877", "Listen for HTTP on this host:port")
+	flag.Parse()
+	wd, _ := filepath.Abs(*dir)
+	os.Chdir(wd)
+	log.Printf("Starting HTTP Server at %q", *httpl)
+	h := simplehttp.New(wd, *dev)
+	log.Fatal(http.ListenAndServe(*httpl, h))
+}
+`)'></div>
+
+                    <p>
+                      To run this server, you can either build the binary and run it directly, or <code>go run . -dev</code>
+                      also works.
+                    </p>
+
+                    <h2>Making dist.go</h2>
+
+                    <p>
+                      Rather than introducing third party build tools, the suggested approach to distributing your 
+                      application is to create a small file called dist.go (ignored by the rest of your application)
+                      that you run when you want to build your distribution.  The 
+                      <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/distutil">distutil</a> package has some 
+                      convient functions that make this less tedious than it might seem.  This approach also
+                      has the advantage that it works equally well on Windows, Linux and Mac, and without 
+                      having to install anything.  The Go module system takes care of that for you.
+                    </p>
+
+                    <p>Various steps are possible and there is not a one-size-fits-all dist.go.  That said,
+                      here's one that will get you started:
+                    </p>
+                    <ul>
+                        <li class="pb-2">It creates a <strong>"dist" folder, copies the static files</strong> from your project into it</li>
+                        <li class="pb-2">It finds and copies <strong>wasm_exec.js</strong></li>
+                        <li class="pb-2">It makes sure <strong>vugugen</strong> is installed</li>
+                        <li class="pb-2">It runs <strong>go generate</strong></li>
+                        <li class="pb-2">It <strong>builds your main.wasm</strong> file</li>
+                        <li>And if desired you can make it <strong>write out an index.html</strong> or build your <strong>server executable</strong></li>
+                      </ul>
+
+<div vg-html='showCode("go",`// +build ignore
+
+package main
+
+import (
+	"flag"
+	"fmt"
+	"log"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"time"
+
+	"github.com/vugu/vugu/distutil"
+)
+
+func main() {
+
+	clean := flag.Bool("clean", false, "Remove dist dir before starting")
+	dist := flag.String("dist", "dist", "Directory to put distribution files in")
+	flag.Parse()
+
+	start := time.Now()
+
+	if *clean {
+		os.RemoveAll(*dist)
+	}
+
+	os.MkdirAll(*dist, 0755) // create dist dir if not there
+
+	// copy static files
+	distutil.MustCopyDirFiltered(".", *dist, nil)
+
+	// find and copy wasm_exec.js
+	distutil.MustCopyFile(distutil.MustWasmExecJsPath(), filepath.Join(*dist, "wasm_exec.js"))
+
+	// check for vugugen and go get if not there
+	if _, err := exec.LookPath("vugugen"); err != nil {
+		fmt.Print(distutil.MustExec("go", "get", "github.com/vugu/vugu/vugugen"))
+	}
+
+	// run go generate
+	fmt.Print(distutil.MustExec("go", "generate", "."))
+
+	// run go build for wasm binary
+	fmt.Print(distutil.MustEnvExec([]string{"GOOS=js", "GOARCH=wasm"}, "go", "build", "-o", filepath.Join(*dist, "main.wasm"), "."))
+
+	// STATIC INDEX FILE:
+	// if you are hosting with a static file server or CDN, you can write out the default index.html from simplehttp
+	// req, _ := http.NewRequest("GET", "/index.html", nil)
+	// outf, err := os.OpenFile(filepath.Join(*dist, "index.html"), os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
+	// distutil.Must(err)
+	// defer outf.Close()
+	// template.Must(template.New("_page_").Parse(simplehttp.DefaultPageTemplateSource)).Execute(outf, map[string]interface{}{"Request": req})
+
+	// BUILD GO SERVER:
+	// or if you are deploying a Go server (yay!) you can build that binary here
+	// fmt.Print(distutil.MustExec("go", "build", "-o", filepath.Join(*dist, "server"), "."))
+
+	log.Printf("dist.go complete in %v", time.Since(start))
+}`)'></div>
+
+                    <p>
+                      By dropping the above is dist.go and tuning it, you can run <code>go run dist.go</code>
+                      and get a <code>dist folder with the distribution of your project</code>, ready for 
+                      deployment.  And you can of course easily call this from another build/distribution system, 
+                      such as a Dockerfile.
+                    </p>
+                    
+                    <!--
+                    .gitignore dist folder
+
+                    server.go should have flag for dev and flag for http listener and flag for main dir, defaulting to "."
+
+                    make sure to include go:generate in server.go
 
                     <p>need to mention how to set title and meta tags as part of setting up server
 
@@ -1159,7 +1329,10 @@ import "math/rand"
 
                       and then an entirely different setup which outputs static HTML to the dist folder,
                        for use with static file servers, CDNs, etc.
+
+                       bulleted list for each?
                     </p>
+                    -->
 
                 </article>
                 

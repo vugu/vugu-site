@@ -2,6 +2,8 @@
 
 package main
 
+//go:generate vugugen .
+
 import (
 	"bytes"
 	"flag"
@@ -9,18 +11,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/vugu/vugu"
-
 	"github.com/vugu/vugu/simplehttp"
 )
 
 func main() {
 	dev := flag.Bool("dev", false, "Enable development features")
+	dir := flag.String("dir", ".", "Project directory")
+	httpl := flag.String("http", "127.0.0.1:8877", "Listen for HTTP on this host:port")
 	flag.Parse()
-	wd, _ := os.Getwd()
-	l := "127.0.0.1:8877"
-	log.Printf("Starting HTTP Server at %q", l)
+	wd, _ := filepath.Abs(*dir)
+	os.Chdir(wd)
+	log.Printf("Starting HTTP Server at %q", *httpl)
 	simplehttp.DefaultTemplateDataFunc = func(r *http.Request) interface{} {
 		ret := make(map[string]interface{}, 3)
 		ret["CSSFiles"] = []string{
@@ -50,5 +54,5 @@ func main() {
 	// 	"/assets/css/style.css",
 	// }
 	h := simplehttp.New(wd, *dev)
-	log.Fatal(http.ListenAndServe(l, h))
+	log.Fatal(http.ListenAndServe(*httpl, h))
 }
