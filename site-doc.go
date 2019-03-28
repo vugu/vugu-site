@@ -6,98 +6,12 @@ import "fmt"
 import "reflect"
 import "github.com/vugu/vugu"
 
-type siteDocPage struct {
-	Path       string
-	ShortTitle string
-	LongTitle  string
-}
-
-var siteDocPages = []siteDocPage{
-	siteDocPage{
-		Path:       "/doc",
-		ShortTitle: "What is Vugu?",
-		LongTitle:  "What is Vugu?",
-	},
-	siteDocPage{
-		Path:       "/doc/start",
-		ShortTitle: "Getting Started",
-		LongTitle:  "Getting Started",
-	},
-	siteDocPage{
-		Path:       "/doc/files",
-		ShortTitle: "Vugu Files",
-		LongTitle:  "Vugu Files - Overview",
-	},
-	siteDocPage{
-		Path:       "/doc/files/markup",
-		ShortTitle: "Markup (HTML/Go)",
-		LongTitle:  "Vugu Files - Markup (HTML/Go)",
-	},
-	siteDocPage{
-		Path:       "/doc/files/style",
-		ShortTitle: "Styles (CSS)",
-		LongTitle:  "Vugu Files - Styles (CSS)",
-	},
-	siteDocPage{
-		Path:       "/doc/files/code",
-		ShortTitle: "Code (Go)",
-		LongTitle:  "Vugu Files - Code (Go)",
-	},
-	siteDocPage{
-		Path:       "/doc/dom-events",
-		ShortTitle: "DOM Events",
-		LongTitle:  "DOM Events",
-	},
-	siteDocPage{
-		Path:       "/doc/components",
-		ShortTitle: "Using Components",
-		LongTitle:  "Using Components",
-	},
-	//  siteDocPage {
-	//    Path: "/doc/components-in-depth",
-	//    ShortTitle: "Components in Depth",
-	//    LongTitle: "Components in Depth",
-	//  },
-	siteDocPage{
-		Path:       "/doc/program",
-		ShortTitle: "Program Structure",
-		LongTitle:  "Vugu Program Structure",
-	},
-	siteDocPage{
-		Path:       "/doc/build-and-dist",
-		ShortTitle: "Building and Distribution",
-		LongTitle:  "Building and Distribution",
-	},
-}
-
 type SiteDocData struct {
 	Router *Router
 }
 
 func (comp *SiteDoc) NewData(props vugu.Props) (interface{}, error) {
 	return &SiteDocData{Router: props["router"].(*Router)}, nil
-}
-
-func (data *SiteDocData) nextSiteDocPage(router *Router) (ret siteDocPage) {
-	p := router.Path()
-	for i, pg := range siteDocPages {
-		if pg.Path == p {
-			if i < len(siteDocPages)-1 {
-				return siteDocPages[i+1]
-			}
-		}
-	}
-	return
-}
-
-func (data *SiteDocData) siteDocPage(router *Router) (ret siteDocPage) {
-	p := router.Path()
-	for _, pg := range siteDocPages {
-		if pg.Path == p {
-			return pg
-		}
-	}
-	return
 }
 
 var _ vugu.ComponentType = (*SiteDoc)(nil)
@@ -146,7 +60,7 @@ func (comp *SiteDoc) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 						parent.AppendChild(n)
 						n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "h1", DataAtom: vugu.VGAtom(89090), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "h2 pb-1 pt-2"}}}
 						parent.AppendChild(n)
-						n.InnerHTML = fmt.Sprint(data.siteDocPage(data.Router).LongTitle)
+						n.InnerHTML = fmt.Sprint(allPages.FindByPathOrEmpty(data.Router.Path()).LongTitle)
 						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 						parent.AppendChild(n)
 						n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "nav", DataAtom: vugu.VGAtom(4867), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "aria-label", Val: "breadcrumb"}}}
@@ -221,10 +135,10 @@ func (comp *SiteDoc) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path != "/doc" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path != "/doc" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "breadcrumb-item active"}}}
 									parent.AppendChild(n)
-									n.InnerHTML = fmt.Sprint(data.siteDocPage(data.Router).ShortTitle)
+									n.InnerHTML = fmt.Sprint(allPages.FindByPathOrEmpty(data.Router.Path()).ShortTitle)
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
@@ -294,7 +208,7 @@ func (comp *SiteDoc) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 								parent.AppendChild(n)
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -468,7 +382,7 @@ func (comp *SiteDoc) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/start" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/start" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -479,7 +393,7 @@ func (comp *SiteDoc) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      Let's make a basic working Vugu application that runs your browser.  It \n                      only takes three small files to start.  Make sure you have at least ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                      Let's make a basic working Vugu application that runs in your browser.  It \n                      only takes three small files to start.  Make sure you have at least ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
@@ -874,7 +788,7 @@ func main() {
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/files" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/files" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -1034,7 +948,7 @@ func main() {
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/files/markup" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/files/markup" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -1903,7 +1817,7 @@ type RootData struct {
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/files/style" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/files/style" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -2080,7 +1994,7 @@ type RootData struct {
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/files/code" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/files/code" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -2630,7 +2544,7 @@ func (data *RootData) HandleClick(event *vugu.DOMEvent) {
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/program" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/program" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -3270,7 +3184,7 @@ if err != nil {
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/dom-events" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/dom-events" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -3285,7 +3199,25 @@ if err != nil {
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Events can be attached to HTML elements by providing an attribute of the event name\n                      prefixed with ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Using the browser's \n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Document Object Model (DOM)", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ",\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											parent.AppendChild(n)
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://developer.mozilla.org/en-US/docs/Web/Events"}}}
+											parent.AppendChild(n)
+											{
+												parent := n
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "events", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+											}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " can be attached to HTML elements by providing an attribute of the event name\n                      prefixed with ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
@@ -3317,7 +3249,7 @@ if err != nil {
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "The name event correspoonds to a regular DOM event as would be provided to\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "The name of the event correspoonds to a regular DOM event as would be provided to\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener"}}}
 											parent.AppendChild(n)
@@ -3606,7 +3538,7 @@ type RootData struct {
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                \n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/components" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/components" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -4010,11 +3942,11 @@ import "math/rand"
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: "\n                <article class=\"col-md-8 content-body\" vg-if='data.siteDocPage(data.Router).Path==\"/doc/components-in-depth\"'>\n                  components in depth\n\n                  mention generated BuildVDOM and that you can look at a generated .go file to see, but it's done automatically\n                  variables available - comp, data, event \n\n                  explain for loops and bound attributes and how these end up in go code \n\n                  NewData method  and in which cases it's called\n\n                  Comp struct, only one instance for the whole app, corresponds to the component type, can have config here if needed for complex cases, but often this is just empty\n                  \n                  show component written manually in Go, with all it's parts - comments to show what is auto generated and \n                  what would normally be copied from the vugu file\n\n                </article>\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: "\n                <article class=\"col-md-8 content-body\" vg-if='allPages.FindByPathOrEmpty(data.Router.Path()).Path==\"/doc/components-in-depth\"'>\n                  components in depth\n\n                  mention generated BuildVDOM and that you can look at a generated .go file to see, but it's done automatically\n                  variables available - comp, data, event \n\n                  explain for loops and bound attributes and how these end up in go code \n\n                  NewData method  and in which cases it's called\n\n                  Comp struct, only one instance for the whole app, corresponds to the component type, can have config here if needed for complex cases, but often this is just empty\n                  \n                  show component written manually in Go, with all it's parts - comments to show what is auto generated and \n                  what would normally be copied from the vugu file\n\n                </article>\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								if data.siteDocPage(data.Router).Path == "/doc/build-and-dist" {
+								if allPages.FindByPathOrEmpty(data.Router.Path()).Path == "/doc/build-and-dist" {
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "article", DataAtom: vugu.VGAtom(261127), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-md-8 content-body"}}}
 									parent.AppendChild(n)
 									{
@@ -4503,7 +4435,7 @@ func main() {
 											parent := n
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
-											for key, value := range siteDocPages {
+											for key, value := range allPages.SiteDocPages() {
 												_, _ = key, value
 												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "list-group-item list-group-item-action d-flex align-items-center active"}}}
 												parent.AppendChild(n)
@@ -4635,7 +4567,7 @@ func main() {
 						parent.AppendChild(n)
 						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 						parent.AppendChild(n)
-						if data.nextSiteDocPage(data.Router).Path != "" {
+						if nextpg := allPages.FindNextDocPage(data.Router.Path()); nextpg != nil {
 							n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "h4", DataAtom: vugu.VGAtom(214274), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "interpost "}}}
 							parent.AppendChild(n)
 							{
@@ -4644,11 +4576,11 @@ func main() {
 								parent.AppendChild(n)
 								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
-								n.InnerHTML = fmt.Sprint(data.nextSiteDocPage(data.Router).LongTitle)
+								n.InnerHTML = fmt.Sprint(nextpg.LongTitle)
 								n.Props = vugu.Props{
-									"href": data.nextSiteDocPage(data.Router).Path,
+									"href": nextpg.Path,
 								}
-								// @click = { data.Router.BrowseTo(data.nextSiteDocPage(data.Router).Path, event) }
+								// @click = { data.Router.BrowseTo(nextpg.Path, event) }
 								{
 									var i_ interface{} = data.Router
 									idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
@@ -4657,12 +4589,12 @@ func main() {
 									n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 										ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
 										Method:                reflect.ValueOf(data.Router).MethodByName("BrowseTo"),
-										Args:                  []interface{}{data.nextSiteDocPage(data.Router).Path, event},
+										Args:                  []interface{}{nextpg.Path, event},
 									})
 								}
 								if false {
 									// force compiler to check arguments for type safety
-									data.Router.BrowseTo(data.nextSiteDocPage(data.Router).Path, event)
+									data.Router.BrowseTo(nextpg.Path, event)
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)

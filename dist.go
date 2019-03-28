@@ -5,19 +5,22 @@ package main
 import (
 	"flag"
 	"fmt"
+	"html/template"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"time"
 
 	"github.com/vugu/vugu/distutil"
+	"github.com/vugu/vugu/simplehttp"
 )
 
 func main() {
 
 	clean := flag.Bool("clean", false, "Remove dist dir before starting")
-	dist := flag.String("dist", "dist", "Directory to put distribution files in")
+	dist := flag.String("dist", "../vugu.github.io", "Directory to put distribution files in")
 	flag.Parse()
 
 	start := time.Now()
@@ -47,11 +50,17 @@ func main() {
 
 	// STATIC INDEX FILE:
 	// if you are hosting with a static file server or CDN, you can write out the default index.html from simplehttp
-	// req, _ := http.NewRequest("GET", "/index.html", nil)
-	// outf, err := os.OpenFile(filepath.Join(*dist, "index.html"), os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
-	// distutil.Must(err)
-	// defer outf.Close()
-	// template.Must(template.New("_page_").Parse(simplehttp.DefaultPageTemplateSource)).Execute(outf, map[string]interface{}{"Request": req})
+	req, _ := http.NewRequest("GET", "/index.html", nil)
+	outf, err := os.OpenFile(filepath.Join(*dist, "index.html"), os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
+	distutil.Must(err)
+	defer outf.Close()
+	template.Must(template.New("_page_").Parse(simplehttp.DefaultPageTemplateSource)).Execute(outf, map[string]interface{}{
+		"Request": req,
+		"CSSFiles": []string{
+			"/assets/css/vendor.css",
+			"/assets/css/style.css",
+		},
+	})
 
 	// BUILD GO SERVER:
 	// or if you are deploying a Go server (yay!) you can build that binary here
