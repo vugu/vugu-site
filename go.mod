@@ -2,7 +2,7 @@ module github.com/vugu/vugu-site
 
 go 1.12
 
-replace github.com/vugu/vugu => /Users/bradpeabody/git/vugu
+replace github.com/vugu/vugu => ../vugu
 
 require (
 	github.com/alecthomas/chroma v0.6.3

@@ -729,19 +729,21 @@ func (data *RootData) Toggle() { data.Show = !data.Show }
 package main
 
 import (
-    "os"
-    "log"
-    "net/http"
+	"log"
+	"net/http"
+	"os"
 
-    "github.com/vugu/vugu"
+	"github.com/vugu/vugu/simplehttp"
 )
 
 func main() {
-    wd, _ := os.Getwd()
-    l := "127.0.0.1:8844"
-    log.Printf("Starting HTTP Server at %q", l)
-    h := vugu.NewDevHTTPHandler(wd, http.Dir(wd))
-    log.Fatal(http.ListenAndServe(l, h))
+	wd, _ := os.Getwd()
+	l := "127.0.0.1:8844"
+	log.Printf("Starting HTTP Server at %q", l)
+	h := simplehttp.New(wd, true)
+	// include a CSS file
+	// simplehttp.DefaultStaticData["CSSFiles"] = []string{ "/my/file.css" }
+	log.Fatal(http.ListenAndServe(l, h))
 }
 `))
 														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}

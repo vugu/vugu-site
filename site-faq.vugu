@@ -215,6 +215,7 @@
                 </div>
 
 
+                <!--
                 <div class="card-header" id="heading-1-1">
                   <h5 class="mb-0">
                     <button class="btn btn-link" type="button" id="add-css-files" @click='data.HandleClick("add-css-files")'>
@@ -238,7 +239,7 @@
 
                   </div>
                 </div>
-
+                -->
               
 
 
