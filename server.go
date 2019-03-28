@@ -80,7 +80,6 @@ func main() {
 	flag.Parse()
 	wd, _ := filepath.Abs(*dir)
 	os.Chdir(wd)
-	log.Printf("Starting HTTP Server at %q", *httpl)
 	simplehttp.DefaultTemplateDataFunc = func(r *http.Request) interface{} {
 		ret := make(map[string]interface{}, 3)
 		ret["CSSFiles"] = []string{
@@ -163,5 +162,6 @@ func main() {
 		return
 	}
 
+	log.Printf("Starting HTTP Server at %q", *httpl)
 	log.Fatal(http.ListenAndServe(*httpl, h))
 }
