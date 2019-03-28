@@ -14,7 +14,11 @@ type Router struct {
 	u url.URL
 }
 
-var router = &Router{} // singleton instance - there's only one browser
+func NewServerRouter(u url.URL) *Router {
+	return &Router{u: u}
+}
+
+// var router = &Router{} // singleton instance - there's only one browser
 
 func (r *Router) Path() string {
 	return r.u.Path

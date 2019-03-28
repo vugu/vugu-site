@@ -7,7 +7,7 @@
       <div class="container">
         <div class="row">
           <nav class="navbar navbar-expand-lg navbar-light">
-            <a href="/" class="navbar-brand" @click='router.BrowseTo("/", event)'><img src="/assets/images/logo-white.svg" alt="Logo"></a>
+            <a href="/" class="navbar-brand" @click='comp.Router.BrowseTo("/", event)'><img src="/assets/images/logo-white.svg" alt="Logo"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -15,16 +15,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                  <a :class='"nav-link"+router.PathCheckText("/"," active")' href="/" @click='router.BrowseTo("/", event)'>Home</span></a>
+                  <a :class='"nav-link"+comp.Router.PathCheckText("/"," active")' href="/" @click='comp.Router.BrowseTo("/", event)'>Home</span></a>
                 </li>
                 <li class="nav-item">
-                  <a :class='"nav-link"' href="/doc/start" @click='router.BrowseTo("/doc/start", event)'>Getting Started</span></a>
+                  <a :class='"nav-link"' href="/doc/start" @click='comp.Router.BrowseTo("/doc/start", event)'>Getting Started</span></a>
                 </li>
                 <li class="nav-item">
-                  <a :class='"nav-link"+router.PathPrefixCheckText("/doc"," active")' href="/doc" @click='router.BrowseTo("/doc", event)'>Documentation</span></a>
+                  <a :class='"nav-link"+comp.Router.PathPrefixCheckText("/doc"," active")' href="/doc" @click='comp.Router.BrowseTo("/doc", event)'>Documentation</span></a>
                 </li>
                 <li class="nav-item">
-                  <a :class='"nav-link"+router.PathCheckText("/faq"," active")' href="/faq" @click='router.BrowseTo("/faq", event)'>faq</span></a>
+                  <a :class='"nav-link"+comp.Router.PathCheckText("/faq"," active")' href="/faq" @click='comp.Router.BrowseTo("/faq", event)'>faq</span></a>
                 </li>
                 <!--
                 <li class="nav-item dropdown">
@@ -84,9 +84,9 @@
     </header>
     <!-- / header -->
 
-    <site-home vg-if='router.PathCheck("/")'></site-home>
-    <site-doc vg-if='router.PathPrefixCheck("/doc")'></site-doc>
-    <site-faq vg-if='router.PathCheck("/faq")'></site-faq>
+    <site-home vg-if='comp.Router.PathCheck("/")' :router='comp.Router'></site-home>
+    <site-doc vg-if='comp.Router.PathPrefixCheck("/doc")' :router='comp.Router'></site-doc>
+    <site-faq vg-if='comp.Router.PathCheck("/faq")' :router='comp.Router'></site-faq>
 
         <!-- hero 
         <section class="hero pb-0">
@@ -128,7 +128,7 @@
 
     <!--
         DOESN'T WORK, needs figure-out 
-        div vg-if="router.PathChecksFailed()">
+        div vg-if="comp.Router.PathChecksFailed()">
         Sorry, the page you requested was not found.
     </div -->
 
@@ -206,49 +206,18 @@
 
 <script type="application/x-go">
 
-/*
-
-import "log"
-import "net/http"
-import "encoding/json"
+type Root struct {
+  Router *Router
+}
 
 type RootData struct {
-    Class string
-    Items []string
+  Router *Router
 }
 
-func (ct *Root) NewData(props vugu.Props) (interface{}, error) {
-    return &RootData{
-        Class: "some class here",
-        Items: []string{"item1", "item2", "item3"},
-    }, nil
+func (comp *Root) NewData(props vugu.Props) (interface{}, error) {
+  //return &RootData{Router: props["router"].(*Router)}, nil
+  return &RootData{Router: comp.Router}, nil
 }
 
-func (comp *Root) HandleLoadClick(event *vugu.DOMEvent, data *RootData, n int) {
-
-    println("In HandleLoadClick()")
-
-    go func() {
-
-        // fetch somehting
-        resp, err := http.Get(fmt.Sprintf("/api/sample?n=%d", n))
-        if err != nil { log.Print(err); return }
-        defer resp.Body.Close()
-
-        // parse and upate data, with a lock
-        event.EventEnv().Lock()
-        defer event.EventEnv().UnlockRender()
-
-        json.NewDecoder(resp.Body).Decode(&data.Items)
-
-    }()
-
-}
-
-func (comp *Root) HandleClick(event *vugu.DOMEvent, itemText string) {
-    log.Printf("HandleClick got %q", itemText)
-}
-
-*/
 
 </script>

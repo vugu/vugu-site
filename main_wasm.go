@@ -14,7 +14,7 @@ func main() {
 	println("Entering main()")
 	defer println("Exiting main()")
 
-	rootInst, err := vugu.New(&Root{}, nil)
+	rootInst, err := vugu.New(&Root{Router: NewJSRouter()}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

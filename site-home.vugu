@@ -9,12 +9,14 @@
       	<div class="row justify-content-center">
       	  <div class="col-lg-10 text-white text-center">
               <h1 class="font-weight-light">Build a web front-end in Go that runs in your browser, today.</h1>
-              <div>Don't think it'll run in your browser?  View Source on this page ;) </div>
+              <div>
+                Pure Go.  Targets WebAssembly (and/or server).
+                Modern browsers supported.  Experimental, for now. Really cool.</div>
       	  </div>
       	</div>
         <div class="row">
           <div class="col text-center">
-            <a href="/doc/start" @click='router.BrowseTo("/doc/start", event)' class="btn btn-white">Start Now &gt;</a>
+            <a href="/doc/start" @click='data.Router.BrowseTo("/doc/start", event)' class="btn btn-white">Start Now &gt;</a>
           </div>
           <br/>&nbsp;
           <br/>&nbsp;
@@ -41,7 +43,7 @@
 
             <hr/>
 
-            <p><strong>PLEASE NOTE: This is <span style="color:red">experimental</span> technology!  <a href="/faq#stability" @click='router.BrowseTo("/faq#stability", event)'>(read more)</a></strong></p>
+            <p><strong>PLEASE NOTE: This is <span style="color:red">experimental</span> technology!  <a href="/faq#stability" @click='data.Router.BrowseTo("/faq#stability", event)'>(read more)</a></strong></p>
 
 
             <hr/>
@@ -52,7 +54,7 @@
                 <p>Runs in most modern browsers.</p>
                 <p>Simple and sane dev and build environment.  (Say goodbye to that node_modules folder!)</p>
                 <p>Write UIs with the ease of HTML+CSS for presentation, and the facility of Go for interface logic.
-                    It's pretty cool!  See the <a href="/doc/start" @click='router.BrowseTo("/doc/start", event)'>Getting Started</a> page.</p>
+                    It's pretty cool!  See the <a href="/doc/start" @click='data.Router.BrowseTo("/doc/start", event)'>Getting Started</a> page.</p>
             <!-- </ul> -->
 
           </div>
@@ -323,6 +325,15 @@
 </div>
 
 <script type="application/x-go">
+
+type SiteHomeData struct {
+  Router *Router
+}
+
+func (comp *SiteHome) NewData(props vugu.Props) (interface{}, error) {
+  return &SiteHomeData{Router: props["router"].(*Router)}, nil
+}
+
 /* notes:
 
 

@@ -6,50 +6,18 @@ import "fmt"
 import "reflect"
 import "github.com/vugu/vugu"
 
-/*
-
-import "log"
-import "net/http"
-import "encoding/json"
+type Root struct {
+	Router *Router
+}
 
 type RootData struct {
-    Class string
-    Items []string
+	Router *Router
 }
 
-func (ct *Root) NewData(props vugu.Props) (interface{}, error) {
-    return &RootData{
-        Class: "some class here",
-        Items: []string{"item1", "item2", "item3"},
-    }, nil
+func (comp *Root) NewData(props vugu.Props) (interface{}, error) {
+	//return &RootData{Router: props["router"].(*Router)}, nil
+	return &RootData{Router: comp.Router}, nil
 }
-
-func (comp *Root) HandleLoadClick(event *vugu.DOMEvent, data *RootData, n int) {
-
-    println("In HandleLoadClick()")
-
-    go func() {
-
-        // fetch somehting
-        resp, err := http.Get(fmt.Sprintf("/api/sample?n=%d", n))
-        if err != nil { log.Print(err); return }
-        defer resp.Body.Close()
-
-        // parse and upate data, with a lock
-        event.EventEnv().Lock()
-        defer event.EventEnv().UnlockRender()
-
-        json.NewDecoder(resp.Body).Decode(&data.Items)
-
-    }()
-
-}
-
-func (comp *Root) HandleClick(event *vugu.DOMEvent, itemText string) {
-    log.Printf("HandleClick got %q", itemText)
-}
-
-*/
 
 var _ vugu.ComponentType = (*Root)(nil)
 
@@ -99,21 +67,21 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 						parent.AppendChild(n)
 						n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "navbar-brand"}}}
 						parent.AppendChild(n)
-						// @click = { router.BrowseTo("/", event) }
+						// @click = { comp.Router.BrowseTo("/", event) }
 						{
-							var i_ interface{} = router
+							var i_ interface{} = comp.Router
 							idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-							var i2_ interface{} = router.BrowseTo
+							var i2_ interface{} = comp.Router.BrowseTo
 							i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
 							n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 								ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-								Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+								Method:                reflect.ValueOf(comp.Router).MethodByName("BrowseTo"),
 								Args:                  []interface{}{"/", event},
 							})
 						}
 						if false {
 							// force compiler to check arguments for type safety
-							router.BrowseTo("/", event)
+							comp.Router.BrowseTo("/", event)
 						}
 						{
 							parent := n
@@ -156,23 +124,23 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/"}}}
 									parent.AppendChild(n)
 									n.Props = vugu.Props{
-										"class": "nav-link" + router.PathCheckText("/", " active"),
+										"class": "nav-link" + comp.Router.PathCheckText("/", " active"),
 									}
-									// @click = { router.BrowseTo("/", event) }
+									// @click = { comp.Router.BrowseTo("/", event) }
 									{
-										var i_ interface{} = router
+										var i_ interface{} = comp.Router
 										idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-										var i2_ interface{} = router.BrowseTo
+										var i2_ interface{} = comp.Router.BrowseTo
 										i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
 										n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 											ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-											Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+											Method:                reflect.ValueOf(comp.Router).MethodByName("BrowseTo"),
 											Args:                  []interface{}{"/", event},
 										})
 									}
 									if false {
 										// force compiler to check arguments for type safety
-										router.BrowseTo("/", event)
+										comp.Router.BrowseTo("/", event)
 									}
 									{
 										parent := n
@@ -195,21 +163,21 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 									n.Props = vugu.Props{
 										"class": "nav-link",
 									}
-									// @click = { router.BrowseTo("/doc/start", event) }
+									// @click = { comp.Router.BrowseTo("/doc/start", event) }
 									{
-										var i_ interface{} = router
+										var i_ interface{} = comp.Router
 										idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-										var i2_ interface{} = router.BrowseTo
+										var i2_ interface{} = comp.Router.BrowseTo
 										i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
 										n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 											ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-											Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+											Method:                reflect.ValueOf(comp.Router).MethodByName("BrowseTo"),
 											Args:                  []interface{}{"/doc/start", event},
 										})
 									}
 									if false {
 										// force compiler to check arguments for type safety
-										router.BrowseTo("/doc/start", event)
+										comp.Router.BrowseTo("/doc/start", event)
 									}
 									{
 										parent := n
@@ -230,23 +198,23 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/doc"}}}
 									parent.AppendChild(n)
 									n.Props = vugu.Props{
-										"class": "nav-link" + router.PathPrefixCheckText("/doc", " active"),
+										"class": "nav-link" + comp.Router.PathPrefixCheckText("/doc", " active"),
 									}
-									// @click = { router.BrowseTo("/doc", event) }
+									// @click = { comp.Router.BrowseTo("/doc", event) }
 									{
-										var i_ interface{} = router
+										var i_ interface{} = comp.Router
 										idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-										var i2_ interface{} = router.BrowseTo
+										var i2_ interface{} = comp.Router.BrowseTo
 										i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
 										n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 											ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-											Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+											Method:                reflect.ValueOf(comp.Router).MethodByName("BrowseTo"),
 											Args:                  []interface{}{"/doc", event},
 										})
 									}
 									if false {
 										// force compiler to check arguments for type safety
-										router.BrowseTo("/doc", event)
+										comp.Router.BrowseTo("/doc", event)
 									}
 									{
 										parent := n
@@ -267,23 +235,23 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/faq"}}}
 									parent.AppendChild(n)
 									n.Props = vugu.Props{
-										"class": "nav-link" + router.PathCheckText("/faq", " active"),
+										"class": "nav-link" + comp.Router.PathCheckText("/faq", " active"),
 									}
-									// @click = { router.BrowseTo("/faq", event) }
+									// @click = { comp.Router.BrowseTo("/faq", event) }
 									{
-										var i_ interface{} = router
+										var i_ interface{} = comp.Router
 										idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-										var i2_ interface{} = router.BrowseTo
+										var i2_ interface{} = comp.Router.BrowseTo
 										i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
 										n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 											ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-											Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+											Method:                reflect.ValueOf(comp.Router).MethodByName("BrowseTo"),
 											Args:                  []interface{}{"/faq", event},
 										})
 									}
 									if false {
 										// force compiler to check arguments for type safety
-										router.BrowseTo("/faq", event)
+										comp.Router.BrowseTo("/faq", event)
 									}
 									{
 										parent := n
@@ -366,21 +334,30 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 		parent.AppendChild(n)
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
-		if router.PathCheck("/") {
+		if comp.Router.PathCheck("/") {
 			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "site-home", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 			parent.AppendChild(n)
+			n.Props = vugu.Props{
+				"router": comp.Router,
+			}
 		}
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
-		if router.PathPrefixCheck("/doc") {
+		if comp.Router.PathPrefixCheck("/doc") {
 			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "site-doc", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 			parent.AppendChild(n)
+			n.Props = vugu.Props{
+				"router": comp.Router,
+			}
 		}
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
-		if router.PathCheck("/faq") {
+		if comp.Router.PathCheck("/faq") {
 			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "site-faq", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 			parent.AppendChild(n)
+			n.Props = vugu.Props{
+				"router": comp.Router,
+			}
 		}
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
@@ -400,7 +377,7 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 		parent.AppendChild(n)
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
-		n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: "\n        DOESN'T WORK, needs figure-out \n        div vg-if=\"router.PathChecksFailed()\">\n        Sorry, the page you requested was not found.\n    </div ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+		n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: "\n        DOESN'T WORK, needs figure-out \n        div vg-if=\"comp.Router.PathChecksFailed()\">\n        Sorry, the page you requested was not found.\n    </div ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
@@ -647,11 +624,5 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 	}
 	return
 }
-
-type Root struct {}
-
-type RootData struct {}
-
-func (ct *Root) NewData(props vugu.Props) (interface{}, error) { return &RootData{}, nil }
 
 func init() { vugu.RegisterComponentType("root", &Root{}) }

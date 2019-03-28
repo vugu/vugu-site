@@ -7,12 +7,12 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 text-white mb-3">
-            <h1 class="h2 pb-1 pt-2" vg-html="data.siteDocPage().LongTitle"></h1>
+            <h1 class="h2 pb-1 pt-2" vg-html="data.siteDocPage(data.Router).LongTitle"></h1>
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb breadcrumb-minimal">
-                <li class="breadcrumb-item"><a href="/" @click='router.BrowseTo("/", event)'>Home</a></li>
-                <li class="breadcrumb-item"><a href="/doc" @click='router.BrowseTo("/doc", event)'>Doc</a></li>
-                <li vg-if='data.siteDocPage().Path!="/doc"' class="breadcrumb-item active" vg-html="data.siteDocPage().ShortTitle"></li>
+                <li class="breadcrumb-item"><a href="/" @click='data.Router.BrowseTo("/", event)'>Home</a></li>
+                <li class="breadcrumb-item"><a href="/doc" @click='data.Router.BrowseTo("/doc", event)'>Doc</a></li>
+                <li vg-if='data.siteDocPage(data.Router).Path!="/doc"' class="breadcrumb-item active" vg-html="data.siteDocPage(data.Router).ShortTitle"></li>
               </ol>
             </nav>
           </div>
@@ -32,7 +32,7 @@
 
                 <!-- content -->
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc"'>
 
                     <p>Vugu is Go library which makes it easy to write web user interfaces in Go.</p>
 
@@ -69,7 +69,7 @@
 
                 </article>
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/start"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/start"'>
 
                     <p>
                       Let's make a basic working Vugu application that runs your browser.  It 
@@ -176,7 +176,7 @@ func main() {
 
                 </article>
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/files"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/files"'>
 
                   <p>Vugu files have three sections: Markup, Style and Code</p>
 
@@ -213,7 +213,7 @@ func main() {
 
                 </article>
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/files/markup"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/files/markup"'>
 
 
                   <p>
@@ -241,7 +241,7 @@ func main() {
                       condition is regular Go code and during code generation is put directly between <nobr><code>if</code> and <code>{</code></nobr>
                       in the resulting .go file.  While the expression itself can be any valid Go code for an if statement,
                       a common case is to reference a member variable of your 
-                      <a href="/doc/components" @click='router.BrowseTo("/doc/components", event)'>Component</a>'s Data struct.
+                      <a href="/doc/components" @click='data.Router.BrowseTo("/doc/components", event)'>Component</a>'s Data struct.
                       For example:
                     </p>
 <div vg-html='showCode("html",`<div>
@@ -352,7 +352,7 @@ type RootData struct {
                       components, where the attributes 
                       become properties that are passed into a component when it is instantiated.  In this case,
                       the attributes are not converted to strings but are kept as regular Go values (store as <code>interface{}</code>).  See the 
-                      <a href="/doc/components" @click='router.BrowseTo("/doc/components", event)'>Components</a> page for more info.
+                      <a href="/doc/components" @click='data.Router.BrowseTo("/doc/components", event)'>Components</a> page for more info.
                     </p>
 
                     <h3>DOM Events with <code>@</code></h3>
@@ -376,7 +376,7 @@ type RootData struct {
                       The special variable <code>event</code> which is of type 
                       <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a>
                       can be used a placeholder and is replaced when the method is invoked with an appropriate event object. 
-                      See <a href="/doc/dom-events" @click='router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> for more info.
+                      See <a href="/doc/dom-events" @click='data.Router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> for more info.
                       Example:
                     </p>
 
@@ -403,7 +403,7 @@ type RootData struct {
                         It is typically 
                       a struct pointer.  This is the proper place to house the state of your component.
                       By default this is an empty struct but it is common to create your own struct with 
-                      the data you need on it.  See more at <a href="/doc/components" @click='router.BrowseTo("/doc/components", event)'>Components</a></li>
+                      the data you need on it.  See more at <a href="/doc/components" @click='data.Router.BrowseTo("/doc/components", event)'>Components</a></li>
                       <li><code>comp</code> - Refers to the component type.  Unless you write something 
                       specific for this it will be an empty struct.  However it can be useful if you need to
                       store configuration info that is determined at app startup and is the same for each 
@@ -415,7 +415,7 @@ type RootData struct {
                         some other needed functionality such as the 
                         <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv</a>, which is important for synchronizing 
                         goroutines that need to update data after an event completes.  See more at 
-                        <a href="/doc/dom-events" @click='router.BrowseTo("/doc/dom-events", event)'>DOM Events</a>.</li>
+                        <a href="/doc/dom-events" @click='data.Router.BrowseTo("/doc/dom-events", event)'>DOM Events</a>.</li>
                       <li><code>key</code> and <code>value</code> - See section covering vg-for above.  These are the 
                         default names used for implied range expressions.
                     </ul>
@@ -426,7 +426,7 @@ type RootData struct {
  
                 </article>
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/files/style"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/files/style"'>
 
                   <p>Style blocks are simply a way to express CSS that corresponds to your component and is output
                     along with your component markup. Example:</p>
@@ -471,7 +471,7 @@ type RootData struct {
 
                 </article>
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/files/code"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/files/code"'>
 
                     <p>
                       Go code can be included in your component with in a
@@ -617,7 +617,7 @@ func (data *RootData) HandleClick(event *vugu.DOMEvent) {
                           any information on <code>data</code> or that could potentially have concurrency issues, you can use <code>EventEnv.Lock()</code>
                           to get an exclusive lock, and <code>EventEnv.UnlockRender()</code> to release the lock and tell render loop that the page needs 
                           to be updated.
-                          See <a href="/doc/dom-events" @click='router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> for more info.
+                          See <a href="/doc/dom-events" @click='data.Router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> for more info.
                       </li>
 
                     </ul>
@@ -640,7 +640,7 @@ func (data *RootData) HandleClick(event *vugu.DOMEvent) {
 
                 </article>
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/program"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/program"'>
 
                   <p>Vugu takes a number of steps to make the development process easy to rapidly 
                     get started and prototype user interfaces.  That said, it's important to 
@@ -651,7 +651,7 @@ func (data *RootData) HandleClick(event *vugu.DOMEvent) {
 
                   <p>
                     When you use the HTTP handler in development mode (as shown on the 
-                    <a href="/doc/start" @click='router.BrowseTo("/doc/start", event)'>Getting Started</a> page), upon page load 
+                    <a href="/doc/start" @click='data.Router.BrowseTo("/doc/start", event)'>Getting Started</a> page), upon page load 
                     Vugu will convert your .vugu files into .go and also by default attempt to generate a main_wasm.go if it does not exist.
                     (You can edit main_wasm.go as needed. It is only a template to get your started. Vugu will not overwrite it.)
                   </p>
@@ -824,7 +824,7 @@ if err != nil {
                       <i class="icon-alert-circle"></i>
                       <h4 class="fs-22">Important Note</h4>
                       <p>When 
-                          <a href="/doc/files/dom-events" @click='router.BrowseTo("/doc/files/dom-events", event)'>DOM Events</a> 
+                          <a href="/doc/files/dom-events" @click='data.Router.BrowseTo("/doc/files/dom-events", event)'>DOM Events</a> 
                           are handled, a (write) lock is acquired against the environment automatically
                         and then released when your event handler returns.  When things that would block (like fetching 
                         data from the server over HTTP) need to be done, this must be run in a goroutine which uses 
@@ -840,7 +840,7 @@ if err != nil {
   
 
                   <!-- <p>When 
-                      <a href="/doc/files/dom-events" @click='router.BrowseTo("/doc/files/dom-events", event)'>DOM Events</a> 
+                      <a href="/doc/files/dom-events" @click='data.Router.BrowseTo("/doc/files/dom-events", event)'>DOM Events</a> 
                       are handled, a (write) lock is acquired against the environment automatically
                     and then released when your event handler returns.  When things that would block (like fetching 
                     data from the server over HTTP) need to be done, this must be run in a goroutines which must use 
@@ -876,13 +876,13 @@ if err != nil {
                     <em>main_wasm.go</em>.  The "_wasm" part indicates that the file should be included during 
                     a WebAssembly build.  You can and should include a server-side <code>main()</code> in another file
                     and use <nobr><code>// +build !wasm</code></nobr> at the top as the inverse build constraint. 
-                    See <a href="/doc/build-and-dist" @click='router.BrowseTo("/doc/build-and-dist", event)'>Building and Distribution</a>
+                    See <a href="/doc/build-and-dist" @click='data.Router.BrowseTo("/doc/build-and-dist", event)'>Building and Distribution</a>
                     for more info.
                   </p>
 
                 </article>
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/dom-events"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/dom-events"'>
 
                     <!-- <p>DOM events</p> -->
 
@@ -945,7 +945,7 @@ type RootData struct {
                           </div>
 
                           
-                          See <a href="/doc/files/code" @click='router.BrowseTo("/doc/files/code", event)'>Code</a>
+                          See <a href="/doc/files/code" @click='data.Router.BrowseTo("/doc/files/code", event)'>Code</a>
                            for an example of using a goroutine to fetch data and locking/unlocking when 
                           handling the results.
 
@@ -969,7 +969,7 @@ type RootData struct {
 
                 </article>
                 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/components"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/components"'>
 
                     <p>
                       <strong>Components are individual files which are used to organize your user interface code.</strong>
@@ -994,7 +994,7 @@ type RootData struct {
                       level component</strong> and is rendered just inside the <code>&lt;body></code> tag on your page.
                       In this case, there is only one instance of your root component, which is created in your <code>main()</code> function.
                       (If you've followed the 
-                      <a href="/doc/files/start" @click='router.BrowseTo("/doc/files/start", event)'>Getting Started</a>
+                      <a href="/doc/files/start" @click='data.Router.BrowseTo("/doc/files/start", event)'>Getting Started</a>
                       instructions you can find this code in main_wasm.go)
                     </p>
 
@@ -1127,7 +1127,7 @@ import "math/rand"
                 </article>
 
                 <!--
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/components-in-depth"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/components-in-depth"'>
                   components in depth
 
                   mention generated BuildVDOM and that you can look at a generated .go file to see, but it's done automatically
@@ -1145,9 +1145,19 @@ import "math/rand"
                 </article>
                 -->
 
-                <article class="col-md-8 content-body" vg-if='data.siteDocPage().Path=="/doc/build-and-dist"'>
+                <article class="col-md-8 content-body" vg-if='data.siteDocPage(data.Router).Path=="/doc/build-and-dist"'>
 
                     <p>Build and Dist</p>
+
+
+                    <p>need to mention how to set title and meta tags as part of setting up server
+
+                      actually we need to show two approaches here - one with a dev/prod Go server, along with its 
+                      build script
+
+                      and then an entirely different setup which outputs static HTML to the dist folder,
+                       for use with static file servers, CDNs, etc.
+                    </p>
 
                 </article>
                 
@@ -1290,7 +1300,7 @@ import "math/rand"
                     <h3 class="widget-title">Documentation</h3>
                     <div class="list-group list-group-related">
 
-                      <a vg-for="siteDocPages" :href="value.Path" @click="router.BrowseTo(value.Path, event)" class="list-group-item list-group-item-action d-flex align-items-center active">
+                      <a vg-for="siteDocPages" :href="value.Path" @click="data.Router.BrowseTo(value.Path, event)" class="list-group-item list-group-item-action d-flex align-items-center active">
                         <i class="fs-20 icon-file-text2 text-primary mr-1"></i>
                         <span vg-html="value.ShortTitle"></span>
                       </a>
@@ -1342,8 +1352,8 @@ import "math/rand"
           </div>
           <div class="col-12 col-md-6 text-right">
               <!-- interpost-next  - this class was causing some funk, took it out -->
-            <h4 class="interpost " vg-if='data.nextSiteDocPage().Path!=""'>
-              <a :href="data.nextSiteDocPage().Path" @click='router.BrowseTo(data.nextSiteDocPage().Path, event)' vg-html="data.nextSiteDocPage().LongTitle"></a>
+            <h4 class="interpost " vg-if='data.nextSiteDocPage(data.Router).Path!=""'>
+              <a :href="data.nextSiteDocPage(data.Router).Path" @click='data.Router.BrowseTo(data.nextSiteDocPage(data.Router).Path, event)' vg-html="data.nextSiteDocPage(data.Router).LongTitle"></a>
             </h4>
           </div>
         </div>
@@ -1424,9 +1434,15 @@ var siteDocPages = []siteDocPage {
   },
 }
 
-type SiteDocData struct {}
+type SiteDocData struct {
+  Router *Router
+}
 
-func (data *SiteDocData) nextSiteDocPage() (ret siteDocPage) {
+func (comp *SiteDoc) NewData(props vugu.Props) (interface{}, error) {
+  return &SiteDocData{Router: props["router"].(*Router)}, nil
+}
+
+func (data *SiteDocData) nextSiteDocPage(router *Router) (ret siteDocPage) {
   p := router.Path()
   for i, pg := range siteDocPages {
     if pg.Path == p {
@@ -1438,7 +1454,7 @@ func (data *SiteDocData) nextSiteDocPage() (ret siteDocPage) {
   return
 }
 
-func (data *SiteDocData) siteDocPage() (ret siteDocPage) {
+func (data *SiteDocData) siteDocPage(router *Router) (ret siteDocPage) {
   p := router.Path()
   for _, pg := range siteDocPages {
     if pg.Path == p {

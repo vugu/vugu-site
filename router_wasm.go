@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/url"
 	"path"
@@ -21,18 +22,19 @@ type Router struct {
 	checkOK bool    // set to true when a path check matches
 }
 
-var router = &Router{} // singleton instance - there's only one browser
+// var router = &Router{} // singleton instance - there's only one browser
 
-func init() {
+func NewJSRouter() *Router {
+
 	// TODO: should be able to use this thing in JS or not
 
 	browserURL := js.Global().Get("document").Get("location").String()
 	u, err := url.Parse(browserURL)
 	if err != nil {
 		log.Printf("Error parsing URL from browser(%q): %v", browserURL, err)
-		return
+		panic(fmt.Errorf("Error parsing URL from browser(%q): %v", browserURL, err))
 	}
-	router.u = *u
+	return &Router{u: *u}
 }
 
 func (r *Router) Path() string {

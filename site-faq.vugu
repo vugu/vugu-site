@@ -215,6 +215,32 @@
                 </div>
 
 
+                <div class="card-header" id="heading-1-1">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" id="add-css-files" @click='data.HandleClick("add-css-files")'>
+                        How do I quickly add some CSS files to be included on every page?
+                    </button>
+                  </h5>
+                </div>
+                <div vg-if='data.SelectedID=="add-css-files"'>
+                  <div class="card-body">
+                    <p>
+                      Assuming you are using simplehttp, the easy way to do this is to go into your devserver.go or server.go 
+                      and add a block like this:</p>
+
+<div vg-html='showCode("go",`simplehttp.DefaultStaticData["CSSFiles"] = []string{
+  "/path/to/file1.css",
+  "/path/to/file2.css",
+  // ...
+}`)'></div>
+
+                    <p>The default setup will loop over those paths (in sequence) and add the appropriate <code>&lt;link</code> tags to the <code>&lt;head></code> section of your page.</p>
+
+                  </div>
+                </div>
+
+              
+
 
               </div>
             </div>

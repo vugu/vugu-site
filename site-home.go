@@ -6,6 +6,14 @@ import "fmt"
 import "reflect"
 import "github.com/vugu/vugu"
 
+type SiteHomeData struct {
+	Router *Router
+}
+
+func (comp *SiteHome) NewData(props vugu.Props) (interface{}, error) {
+	return &SiteHomeData{Router: props["router"].(*Router)}, nil
+}
+
 /* notes:
 
 
@@ -95,7 +103,7 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 						parent.AppendChild(n)
 						{
 							parent := n
-							n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Don't think it'll run in your browser?  View Source on this page ;) ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+							n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                Pure Go.  Targets WebAssembly (and/or server).\n                Modern browsers supported.  Experimental, for now. Really cool.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 							parent.AppendChild(n)
 						}
 						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      \t  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -120,21 +128,21 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 						parent.AppendChild(n)
 						n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/doc/start"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-white"}}}
 						parent.AppendChild(n)
-						// @click = { router.BrowseTo("/doc/start", event) }
+						// @click = { data.Router.BrowseTo("/doc/start", event) }
 						{
-							var i_ interface{} = router
+							var i_ interface{} = data.Router
 							idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-							var i2_ interface{} = router.BrowseTo
+							var i2_ interface{} = data.Router.BrowseTo
 							i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
 							n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 								ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-								Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+								Method:                reflect.ValueOf(data.Router).MethodByName("BrowseTo"),
 								Args:                  []interface{}{"/doc/start", event},
 							})
 						}
 						if false {
 							// force compiler to check arguments for type safety
-							router.BrowseTo("/doc/start", event)
+							data.Router.BrowseTo("/doc/start", event)
 						}
 						{
 							parent := n
@@ -278,21 +286,21 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 								parent.AppendChild(n)
 								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/faq#stability"}}}
 								parent.AppendChild(n)
-								// @click = { router.BrowseTo("/faq#stability", event) }
+								// @click = { data.Router.BrowseTo("/faq#stability", event) }
 								{
-									var i_ interface{} = router
+									var i_ interface{} = data.Router
 									idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-									var i2_ interface{} = router.BrowseTo
+									var i2_ interface{} = data.Router.BrowseTo
 									i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
 									n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 										ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-										Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+										Method:                reflect.ValueOf(data.Router).MethodByName("BrowseTo"),
 										Args:                  []interface{}{"/faq#stability", event},
 									})
 								}
 								if false {
 									// force compiler to check arguments for type safety
-									router.BrowseTo("/faq#stability", event)
+									data.Router.BrowseTo("/faq#stability", event)
 								}
 								{
 									parent := n
@@ -355,21 +363,21 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 							parent.AppendChild(n)
 							n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/doc/start"}}}
 							parent.AppendChild(n)
-							// @click = { router.BrowseTo("/doc/start", event) }
+							// @click = { data.Router.BrowseTo("/doc/start", event) }
 							{
-								var i_ interface{} = router
+								var i_ interface{} = data.Router
 								idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-								var i2_ interface{} = router.BrowseTo
+								var i2_ interface{} = data.Router.BrowseTo
 								i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
 								n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 									ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-									Method:                reflect.ValueOf(router).MethodByName("BrowseTo"),
+									Method:                reflect.ValueOf(data.Router).MethodByName("BrowseTo"),
 									Args:                  []interface{}{"/doc/start", event},
 								})
 							}
 							if false {
 								// force compiler to check arguments for type safety
-								router.BrowseTo("/doc/start", event)
+								data.Router.BrowseTo("/doc/start", event)
 							}
 							{
 								parent := n
@@ -418,9 +426,5 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 }
 
 type SiteHome struct {}
-
-type SiteHomeData struct {}
-
-func (ct *SiteHome) NewData(props vugu.Props) (interface{}, error) { return &SiteHomeData{}, nil }
 
 func init() { vugu.RegisterComponentType("site-home", &SiteHome{}) }
