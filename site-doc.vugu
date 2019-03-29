@@ -283,7 +283,7 @@ type RootData struct { // component data for "root"
 }
 </script>`)'></div>
 
-                    <p>Note that the vg-html attribute outputs the value as HTML, using <code>fmt.Print()</code>, see below.</p>
+                    <p>Note that the vg-html attribute outputs the value as HTML, using <code>fmt.Sprint()</code>, see below.</p>
 
                     <p>
                       As a special case and for convenience, if the expression contains no whitespace it will be expanded to
@@ -310,12 +310,12 @@ type RootData struct { // component data for "root"
                     <p>The vg-html attribute is used to output an expression as HTML into the contents of an element.
                       (It corresponds to the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML">innerHTML</a> property.)
                       The expression converted to a string using 
-                      <a target="_blank" href="https://golang.org/pkg/fmt/#Print">fmt.Print()</a>.  Example:
+                      <a target="_blank" href="https://golang.org/pkg/fmt/#Sprint">fmt.Sprint()</a>.  Example:
                     </p>
 
 <div vg-html='showCode("html",`<div>
     <p vg-html=&apos;"<b>an HTML string</b>"&apos;>
-    <p vg-html=&apos;123&apos;> &lt;!-- will be output according to fmt.Print rules -->
+    <p vg-html=&apos;123&apos;> &lt;!-- will be output according to fmt.Sprint rules -->
     <p vg-html=&apos;html.EscapeString("escaping & arbitrary text is easy like so")&apos;>
 </div>
 
@@ -826,23 +826,29 @@ if err != nil {
                       <i class="icon-alert-circle"></i>
                       <h4 class="fs-22">Important Note</h4>
                       <p>When 
-                          <a href="/doc/files/dom-events" @click='data.Router.BrowseTo("/doc/files/dom-events", event)'>DOM Events</a> 
+                          <a href="/doc/dom-events" @click='data.Router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> 
                           are handled, a (write) lock is acquired against the environment automatically
                         and then released when your event handler returns.  When things that would block (like fetching 
-                        data from the server over HTTP) need to be done, this must be run in a goroutine which uses 
+                        data from the server over HTTP) need to be done, this must be run in a goroutine which uses
                         <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent.EventEnv">event.EventEnv()</a> 
-                        to acquire their own lock to ensure they don't interfere with the render loop or other code.
+                        to acquire their own lock before modifying any component data, to ensure they don't interfere with the render loop or other code.
+                        Locking should only be done during data modification and then unlocked immediately afterward.  <strong>Do not put a
+                          <code>Lock()</code> before <code>http.Get()</code> or other such 
+                          <a target="_blank" href="https://en.wikipedia.org/wiki/Blocking_(computing)">blocking</a> calls.</strong>  Instead <code>Lock()</code> after 
+                          you have your data and before updating
+                        the state of your component.
                         <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv.UnlockRender()</a>
                         will cause the <code>env.EventWait()</code> call above to return and update the page.
                         (Whereas <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv.UnlockOnly()</a>
                         will release the lock but not cause the page update. This is useful if 
                         you need to do several updates to data at different times
-                        but only care to refresh the page after they are all done.)</p>
+                        but only care to refresh the page after they are all done.)
+                        See <a href="/doc/files/code" @click='data.Router.BrowseTo("/doc/files/code", event)'>Code</a> for a correct example.</p>
                     </div>
   
 
                   <!-- <p>When 
-                      <a href="/doc/files/dom-events" @click='data.Router.BrowseTo("/doc/files/dom-events", event)'>DOM Events</a> 
+                      <a href="/doc/dom-events" @click='data.Router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> 
                       are handled, a (write) lock is acquired against the environment automatically
                     and then released when your event handler returns.  When things that would block (like fetching 
                     data from the server over HTTP) need to be done, this must be run in a goroutines which must use 
@@ -1286,14 +1292,14 @@ func main() {
 
 	// check for vugugen and go get if not there
 	if _, err := exec.LookPath("vugugen"); err != nil {
-		fmt.Print(distutil.MustExec("go", "get", "github.com/vugu/vugu/vugugen"))
+		fmt.Sprint(distutil.MustExec("go", "get", "github.com/vugu/vugu/vugugen"))
 	}
 
 	// run go generate
-	fmt.Print(distutil.MustExec("go", "generate", "."))
+	fmt.Sprint(distutil.MustExec("go", "generate", "."))
 
 	// run go build for wasm binary
-	fmt.Print(distutil.MustEnvExec([]string{"GOOS=js", "GOARCH=wasm"}, "go", "build", "-o", filepath.Join(*dist, "main.wasm"), "."))
+	fmt.Sprint(distutil.MustEnvExec([]string{"GOOS=js", "GOARCH=wasm"}, "go", "build", "-o", filepath.Join(*dist, "main.wasm"), "."))
 
 	// STATIC INDEX FILE:
 	// if you are hosting with a static file server or CDN, you can write out the default index.html from simplehttp
@@ -1305,7 +1311,7 @@ func main() {
 
 	// BUILD GO SERVER:
 	// or if you are deploying a Go server (yay!) you can build that binary here
-	// fmt.Print(distutil.MustExec("go", "build", "-o", filepath.Join(*dist, "server"), "."))
+	// fmt.Sprint(distutil.MustExec("go", "build", "-o", filepath.Join(*dist, "server"), "."))
 
 	log.Printf("dist.go complete in %v", time.Since(start))
 }`)'></div>

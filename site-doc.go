@@ -1205,7 +1205,7 @@ type RootData struct { // component data for "root"
 											parent.AppendChild(n)
 											{
 												parent := n
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "fmt.Print()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "fmt.Sprint()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", see below.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -1280,11 +1280,11 @@ type RootData struct { // component data for "root"
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " property.)\n                      The expression converted to a string using \n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
-											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://golang.org/pkg/fmt/#Print"}}}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://golang.org/pkg/fmt/#Sprint"}}}
 											parent.AppendChild(n)
 											{
 												parent := n
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "fmt.Print()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "fmt.Sprint()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".  Example:\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -1296,7 +1296,7 @@ type RootData struct { // component data for "root"
 										parent.AppendChild(n)
 										n.InnerHTML = fmt.Sprint(showCode("html", `<div>
     <p vg-html='"<b>an HTML string</b>"'>
-    <p vg-html='123'> <!-- will be output according to fmt.Print rules -->
+    <p vg-html='123'> <!-- will be output according to fmt.Sprint rules -->
     <p vg-html='html.EscapeString("escaping & arbitrary text is easy like so")'>
 </div>
 
@@ -2982,9 +2982,9 @@ if err != nil {
 												parent := n
 												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "When \n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
-												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/doc/files/dom-events"}}}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/doc/dom-events"}}}
 												parent.AppendChild(n)
-												// @click = { data.Router.BrowseTo("/doc/files/dom-events", event) }
+												// @click = { data.Router.BrowseTo("/doc/dom-events", event) }
 												{
 													var i_ interface{} = data.Router
 													idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
@@ -2993,19 +2993,19 @@ if err != nil {
 													n.SetDOMEventHandler("click", vugu.DOMEventHandler{
 														ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
 														Method:                reflect.ValueOf(data.Router).MethodByName("BrowseTo"),
-														Args:                  []interface{}{"/doc/files/dom-events", event},
+														Args:                  []interface{}{"/doc/dom-events", event},
 													})
 												}
 												if false {
 													// force compiler to check arguments for type safety
-													data.Router.BrowseTo("/doc/files/dom-events", event)
+													data.Router.BrowseTo("/doc/dom-events", event)
 												}
 												{
 													parent := n
 													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "DOM Events", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 													parent.AppendChild(n)
 												}
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " \n                          are handled, a (write) lock is acquired against the environment automatically\n                        and then released when your event handler returns.  When things that would block (like fetching \n                        data from the server over HTTP) need to be done, this must be run in a goroutine which uses \n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " \n                          are handled, a (write) lock is acquired against the environment automatically\n                        and then released when your event handler returns.  When things that would block (like fetching \n                        data from the server over HTTP) need to be done, this must be run in a goroutine which uses\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://godoc.org/github.com/vugu/vugu#DOMEvent.EventEnv"}}}
 												parent.AppendChild(n)
@@ -3014,7 +3014,52 @@ if err != nil {
 													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "event.EventEnv()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 													parent.AppendChild(n)
 												}
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " \n                        to acquire their own lock to ensure they don't interfere with the render loop or other code.\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " \n                        to acquire their own lock before modifying any component data, to ensure they don't interfere with the render loop or other code.\n                        Locking should only be done during data modification and then unlocked immediately afterward.  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Do not put a\n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													{
+														parent := n
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Lock()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+													}
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " before ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													{
+														parent := n
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "http.Get()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+													}
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " or other such \n                          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+													n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://en.wikipedia.org/wiki/Blocking_(computing)"}}}
+													parent.AppendChild(n)
+													{
+														parent := n
+														n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "blocking", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+														parent.AppendChild(n)
+													}
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " calls.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "  Instead ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Lock()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " after \n                          you have your data and before updating\n                        the state of your component.\n                        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://godoc.org/github.com/vugu/vugu#EventEnv"}}}
 												parent.AppendChild(n)
@@ -3041,7 +3086,32 @@ if err != nil {
 													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "EventEnv.UnlockOnly()", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 													parent.AppendChild(n)
 												}
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        will release the lock but not cause the page update. This is useful if \n                        you need to do several updates to data at different times\n                        but only care to refresh the page after they are all done.)", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                        will release the lock but not cause the page update. This is useful if \n                        you need to do several updates to data at different times\n                        but only care to refresh the page after they are all done.)\n                        See ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												parent.AppendChild(n)
+												n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "/doc/files/code"}}}
+												parent.AppendChild(n)
+												// @click = { data.Router.BrowseTo("/doc/files/code", event) }
+												{
+													var i_ interface{} = data.Router
+													idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
+													var i2_ interface{} = data.Router.BrowseTo
+													i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
+													n.SetDOMEventHandler("click", vugu.DOMEventHandler{
+														ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
+														Method:                reflect.ValueOf(data.Router).MethodByName("BrowseTo"),
+														Args:                  []interface{}{"/doc/files/code", event},
+													})
+												}
+												if false {
+													// force compiler to check arguments for type safety
+													data.Router.BrowseTo("/doc/files/code", event)
+												}
+												{
+													parent := n
+													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Code", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+													parent.AppendChild(n)
+												}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " for a correct example.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -3049,7 +3119,7 @@ if err != nil {
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  \n\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
-										n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: " <p>When \n                      <a href=\"/doc/files/dom-events\" @click='data.Router.BrowseTo(\"/doc/files/dom-events\", event)'>DOM Events</a> \n                      are handled, a (write) lock is acquired against the environment automatically\n                    and then released when your event handler returns.  When things that would block (like fetching \n                    data from the server over HTTP) need to be done, this must be run in a goroutines which must use \n                    <a target=\"_blank\" href=\"https://godoc.org/github.com/vugu/vugu#DOMEvent.EventEnv\">event.EventEnv()</a> \n                    to acquire their own lock to ensure they don't interfere with the render loop or other code.\n                    <a target=\"_blank\" href=\"https://godoc.org/github.com/vugu/vugu#EventEnv\">EventEnv.UnlockRender()</a>\n                    will cause the <code>env.EventWait()</code> call above to return and update the page.\n                    (Whereas <a target=\"_blank\" href=\"https://godoc.org/github.com/vugu/vugu#EventEnv\">EventEnv.UnlockOnly()</a>\n                    will release the lock but not cause the page update. This is useful if \n                    you need to do several updates at different times but only care to refresh the page after they are all done.)\n                  </p> ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: " <p>When \n                      <a href=\"/doc/dom-events\" @click='data.Router.BrowseTo(\"/doc/dom-events\", event)'>DOM Events</a> \n                      are handled, a (write) lock is acquired against the environment automatically\n                    and then released when your event handler returns.  When things that would block (like fetching \n                    data from the server over HTTP) need to be done, this must be run in a goroutines which must use \n                    <a target=\"_blank\" href=\"https://godoc.org/github.com/vugu/vugu#DOMEvent.EventEnv\">event.EventEnv()</a> \n                    to acquire their own lock to ensure they don't interfere with the render loop or other code.\n                    <a target=\"_blank\" href=\"https://godoc.org/github.com/vugu/vugu#EventEnv\">EventEnv.UnlockRender()</a>\n                    will cause the <code>env.EventWait()</code> call above to return and update the page.\n                    (Whereas <a target=\"_blank\" href=\"https://godoc.org/github.com/vugu/vugu#EventEnv\">EventEnv.UnlockOnly()</a>\n                    will release the lock but not cause the page update. This is useful if \n                    you need to do several updates at different times but only care to refresh the page after they are all done.)\n                  </p> ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
@@ -4336,14 +4406,14 @@ func main() {
 
 	// check for vugugen and go get if not there
 	if _, err := exec.LookPath("vugugen"); err != nil {
-		fmt.Print(distutil.MustExec("go", "get", "github.com/vugu/vugu/vugugen"))
+		fmt.Sprint(distutil.MustExec("go", "get", "github.com/vugu/vugu/vugugen"))
 	}
 
 	// run go generate
-	fmt.Print(distutil.MustExec("go", "generate", "."))
+	fmt.Sprint(distutil.MustExec("go", "generate", "."))
 
 	// run go build for wasm binary
-	fmt.Print(distutil.MustEnvExec([]string{"GOOS=js", "GOARCH=wasm"}, "go", "build", "-o", filepath.Join(*dist, "main.wasm"), "."))
+	fmt.Sprint(distutil.MustEnvExec([]string{"GOOS=js", "GOARCH=wasm"}, "go", "build", "-o", filepath.Join(*dist, "main.wasm"), "."))
 
 	// STATIC INDEX FILE:
 	// if you are hosting with a static file server or CDN, you can write out the default index.html from simplehttp
@@ -4355,7 +4425,7 @@ func main() {
 
 	// BUILD GO SERVER:
 	// or if you are deploying a Go server (yay!) you can build that binary here
-	// fmt.Print(distutil.MustExec("go", "build", "-o", filepath.Join(*dist, "server"), "."))
+	// fmt.Sprint(distutil.MustExec("go", "build", "-o", filepath.Join(*dist, "server"), "."))
 
 	log.Printf("dist.go complete in %v", time.Since(start))
 }`))
