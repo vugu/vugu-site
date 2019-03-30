@@ -484,6 +484,18 @@ type RootData struct {
                       your component.
                     </p>
 
+                    <div class="alert alert-warning" role="alert">
+                      <i class="icon-alert-circle"></i>
+                      <h4 class="fs-22">Tip: Script Tag Alternative</h4>
+                      <p>Because Go packages impose few limits on which code may be put into which file,
+                        you are not required to use a <nobr><code>&lt;script type="application/x-go"></code></nobr>
+                        tag and it works just as well to place this code in a separate file.
+                      </p>
+                      <p>If you want to do this, the suggested naming convention is <nobr><strong>component-name-<em>data</em>.go</strong>.</nobr></p>
+                        <p>For <strong>root.vugu</strong>, you could place your corresponding Go code in <nobr><strong>root-data.go</strong>.</nobr> </p>
+                        <p>For <strong>some-component.vugu</strong> you could place your corresponding Go code in <nobr><strong>some-component-data.go</strong></nobr></p>
+                    </div>
+
                     <p>
                       For every component there are two structs which must be defined.
                       One which implements 
