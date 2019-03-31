@@ -32,6 +32,7 @@ func init() {
 {{if .MetaTags}}{{range $k, $v := .MetaTags}}
 <meta name="{{$k}}" content="{{$v}}"/>
 {{end}}{{end}}
+<meta name="viewport" content="width=device-width, initial-scale=1">
 {{if .CSSFiles}}{{range $f := .CSSFiles}}
 <link rel="stylesheet" href="{{$f}}" />
 {{end}}{{end}}
