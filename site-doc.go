@@ -4554,7 +4554,7 @@ func main() {
 
 	// check for vugugen and go get if not there
 	if _, err := exec.LookPath("vugugen"); err != nil {
-		fmt.Sprint(distutil.MustExec("go", "get", "github.com/vugu/vugu/vugugen"))
+		fmt.Sprint(distutil.MustExec("go", "get", "github.com/vugu/vugu/cmd/vugugen"))
 	}
 
 	// run go generate
