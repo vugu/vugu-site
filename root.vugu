@@ -76,6 +76,9 @@
                 <li class="nav-item">
                   <a class="nav-link" href="https://godoc.org/github.com/vugu/vugu" target="_blank">GoDoc</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://play.vugu.org/" target="_blank">Playground</a>
+                </li>
               </ul>
             </div>
           </nav>
