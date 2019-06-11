@@ -38,7 +38,7 @@
                 <b>Vugu:</b> A modern UI library for <b>Go+WebAssembly</b>
              </h2>
 
-            <p>Inspired by tools like <b>Vue</b> and <b>React</b>, Vugu is a small library written enitrely in Go and 
+            <p>Inspired by tools like <b>Vue</b> and <b>React</b>, Vugu is a small library written entirely in Go and 
                 able to run in modern browsers using WebAssembly.</p>
 
             <hr/>

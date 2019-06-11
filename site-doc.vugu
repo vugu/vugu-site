@@ -917,8 +917,8 @@ if err != nil {
                         <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">addEventListener</a>.
                     </p>
 
-                    <p>The Go expression provided must be a Go function/method 
-                        call.  Other Go statements are not currently allowed.  The arguments to the function call can be anything valid in Go,
+                    <p>The Go expression provided must be a Go method 
+                        call.  The method name must be exported (begin with an upper case letter).  Other Go statements are not currently allowed.  The arguments to the function call can be anything valid in Go,
                         including literals.</p>
 
 <div vg-html='showCode("html",`<div>
@@ -1036,8 +1036,8 @@ type RootData struct {
 <div vg-html='showCode("html",`<!-- root.vugu -->
 <div class="root">
     <ul>
-      <my-line file-name="example.txt" :line-number="math.Int63n(100)">
-    </li>
+      <my-line file-name="example.txt" :line-number="rand.Int63n(100)">
+    </ul>
 </div>
 
 <script type="application/x-go">
@@ -1565,6 +1565,11 @@ func main() {
 
 
 <script type="application/x-go">
+import "log"
+
+func init() {
+  log.Printf("TODO: add some instructions on where to ask questions/get help")
+}
 
 type SiteDocData struct {
   Router *Router

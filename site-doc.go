@@ -6,6 +6,12 @@ import "fmt"
 import "reflect"
 import "github.com/vugu/vugu"
 
+import "log"
+
+func init() {
+	log.Printf("TODO: add some instructions on where to ask questions/get help")
+}
+
 type SiteDocData struct {
 	Router *Router
 }
@@ -3485,7 +3491,7 @@ if err != nil {
 										parent.AppendChild(n)
 										{
 											parent := n
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "The Go expression provided must be a Go function/method \n                        call.  Other Go statements are not currently allowed.  The arguments to the function call can be anything valid in Go,\n                        including literals.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "The Go expression provided must be a Go method \n                        call.  The method name must be exported (begin with an upper case letter).  Other Go statements are not currently allowed.  The arguments to the function call can be anything valid in Go,\n                        including literals.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -3910,8 +3916,8 @@ type RootData struct {
 										n.InnerHTML = fmt.Sprint(showCode("html", `<!-- root.vugu -->
 <div class="root">
     <ul>
-      <my-line file-name="example.txt" :line-number="math.Int63n(100)">
-    </li>
+      <my-line file-name="example.txt" :line-number="rand.Int63n(100)">
+    </ul>
 </div>
 
 <script type="application/x-go">

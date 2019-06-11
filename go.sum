@@ -30,6 +30,8 @@ github.com/vugu/vugu v0.0.0-20190325015639-a91a3e475677 h1:Nzp9do3v5AJfbIgjYkcre
 github.com/vugu/vugu v0.0.0-20190325015639-a91a3e475677/go.mod h1:WooFrRUTzJwXgKBxUeUJvgmxeFSdAeYauJfV2TwEFy8=
 github.com/vugu/vugu v0.0.0-20190325055526-fc6fe9e20ee7 h1:y/fgPRRZWWoGa4DxAMEAhV04pCcwv/JYNZJgVqj3jnE=
 github.com/vugu/vugu v0.0.0-20190325055526-fc6fe9e20ee7/go.mod h1:WooFrRUTzJwXgKBxUeUJvgmxeFSdAeYauJfV2TwEFy8=
+github.com/vugu/vugu v0.0.0-20190518235128-5a84f26390d1 h1:Iowi+7qqrJr/6RmZFIM8g6n6e8TENUNiOxex1xG/NHA=
+github.com/vugu/vugu v0.0.0-20190518235128-5a84f26390d1/go.mod h1:JXaMmpEMpofCzJj8TmSWeLDxAajs4a4wrac5VYwj4A8=
 github.com/vugu/vugu/examples/fetch-and-display v0.0.0-20190328050928-270b710779e9/go.mod h1:iua9oGVKHLtdrOpfO2Nq1cKrp8fBn0hwxHZhdc1Di7A=
 golang.org/x/arch v0.0.0-20190312162104-788fe5ffcd8c h1:Rx/HTKi09myZ25t1SOlDHmHOy/mKxNAcu0hP1oPX9qM=
 golang.org/x/arch v0.0.0-20190312162104-788fe5ffcd8c/go.mod h1:flIaEI6LNU6xOCD5PaJvn9wGP0agmIOqjrtsKGRguv4=
@@ -44,4 +46,5 @@ golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5h
 golang.org/x/text v0.3.0 h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/tools v0.0.0-20190322203728-c1a832b0ad89/go.mod h1:LCzVGOaR6xXOjkQ3onu1FJEFr0SW1gC7cKk1uF8kGRs=
+golang.org/x/tools v0.0.0-20190407030857-0fdf0c73855b/go.mod h1:LCzVGOaR6xXOjkQ3onu1FJEFr0SW1gC7cKk1uF8kGRs=
 rsc.io/pdf v0.1.1/go.mod h1:n8OzWcQ6Sp37PL01nO98y4iUCRdTGarVfzxY20ICaU4=

@@ -256,7 +256,7 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "React", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
 							}
-							n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", Vugu is a small library written enitrely in Go and \n                able to run in modern browsers using WebAssembly.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+							n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", Vugu is a small library written entirely in Go and \n                able to run in modern browsers using WebAssembly.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 							parent.AppendChild(n)
 						}
 						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
