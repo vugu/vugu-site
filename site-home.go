@@ -391,10 +391,174 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 						parent.AppendChild(n)
 						n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: " </ul> ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 						parent.AppendChild(n)
+						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+						parent.AppendChild(n)
+						n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "hr", DataAtom: vugu.VGAtom(87810), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+						parent.AppendChild(n)
+						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+						parent.AppendChild(n)
+						n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "h4", DataAtom: vugu.VGAtom(214274), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+						parent.AppendChild(n)
+						{
+							parent := n
+							n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Updates ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+							parent.AppendChild(n)
+							n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "span", DataAtom: vugu.VGAtom(40708), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "style", Val: "color: red"}}}
+							parent.AppendChild(n)
+							{
+								parent := n
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "♨", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+							}
+						}
+						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+						parent.AppendChild(n)
+						n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "text-left"}}}
+						parent.AppendChild(n)
+						{
+							parent := n
+							n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+							parent.AppendChild(n)
+							n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "ul", DataAtom: vugu.VGAtom(42754), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+							parent.AppendChild(n)
+							{
+								parent := n
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-07-20", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Some design info on how \"data binding\" (hashing actually) will work in Vugu: ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://github.com/vugu/vugu/wiki/Data-Hashing-vs-Binding"}, vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}}}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "https://github.com/vugu/vugu/wiki/Data-Hashing-vs-Binding", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+								}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-07-16", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Vugu has a logo! https://www.instagram.com/p/Bz3zmtYAYcM/  Good things are in the works, the plan is to get a bunch of much-awaited updates pushed to master before the end of the month.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+								}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-05-19", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Refactor still in progress - this is the cleaned-up architecture concept: ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://github.com/vugu/vugu/wiki/Architecture-Overview"}, vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}}}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "https://github.com/vugu/vugu/wiki/Architecture-Overview", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+								}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-04-07", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " The Vugu Playground is up at: ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://play.vugu.org/"}, vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}}}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "https://play.vugu.org/", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+								}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-04-05", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Thanks to @erinpentecost, **vugufmt is now available** and provides gofmt-like functionality on your .vugu files. (", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "go get github.com/vugu/vugu/cmd/vugufmt && go install github.com/vugu/vugu/cmd/vugufmt", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ")", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+								}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-04-05", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " The component playground should be available soon; followed by some internal work to properly handle nested components in a type-safe way; then probably a router...", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+								}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+							}
+							n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  \n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+							parent.AppendChild(n)
+						}
 						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n          ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 						parent.AppendChild(n)
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 					parent.AppendChild(n)
 				}
 				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
