@@ -459,7 +459,16 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-07-16", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 									}
-									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Vugu has a logo! https://www.instagram.com/p/Bz3zmtYAYcM/  Good things are in the works, the plan is to get a bunch of much-awaited updates pushed to master before the end of the month.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Vugu has a logo! ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://www.instagram.com/p/Bz3zmtYAYcM/"}, vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}}}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "https://www.instagram.com/p/Bz3zmtYAYcM/", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "  Good things are in the works, the plan is to get a bunch of much-awaited updates pushed to master before the end of the month.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 									parent.AppendChild(n)
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}

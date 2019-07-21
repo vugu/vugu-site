@@ -65,7 +65,7 @@
 
                 <ul>
                   <li><strong>2019-07-20</strong> Some design info on how "data binding" (hashing actually) will work in Vugu: <a href="https://github.com/vugu/vugu/wiki/Data-Hashing-vs-Binding" target="_blank">https://github.com/vugu/vugu/wiki/Data-Hashing-vs-Binding</a></li>
-                  <li><strong>2019-07-16</strong> Vugu has a logo! https://www.instagram.com/p/Bz3zmtYAYcM/  Good things are in the works, the plan is to get a bunch of much-awaited updates pushed to master before the end of the month.</li>
+                  <li><strong>2019-07-16</strong> Vugu has a logo! <a href="https://www.instagram.com/p/Bz3zmtYAYcM/" target="_blank">https://www.instagram.com/p/Bz3zmtYAYcM/</a>  Good things are in the works, the plan is to get a bunch of much-awaited updates pushed to master before the end of the month.</li>
                   <li><strong>2019-05-19</strong> Refactor still in progress - this is the cleaned-up architecture concept: <a href="https://github.com/vugu/vugu/wiki/Architecture-Overview" target="_blank">https://github.com/vugu/vugu/wiki/Architecture-Overview</a></li>
                   <li><strong>2019-04-07</strong> The Vugu Playground is up at: <a href="https://play.vugu.org/" target="_blank">https://play.vugu.org/</a></li>
                   <li><strong>2019-04-05</strong> Thanks to @erinpentecost, **vugufmt is now available** and provides gofmt-like functionality on your .vugu files. (<code>go get github.com/vugu/vugu/cmd/vugufmt && go install github.com/vugu/vugu/cmd/vugufmt</code>)</li>
