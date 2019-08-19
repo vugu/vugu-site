@@ -436,7 +436,7 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-08-18", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 									}
-									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Full HTML (root component can start with  tag) now supported on component-refactor branch, updated CSS and JS support figured out and implementation in-progress.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Full HTML (root component can start with  tag) now supported on component-refactor branch, updated CSS and JS support figured out and implementation in-progress.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 									parent.AppendChild(n)
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
