@@ -423,6 +423,31 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 							parent.AppendChild(n)
 							{
 								parent := n
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\t\t  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-08-25", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " CSS now supported on component-refactor branch, including in full-HTML mode, working sample that pulls in Bootstrap CSS.  Vugu's ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://godoc.org/github.com/vugu/vugu/js"}, vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}}}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "js wrapper package", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " copied to master and made available.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
 								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
