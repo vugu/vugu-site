@@ -423,7 +423,32 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 							parent.AppendChild(n)
 							{
 								parent := n
-								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\t\t  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-09-01", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " On component-refactor branch: Form element values and other related data now available on DOMEvent, ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "code", DataAtom: vugu.VGAtom(378116), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ".prop=", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " syntax implemented, various cleanup, imports are deduplicated automatically now, started on nested component implementation and all of that craziness.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+								}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\t\t              ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
 								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 								parent.AppendChild(n)
