@@ -28,12 +28,15 @@ func NewJSRouter() *Router {
 
 	// TODO: should be able to use this thing in JS or not
 
-	browserURL := js.Global().Get("document").Get("location").String()
+	browserURL := js.Global().Get("document").Get("location").Get("href").String()
 	u, err := url.Parse(browserURL)
 	if err != nil {
 		log.Printf("Error parsing URL from browser(%q): %v", browserURL, err)
 		panic(fmt.Errorf("Error parsing URL from browser(%q): %v", browserURL, err))
 	}
+
+	log.Printf("NewJSRouter - browserURL=%q", browserURL)
+
 	return &Router{u: *u}
 }
 
