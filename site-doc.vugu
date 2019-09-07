@@ -74,7 +74,7 @@
                     <p>
                       Let's make a basic working Vugu application that runs in your browser.  It 
                       only takes three small files to start.  Make sure you have at least 
-                      <strong><a target="_blank" href="https://golang.org/dl/">Go</a> 1.12</strong> installed.
+                      <strong><a target="_blank" href="https://golang.org/dl/">Go</a> 1.13</strong> installed.
                     </p>
 
                   <section id="section-1">

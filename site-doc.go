@@ -412,7 +412,7 @@ func (comp *SiteDoc) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.
 													n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Go", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 													parent.AppendChild(n)
 												}
-												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " 1.12", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " 1.13", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
 											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " installed.\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
