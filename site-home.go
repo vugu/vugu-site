@@ -436,7 +436,7 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-09-15", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 									}
-									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Refactor changed merged into master. Includes: updated sample code, component resolution at code-generation time, type-safe component params, optional component param map, BeforeBuild lifecycle callback, modification tracking system, JS property assignment syntax, \"full HTML\" support, improved DOM event handling, Go 1.13 support, import deduplication, and a brand new rendering pipeline! Initial documentation at ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " Refactor changes merged into master. Includes: updated sample code, component resolution at code-generation time, type-safe component params, optional component param map, BeforeBuild lifecycle callback, modification tracking system, JS property assignment syntax, \"full HTML\" support, improved DOM event handling, Go 1.13 support, import deduplication, and a brand new rendering pipeline! Initial documentation at ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 									parent.AppendChild(n)
 									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "a", DataAtom: vugu.VGAtom(1), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "target", Val: "_blank"}, vugu.VGAttribute{Namespace: "", Key: "href", Val: "https://github.com/vugu/vugu/wiki/Refactor-Notes---Sep-2019"}}}
 									parent.AppendChild(n)
