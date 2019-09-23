@@ -34,6 +34,8 @@ github.com/vugu/vugu v0.0.0-20190518235128-5a84f26390d1 h1:Iowi+7qqrJr/6RmZFIM8g
 github.com/vugu/vugu v0.0.0-20190518235128-5a84f26390d1/go.mod h1:JXaMmpEMpofCzJj8TmSWeLDxAajs4a4wrac5VYwj4A8=
 github.com/vugu/vugu v0.0.0-20190719055003-a013ad2a9274 h1:BKOkq/Wp/O4H1FFX5VzYs1vJUfIMYVe/4tA47lzcmvQ=
 github.com/vugu/vugu v0.0.0-20190719055003-a013ad2a9274/go.mod h1:JXaMmpEMpofCzJj8TmSWeLDxAajs4a4wrac5VYwj4A8=
+github.com/vugu/vugu v0.1.0 h1:gJtz7jza90ZUKgLb1mu0Ql5x/wDV5pJxiqW7CPV+BJU=
+github.com/vugu/vugu v0.1.0/go.mod h1:XcDIa6J18Rk/c56X88PTzawJTS2pSAGdTN6u5RE1ZWc=
 github.com/vugu/vugu/examples/fetch-and-display v0.0.0-20190328050928-270b710779e9/go.mod h1:iua9oGVKHLtdrOpfO2Nq1cKrp8fBn0hwxHZhdc1Di7A=
 golang.org/x/arch v0.0.0-20190312162104-788fe5ffcd8c h1:Rx/HTKi09myZ25t1SOlDHmHOy/mKxNAcu0hP1oPX9qM=
 golang.org/x/arch v0.0.0-20190312162104-788fe5ffcd8c/go.mod h1:flIaEI6LNU6xOCD5PaJvn9wGP0agmIOqjrtsKGRguv4=
