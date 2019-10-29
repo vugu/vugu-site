@@ -1095,12 +1095,8 @@ func (comp *MyLine) NewData(props vugu.Props) (interface{}, error) {
     <ul>
       <my-line vg-for=&apos;i := 0; i < 10; i++&apos; 
         file-name="example.txt" :line-number="i">
-    </li>
+    </ul>
 </div>
-
-<script type="application/x-go">
-import "math/rand"
-</script>
 `)'></div>
 
                       <p>
