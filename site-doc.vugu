@@ -1097,10 +1097,6 @@ func (comp *MyLine) NewData(props vugu.Props) (interface{}, error) {
         file-name="example.txt" :line-number="i">
     </ul>
 </div>
-
-<script type="application/x-go">
-import "math/rand"
-</script>
 `)'></div>
 
                       <p>
