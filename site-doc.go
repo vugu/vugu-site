@@ -3916,7 +3916,7 @@ type RootData struct {
 										n.InnerHTML = fmt.Sprint(showCode("html", `<!-- root.vugu -->
 <div class="root">
     <ul>
-      <my-line file-name="example.txt" :line-number="rand.Int63n(100)">
+      <my-line file-name="example.txt" :line-number="rand.Int63n(100)" />
     </ul>
 </div>
 
@@ -4054,13 +4054,9 @@ func (comp *MyLine) NewData(props vugu.Props) (interface{}, error) {
 <div class="root">
     <ul>
       <my-line vg-for='i := 0; i < 10; i++' 
-        file-name="example.txt" :line-number="i">
-    </li>
+        file-name="example.txt" :line-number="i" />
+    </ul>
 </div>
-
-<script type="application/x-go">
-import "math/rand"
-</script>
 `))
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n\n                      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)

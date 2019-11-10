@@ -1036,7 +1036,7 @@ type RootData struct {
 <div vg-html='showCode("html",`<!-- root.vugu -->
 <div class="root">
     <ul>
-      <my-line file-name="example.txt" :line-number="rand.Int63n(100)">
+      <my-line file-name="example.txt" :line-number="rand.Int63n(100)" />
     </ul>
 </div>
 
@@ -1094,7 +1094,7 @@ func (comp *MyLine) NewData(props vugu.Props) (interface{}, error) {
 <div class="root">
     <ul>
       <my-line vg-for=&apos;i := 0; i < 10; i++&apos; 
-        file-name="example.txt" :line-number="i">
+        file-name="example.txt" :line-number="i" />
     </ul>
 </div>
 `)'></div>
