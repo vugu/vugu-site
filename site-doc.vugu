@@ -1301,14 +1301,14 @@ func main() {
 
 	// check for vugugen and go get if not there
 	if _, err := exec.LookPath("vugugen"); err != nil {
-		fmt.Sprint(distutil.MustExec("go", "get", "github.com/vugu/vugu/cmd/vugugen"))
+		fmt.Print(distutil.MustExec("go", "get", "github.com/vugu/vugu/cmd/vugugen"))
 	}
 
 	// run go generate
-	fmt.Sprint(distutil.MustExec("go", "generate", "."))
+	fmt.Print(distutil.MustExec("go", "generate", "."))
 
 	// run go build for wasm binary
-	fmt.Sprint(distutil.MustEnvExec([]string{"GOOS=js", "GOARCH=wasm"}, "go", "build", "-o", filepath.Join(*dist, "main.wasm"), "."))
+	fmt.Print(distutil.MustEnvExec([]string{"GOOS=js", "GOARCH=wasm"}, "go", "build", "-o", filepath.Join(*dist, "main.wasm"), "."))
 
 	// STATIC INDEX FILE:
 	// if you are hosting with a static file server or CDN, you can write out the default index.html from simplehttp
@@ -1320,7 +1320,7 @@ func main() {
 
 	// BUILD GO SERVER:
 	// or if you are deploying a Go server (yay!) you can build that binary here
-	// fmt.Sprint(distutil.MustExec("go", "build", "-o", filepath.Join(*dist, "server"), "."))
+	// fmt.Print(distutil.MustExec("go", "build", "-o", filepath.Join(*dist, "server"), "."))
 
 	log.Printf("dist.go complete in %v", time.Since(start))
 }`)'></div>
