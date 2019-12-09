@@ -433,10 +433,26 @@ func (comp *SiteHome) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu
 									parent.AppendChild(n)
 									{
 										parent := n
+										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-12-08", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+										parent.AppendChild(n)
+									}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " First Vugu program successfully compiles with Tinygo. Testing and a bit more alternate implementation is still required but at least the compilation works now.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+								}
+								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "li", DataAtom: vugu.VGAtom(45570), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+								parent.AppendChild(n)
+								{
+									parent := n
+									n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									parent.AppendChild(n)
+									{
+										parent := n
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "2019-11-24", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 										parent.AppendChild(n)
 									}
-									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " WASM test suite now working in Travis CI; getting closer on TinyGo support.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+									n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " WASM test suite now working in Travis CI; getting closer on TinyGo support and merged refactor into master.", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 									parent.AppendChild(n)
 								}
 								n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
