@@ -4287,7 +4287,7 @@ func (comp *MyLine) NewData(props vugu.Props) (interface{}, error) {
 												n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "-dev", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 												parent.AppendChild(n)
 											}
-											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", this can also serve as a viable production server.\n                    (Obviously you need to be aware of your specific prouction environment requirements,\n                    but this will get you pointed in the right direction.)", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+											n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: ", this can also serve as a viable production server.\n                    (Obviously you need to be aware of your specific production environment requirements,\n                    but this will get you pointed in the right direction.)", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 											parent.AppendChild(n)
 										}
 										n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n                    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}

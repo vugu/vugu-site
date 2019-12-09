@@ -1200,7 +1200,7 @@ func (comp *MyLine) NewData(props vugu.Props) (interface{}, error) {
                     enable automatically performing Vugu code generation and rebuilding your 
                     wasm (same as devserver.go), which you can turn on and off.
                     Running without <code>-dev</code>, this can also serve as a viable production server.
-                    (Obviously you need to be aware of your specific prouction environment requirements,
+                    (Obviously you need to be aware of your specific production environment requirements,
                     but this will get you pointed in the right direction.)</p>
                     <p>Command line flags for the HTTP listener and the directory to look for files in are 
                     also included. <strong>server.go</strong>:</p>
