@@ -64,6 +64,7 @@
             <div class="text-left">
 
                 <ul>
+                  <li><strong>2020-03-29</strong> Vugu URL router is now functional (<a href="https://github.com/vugu/vgrouter" target="_blank">github.com/vugu/vgrouter</a>). Features include optional fragment support, client and server-side use, two-way data binding for query and path parameters, and automatic route generation based on folder structure. The `vg-comp` tag now allows programmatic component selection.  A pattern for wiring large applications with lots of components is in place and will be tested further as dev moves forward. Next steps include just a bit more dev and testing on the router and then updating vugu.org to use these new features and bring the documentation up to date.</li>
                   <li><strong>2019-12-08</strong> First Vugu program successfully compiles with Tinygo. Testing and a bit more alternate implementation is still required but at least the compilation works now.</li>
                   <li><strong>2019-11-24</strong> WASM test suite now working in Travis CI; getting closer on TinyGo support and merged refactor into master.</li>
                   <li><strong>2019-11-10</strong> Support for TinyGo is in-progress on the tinygo branch.  No known blocking issues as yet, some minor refactor required but looks promising.</li>
