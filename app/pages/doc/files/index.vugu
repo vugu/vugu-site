@@ -1,0 +1,52 @@
+<div>
+
+    <p>Vugu files have three sections: Markup, Style and Code</p>
+
+    <p>
+      <strong>Markup</strong> is the HTML element which is the display portion of your file.
+      More often than not it is a simple div tag, such as: </p>
+<div vg-html='codefmt.Show("html",`<div class="some-name">
+<!-- ... -->
+</div>`)'></div>
+
+      <p>
+      It is displayed at the appropriate location in the document.  For the
+      root component (by default named "root" and living in root.vugu), this is usually immediately
+      inside the <code>&lt;body></code> tag of the page.  The element can be of any type except
+      <code>&lt;script></code> or <code>&lt;style></code>.  A full-HTML mode is also available for root
+      components that need access to the title, meta tags, etc.
+      See <a href="/doc/files/markup#full-html">Markup</a> for details.
+    </p>
+
+    <p>
+      <strong>Style</strong> is a regular <code>&lt;style></code> tag and includes CSS which is 
+      output with this component.  To avoid collisions, styles should be appropriately
+      prefixed (corresponding to an <code>id</code> or <code>class</code> on the top level markup 
+      element above).
+    </p>
+
+    <p>
+      <strong>Code</strong> is Go language code which is copied verbatim into the final .go file.
+      It is put into a script tag with a specific content type, like so:</p>
+<div vg-html='codefmt.Show("html",`<script type="application/x-go">
+// Go code here
+</script>`)'></div>
+    <p>
+      Note that JavaScript is not currently supported, only Go code.  (There can be only one.)
+    </p>
+
+</div>
+
+
+<script type="application/x-go">
+
+import "github.com/vugu/vugu-site/app/codefmt"
+
+type Index struct {}
+
+func (c *Index) Title() string { return "Vugu Files: Overview" }
+func (c *Index) ShortTitle() string { return "Vugu Files" }
+func (c *Index) MetaDescription() string { return "Vugu files have three sections: Markup, Style and Code. Markup is the HTML element which is the display portion of your file. Style is a regular style tag. Code is Go language code." }
+
+</script>
+    

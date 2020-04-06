@@ -1,0 +1,34 @@
+<div>
+<section class="hero bg-blue" vg-if='c.PageInfo.Path == "/doc" || strings.HasPrefix(c.PageInfo.Path, "/doc/")'>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 text-white mb-3">
+          <h1 class="h2 pb-1 pt-2" vg-html="c.Title"></h1>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-minimal">
+              <li class="breadcrumb-item"><a href="/" notclick='data.Router.BrowseTo("/", event)'>Home</a></li>
+              <li class="breadcrumb-item"><a href="/doc" notclick='data.Router.BrowseTo("/doc", event)'>Doc</a></li>
+              <li vg-if='strings.HasPrefix(c.PageInfo.Path, "/doc/")'
+                class="breadcrumb-item active"
+                vg-html="c.PageInfo.ShortTitle">
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+  <!-- vg-html="allPages.FindByPathOrEmpty(data.Router.Path()).LongTitle" -->
+
+<script type="application/x-go">
+
+import "strings"
+
+import "github.com/vugu/vugu-site/app/state"
+
+type NavHero struct {
+    state.PageInfoRef
+}
+
+</script>

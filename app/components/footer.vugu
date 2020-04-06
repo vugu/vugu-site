@@ -1,0 +1,61 @@
+<footer class="bg-dark">
+
+    <div class="container">
+
+        <div class="row gutter-0" vg-if='c.prevPageInfo.Path != "" || c.nextPageInfo.Path != ""'>
+            <div class="col-12 col-md-6">
+                <h4 class="prev-next-part" vg-if='c.prevPageInfo.Path != ""'>
+                    <a :href="c.prevPageInfo.Path" vg-html='"« "+c.prevPageInfo.LongTitle'></a>
+                </h4>
+            </div>
+            <div class="col-12 col-md-6 text-right">
+                <h4 class="prev-next-part" vg-if='c.nextPageInfo.Path != ""'>
+                    <a :href="c.nextPageInfo.Path" vg-html='c.nextPageInfo.LongTitle+" »"'></a>
+                </h4>
+            </div>
+        </div>
+
+        <div class="row mt-0 pt-2 pb-1">
+
+            <div class="col-12 col-md-2">
+                <a href="/"><img src="/assets/images/logo-white.svg" alt="Logo"></a>
+            </div>
+
+            <div class="col-12 col-md-4 col-lg-2 ml-auto text-md-right">Copyright (C) <span vg-html='time.Now().Year()'></span></div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script type="application/x-go">
+
+//import "log"
+import "time"
+import "github.com/vugu/vugu-site/app/state"
+
+type Footer struct {
+    state.PageInfoRef
+    state.PageSeqRef
+
+    prevPageInfo, nextPageInfo state.PageInfo
+}
+
+func (c *Footer) BeforeBuild() {
+    c.prevPageInfo = state.PageInfo{}
+    c.nextPageInfo = state.PageInfo{}
+    //log.Printf("c.PageInfo.Path = %#v", c.PageInfo.Path)
+    prevPath := c.PageSeq.Prev(c.PageInfo.Path)
+    if prevPath != "" {
+        c.prevPageInfo = state.PageInfoFrom(prevPath, c.PageSeq.PageMap[prevPath])
+    }
+    nextPath := c.PageSeq.Next(c.PageInfo.Path)
+    //log.Printf("nextPath: %q", nextPath)
+    if nextPath != "" {
+        c.nextPageInfo = state.PageInfoFrom(nextPath, c.PageSeq.PageMap[nextPath])
+    }
+}
+
+</script>

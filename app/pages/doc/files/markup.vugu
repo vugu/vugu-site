@@ -1,0 +1,235 @@
+<div>
+
+    <p>
+        The Markup section is an element which has the HTML that is displayed for this file (each file is a "component",
+        following the parlance of other UI libraries).
+      </p>
+
+      <p>In addition to regular HTML, some specific attributes have special meaning in Vugu and allow you to introduce 
+        logic into your component's display.
+      </p>
+
+      <div class="alert alert-warning" role="alert">
+        <i class="icon-alert-circle"></i>
+        <h4 class="fs-22">Tip</h4>
+        <p>Component files are parsed first using a regular HTML parser, before any Go expressions are considered.
+          As such, using single quotes when writing attribute values can help with HTML escaping issues.  
+          For example, you can write <code>&lt;div vg-if='myvar == "myval"'></code> or
+          <code>&lt;div vg-if="myvar == &amp;#34;myval&amp;#34;"></code>, but the former is easier to read. </p>
+      </div>
+
+      <h3>Conditionals with <code>vg-if</code></h3>
+
+      <p>
+        You can choose a condition for an element to be displayed using <code>vg-if='condition'</code>. The 
+        condition is regular Go code and during code generation is put directly between <nobr><code>if</code> and <code>{</code></nobr>
+        in the resulting .go file.  While the expression itself can be any valid Go code for an if statement,
+        a common case is to reference a member variable of your 
+        <a href="/doc/components">Component</a> struct.
+        For example:
+      </p>
+<div vg-html='codefmt.Show("html",`<div>
+    <p vg-if=&apos;c.ShowText&apos;>
+        Conditional text here.
+    </p>
+</div>
+
+<script type="application/x-go">
+type Root struct { // component for "root"
+    ShowText bool `+"`"+`vugu:"data"`+"`"+`
+}
+</script>`)'></div>
+
+      <p>Note the use of <code>c</code> as the name of the method receiver (i.e. <code>c</code> is "the component I am in").</p>
+
+      <h3>Loops with <code>vg-for</code></h3>
+
+      <p>Loops correspond directly to <code>for</code> blocks in Go code.  All forms of loops are supported
+        including the <code>init; condition; post</code> syntax as well as <code>range</code> expressions.
+        For example:
+      </p>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <p vg-for=&apos;i := 0; i < 10; i++&apos;>
+        <div vg-html="i"></div>
+    </p>
+</div>`)'></div>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <p vg-for=&apos;_, item := range c.Items&apos;>
+        <div vg-html="item"></div>
+    </p>
+</div>
+
+<script type="application/x-go">
+type Root struct {
+    Items []string `+"`"+`vugu:"data"`+"`"+`
+}
+</script>`)'></div>
+
+      <p>Note that the vg-html attribute outputs the value as HTML, using <code>fmt.Sprint()</code>, see below.</p>
+
+      <p>
+        As a special case and for convenience, if the expression contains no whitespace it will be expanded to
+        <code>for key, value := range expr {</code>. Example:
+      </p>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <div vg-for=&apos;c.Items&apos;>
+        <div>
+            Key: <span vg-html="key"></span>
+            Value: <span vg-html="value"></span>
+        </div>
+    </div>
+</div>
+
+<script type="application/x-go">
+type Root struct {
+    Items []string `+"`"+`vugu:"data"`+"`"+`
+}
+</script>`)'></div>
+
+      <p>By default, loop variables are shadowed (redeclared with the same name) inside the loop.
+        This is done for convenience as the common case is you want references to these variables 
+        to not change if used inside DOM event handlers or other code.  To disable loop variable shadowing,
+        you can use <code>vg-for.noshadow</code> instead of <code>vg-for</code>.
+      </p>
+
+      <h3>Raw HTML with <code>vg-html</code></h3>
+
+      <p>The vg-html attribute is used to output an expression as HTML into the contents of an element.
+        (It corresponds to the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML">innerHTML</a> property.)
+        The expression is converted to a string using 
+        <a target="_blank" href="https://golang.org/pkg/fmt/#Sprint">fmt.Sprint()</a>.  Example:
+      </p>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <p vg-html=&apos;"<b>an HTML string</b>"&apos;>
+    <p vg-html=&apos;123&apos;> &lt;!-- will be output according to fmt.Sprint rules -->
+    <p vg-html=&apos;html.EscapeString("escaping & arbitrary text is easy like so")&apos;>
+</div>
+
+<script type="application/x-go">
+import "html"
+</script>`)'></div>
+
+      <p>
+          You may use variable names declared in earlier constructs (such as <code>key</code> or <code>value</code> from a for/range loop).
+          Regular Go variable scoping rules apply, where each nested DOM element is equivalent to a Go <code>{</code> code block <code>}</code>.
+        </p>
+
+      <h3>Dynamic Attributes with <code>:</code></h3>
+
+      <p>
+        The values of HTML attributes can be made dynamic and accept Go expressions.  
+        Dynamically changing attribute values has many uses such as applying CSS styles with the class attribute.
+      </p>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <p :style=&apos;"background:"+c.BgColor&apos;></p>
+</div>
+
+<script type="application/x-go">
+type Root struct {
+    BgColor string // e.g. "blue"
+}
+</script>`)'></div>
+
+      <p>Note that in addition to the above use, dynamic attributes are frequently used in conjuction with 
+        components, where attributes that start with an uppercase letter become struct field assignments.
+        In this case, the attributes are not converted to strings but are kept as regular Go expressions.  See the 
+        <a href="/doc/components">Components</a> page for more info.
+      </p>
+
+      <h3>DOM Events with <code>@</code></h3>
+
+      <p>Event handlers can be attached to HTML elements (à la 
+        <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">addEventListener</a>)
+        using special attributes prefixed with an @ symbol.
+      </p>
+
+      <p>The attribute name after the @ indicates the event name, e.g. "click".  The attribute value may be a Go function/method 
+        call or other valid Go statement.</p>
+      
+      <!--
+      <p>Note that these values must hash properly with 
+            <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComputeHash">ComputeHash()</a>,
+            as this is needed by Vugu 
+        to keep track of its events internally. Most primitive types that just store data are fine, but please, no channels.
+      </p>
+      -->
+
+        <p>
+        You may use variable names declared in earlier constructs (such as <code>key</code> or <code>value</code> from a for/range loop).
+        Regular Go variable scoping rules apply, where each nested DOM element is equivalent to a Go <code>{</code> code block <code>}</code>.
+        The special variable <code>event</code>, of type
+        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a>
+        is declared in this scope and available to access the context of the event.
+        See <a href="/doc/dom-events">DOM Events</a> for more info.
+        Example:
+      </p>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <div vg-if=&apos;c.Show&apos;>I am here!</div>
+    <button @click=&apos;c.Toggle(event)&apos;>Toggle me Silly</button>
+</div>
+
+<script type="application/x-go">
+import "log"
+func (c *Root) Toggle(e *vugu.DOMEvent) {
+    c.Show = !c.Show
+    log.Printf("Toggled! Show is now %t", c.Show)
+}
+type Root struct {
+    Show bool `+"`"+`vugu:"data"`+"`"+`
+}
+</script>`)'></div>
+
+      <p>You can also place statements directly in the event tag.  For example <code>@click=&apos;c.Show=!c.Show&apos;</code> is valid.</p>
+
+      <h3>Special Variable Names</h3>
+
+      <p>
+        Several variable names have special meaning and are useful when writing .vugu files:
+      </p>
+
+      <ul>
+        <li><code>c</code> - Refers to the instance of your Component.  
+          It will be a 
+          struct pointer.  This is the proper place to house the state of your component.
+        By default the type of <code>c</code> is a named but empty struct.  However, it is common to create your own struct with 
+        the data you need on it.  See more at <a href="/doc/components">Components</a></li>
+        <li><code>event</code> - This is a placeholder for a 
+          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a> 
+          instance that is 
+          created when a DOM event is triggered and your handler is called.  This also provides 
+          some other needed functionality such as the 
+          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv</a>, which is important for synchronizing 
+          goroutines that need to update data after an event completes.  See more at 
+          <a href="/doc/dom-events">DOM Events</a>.</li>
+        <li><code>key</code> and <code>value</code> - See section covering vg-for above.  These are the 
+          default names used for implied range expressions.
+      </ul>
+
+      <p>Please note that variables that your code declares, e.g. in a vg-for loop, should not start with <code>vg</code>, in order 
+        to avoid conflicting with generated code.
+      </p>
+
+      <!-- <h3 id="full-html">Full HTML Mode</h3>
+
+      <p>(TODO)</p> -->
+
+</div>
+
+<script type="application/x-go">
+
+import "github.com/vugu/vugu-site/app/codefmt"
+
+type Markup struct {}
+
+func (c *Markup) Title() string { return "Vugu Files: Markup (HTML/Go)" }
+func (c *Markup) ShortTitle() string { return "Markup (HTML/Go)" }
+func (c *Markup) MetaDescription() string { return "The Markup section is an element which has the HTML that is displayed for this file. In addition to regular HTML, some specific attributes have special meaning in Vugu and allow you to introduce logic into your component's display." }
+
+</script>
+    

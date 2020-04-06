@@ -1,17 +1,6 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
 
-# Test binary, build with `go test -c`
-*.test
+server/server
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
-.vscode
-
-dist
+# do not include generated files in git as this is not a package used by others, we just re-generate upon each build
+**_vgen.go
 

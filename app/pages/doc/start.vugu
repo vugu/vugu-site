@@ -1,0 +1,108 @@
+<div>
+
+
+                    <p>
+                      Let's make a basic working Vugu application that runs in your browser.  It 
+                      only takes three small files to start.  Make sure you have at least 
+                      <strong><a target="_blank" href="https://golang.org/dl/">Go</a> 1.14</strong> installed.
+                    </p>
+
+                  <section id="section-1">
+                    <!-- <h2 class="section-title-2">Quick Start <a data-scroll href="#section-2" class="anchor" data-toggle="tooltip" data-placement="top" title="Copy URL"><i class="icon-hash"></i></a></h2> -->
+                    <ol class="step-list">
+                      <li><div>
+                        <p>
+                          <strong>Create a new empty folder anywhere you like.</strong>  We'll use the name <code>testapp</code> as an example. 
+                          Each file you create will be directly in this folder, no subfolders are needed.
+                        </p>
+                      </div></li>
+                      <li><div>
+                        <p><strong>Create</strong> <code>go.mod</code> which specifies a 
+                          <a target="_blank" href="https://github.com/golang/go/wiki/Modules#gomod">Go module</a> name.  To get started, you can 
+                          pick any name you like as a placeholder following the pattern shown. 
+                          For example:</p>
+                          
+                        <p>
+                          <pre><code>module example.org/someone/testapp
+</code></pre>
+                        </p>
+                      </div></li>
+                      <li><div>
+                        <p>
+                          <strong>Create a Vugu component file.</strong>
+                          We'll put a click handler and an element that toggles to demonstrate some basic functionality.
+                          This first component should be called <code>root.vugu</code>:
+                          <div vg-html='codefmt.Show("html",`<div class="my-first-vugu-comp">
+    <button @click="c.Toggle()">Test</button>
+    <div vg-if="c.Show">I am here!</div>
+</div>
+
+<style>
+.my-first-vugu-comp { background: #eee; }
+</style>
+
+<script type="application/x-go">
+type Root struct { Show bool `+"`"+`vugu:"data"`+"`"+` }
+func (c *Root) Toggle() { c.Show = !c.Show }
+</script>`)'></div>
+
+                        </p>
+                      </div></li>
+                      <li><div>
+                        <p><strong>Create a development server file.</strong>  Note that this does not get compiled to WebAssembly.
+                          This is a server which serves your program up to the browser.
+                          <code>devserver.go</code>:
+                        <p><div vg-html='codefmt.Show("go",`// +build ignore
+
+package main
+
+import (
+	"log"
+	"net/http"
+	"os"
+
+	"github.com/vugu/vugu/simplehttp"
+)
+
+func main() {
+	wd, _ := os.Getwd()
+	l := "127.0.0.1:8844"
+	log.Printf("Starting HTTP Server at %q", l)
+	h := simplehttp.New(wd, true)
+	// include a CSS file
+	// simplehttp.DefaultStaticData["CSSFiles"] = []string{ "/my/file.css" }
+	log.Fatal(http.ListenAndServe(l, h))
+}
+`)'></div>
+<!-- </code></pre> -->
+                        </p>
+                      </div></li>
+                      <li><div>
+                        <p><strong>Run the server</strong>.
+                          While in the same directory, run the command <code>go run devserver.go</code></p>
+                        <p>After a few brief moments, the server should start.  It works the same on 
+                          Windows, Linux or Mac.</p>
+                      </div></li>
+                      <li><div>
+                          <p><strong>Browse to it</strong>: <a target="_blank" href="http://127.0.0.1:8844/">http://127.0.0.1:8844/</a>
+                        </div></li>
+                      <li><div>
+                          <p>Marvel at the wonder you have created.
+                        </div></li>
+  
+                    </ol>
+                  </section>
+
+
+</div>
+
+<script type="application/x-go">
+
+import "github.com/vugu/vugu-site/app/codefmt"
+
+type Start struct {}
+
+func (c *Start) Title() string { return "Getting Started" }
+func (c *Start) MetaDescription() string { return "Let's make a basic working Vugu application that runs in your browser. It only takes three small files to start." }
+
+</script>

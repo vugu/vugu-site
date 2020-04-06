@@ -1,0 +1,49 @@
+<div class="widget">
+    <h3 class="widget-title">Documentation</h3>
+    <div class="list-group list-group-related">
+
+        <!-- active -->
+        <a vg-for='_, p := range c.DocPathList' :href="p" 
+            :class='"list-group-item list-group-item-action d-flex align-items-center "+c.activeClassCond(p)'>
+            <i class="fs-20 icon-file-text2 text-primary mr-1"></i>
+            <span vg-html="c.titleFor(p)"></span>
+        </a>
+
+        <!-- <a vg-for="allPages.SiteDocPages()" :href="value.Path"
+            @click="data.Router.BrowseTo(value.Path, event)"
+            class="list-group-item list-group-item-action d-flex align-items-center active">
+            <i class="fs-20 icon-file-text2 text-primary mr-1"></i>
+            <span vg-html="value.ShortTitle"></span>
+        </a> -->
+
+    </div>
+</div>
+
+<script type="application/x-go">
+
+//import "log"
+import "github.com/vugu/vugu-site/app/state"
+
+type DocSidebar struct {
+    state.PageInfoRef
+    state.PageSeqRef
+    DocPathList []string
+}
+
+func (c *DocSidebar) BeforeBuild() {
+    c.DocPathList = c.PageSeq.WithPrefix("/doc").PathList
+}
+
+func (c *DocSidebar) titleFor(p string) string {
+    //log.Printf("c.PageSeq.PageMap = %#v", c.PageSeq.PageMap)
+    pi := state.PageInfoFrom(p, c.PageSeq.PageMap[p])
+    return pi.ShortTitle
+}
+
+func (c *DocSidebar) activeClassCond(p string) string {
+    if c.PageInfo.Path == p { return "active" }
+    return ""
+}
+
+
+</script>

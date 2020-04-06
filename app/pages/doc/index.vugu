@@ -1,0 +1,55 @@
+<div>
+
+    <p>Vugu is Go library which makes it easy to write web user interfaces in Go.</p>
+
+    <p>The basic idea is as follows:</p>
+
+    <ul>
+
+        <li><strong>You write UI components in .vugu files</strong>. These files are similar to UI components you might
+            see in
+            JavaScript frameworks (e.g. .vue files). However, they contain no JavaScript and instead have Go language
+            expressions for
+            <code>if</code>, <code>for</code> and other such functionality.<br />&nbsp;
+        </li>
+
+        <li>
+            <strong>Each .vugu file is converted to a corresponding .go file.</strong> There is a development server in
+            the Vugu project
+            which can do this for you automatically on page reload, or the <code>vugugen</code> command line tool can be
+            used to integrate
+            with <code>go generate</code>. The code generation also attempts to provide sensible defaults where needed
+            so your .vugu
+            files contain as little boilerplate as possible, while still allowing extensive customization if desired.
+            <br />&nbsp;
+        </li>
+
+        <li>
+            <strong>Your project is compiled to a WebAssembly module and run in the browser.</strong> Again, the
+            development server makes this easy to
+            do when starting a project. As your project evolves and you need to customize parts of this process you can
+            easily do so.<br />&nbsp;
+        </li>
+
+        <li>
+            <strong>The Vugu library</strong> (package: <a target="_blank"
+                href="https://github.com/vugu/vugu">github.com/vugu/vugu</a>)
+            <strong>provides functionality to efficiently synchronize HTML DOM</strong> on a web page according to the
+            markup
+            in your .vugu files. Features like attaching DOM event handlers (click, etc.) and breaking large pages up
+            into components
+            are supported.
+        </li>
+
+    </ul>
+
+</div>
+
+<script type="application/x-go">
+
+type Index struct {}
+
+func (c *Index) Title() string { return "What is Vugu?" }
+func (c *Index) MetaDescription() string { return "Vugu is Go library which makes it easy to write web user interfaces in Go. You write UI components in .vugu files, converted to .go, compiled to wasm.  Browser DOM sychronization." }
+
+</script>

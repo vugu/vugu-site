@@ -1,0 +1,37 @@
+
+.prev-next-part {
+    color: white;
+    padding: 8px;
+}
+
+.prev-next-part a {
+    font-size: 1.2rem;
+    color: white;
+}
+
+/* disable animation */
+.list-group-related .list-group-item {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    transition: none !important;
+}
+
+.navbar-nav .nav-link {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    transition: none !important;
+}
+
+.breadcrumb-item a {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    transition: none !important;
+}
+
+.faq-title a {
+    color: rgba(128, 128, 128, 0.932);
+    visibility: hidden;
+}
+.faq-title:hover a {
+    visibility: visible;
+}

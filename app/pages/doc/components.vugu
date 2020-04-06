@@ -1,0 +1,189 @@
+<div>
+
+                    <p>
+                      <strong>Components are individual files which are used to organize your user interface code.</strong>
+                      Each component lives in a .vugu file.  Each .vugu file is processed to produce 
+                      a .go file.  Like all Go code, each directory is a package and you may add 
+                      additional .go files to it and use them as part of your component.
+                      Vugu does some 
+                      code generation, but otherwise does not interfere with the regular Go build 
+                      process at all.  By default, code generated files end with <em>_vgen.go</em>.
+                    </p>
+
+                    <!-- <p>
+                      Under the hood, components implement the 
+                      <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComponentType">ComponentType</a> 
+                      interface.  Although this is 
+                      unimportant to most developers as the code generator does the work to 
+                      implement it based on your .vugu file.
+                    </p> -->
+
+                    <p>
+                      By default, the component named <strong>root</strong> (and thus living in root.vugu) <strong>is the top 
+                      level component</strong> and is rendered just inside the <code>&lt;body></code> tag on your page.
+                      In this case, there is only one instance of your root component, which is created in your <code>main()</code> function.
+                      (If you've followed the 
+                      <a href="/doc/files/start">Getting Started</a>
+                      instructions you can find this code in main_wasm.go)
+                    </p>
+
+                    <p>
+                      Things get interesting when we introduce the idea of <strong>multiple components</strong> into an application.
+                      Each component goes in its own .vugu file.
+                    </p>
+
+                    <p>
+                      It's important to remember that under the hood, components are just Go structs.
+                      All component references are resolved at compile-time.  There is intentionally
+                      as little magic involved as possible.  In fact, components are really just implementations
+                      of the <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#Builder">Builder</a>
+                      interface and simply provide a <code>Build</code> method with HTML nodes they output.
+                    </p>
+
+                    <p>
+                      One component can include a <strong>tag that indicates the name of
+                      a component struct to use.</strong>.  
+                      When this happens, it says than an instance 
+                      of this other component should be created.  Let's look at an example:
+                    </p>
+
+<div vg-html='codefmt.Show("html",`<!-- root.vugu -->
+<div class="root">
+    <ul>
+      <main:MyLine FileName="example.txt" :LineNumber="rand.Int63n(100)" ></main:MyLine>
+    </ul>
+</div>
+
+<script type="application/x-go">
+import "math/rand"
+</script>
+`)'></div>
+
+<div vg-html='codefmt.Show("html",`<!-- my-line.vugu -->
+
+<li class="my-line">
+  <strong vg-html=&apos;c.FileName&apos;></strong>:<span vg-html=&apos;c.LineNumber&apos;></span>
+</li>
+
+<script type="application/x-go">
+type MyLine struct {
+    FileName string `+"`"+`vugu:"data"`+"`"+`
+    LineNumber int  `+"`"+`vugu:"data"`+"`"+`
+}
+</script>`)'></div>
+
+                      <p>In this case the <code>&lt;main:MyLine></code> tag gets replaced with the <code>&lt;li></code> tag and its contents as 
+                        rendered by the MyLine component.
+                      </p>
+
+                      <p><code>main</code> is the name of the package.  The name of the current package ("main" or otherwise) is removed
+                      in the generated code, but otherwise all package names are regular Go references.  Import statements are required
+                      in order to access components in other packages.</p>
+
+                      <p>
+                        As shown in the example, HTML attributes starting with a capital letter correspond to struct field assignments.
+                        Attributes with a colon (<code>:</code>)
+                        will be evaluated as Go code and then the result used as-is (not converted in any way). 
+                        This allows you to pass arbitrarily complex data, or pointers, etc. into components when needed.
+                      </p>
+
+                      <!-- <p>
+                        The <code>NewData</code> method on the component type is responsible for reading the props 
+                        passed into it and populating the data struct for this component instance.
+                        (This method is part of satisfying the
+                         <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComponentType">ComponentType</a> interface.)
+                      </p> -->
+
+                      <p>
+                        Components can be instantiated as many times as needed. Each one causes a new instance 
+                        to be created.  Like so:
+                      </p>
+
+<div vg-html='codefmt.Show("html",`<!-- root.vugu -->
+
+<div class="root">
+    <ul>
+      <main:MyLine vg-for=&apos;i := 0; i < 10; i++&apos; 
+        FileName="example.txt" :LineNumber="i" ></main:MyLine>
+    </ul>
+</div>
+`)'></div>
+
+                      <p>Components used in this way also support additional features including dynamic properties, as follows:</p>
+
+<div vg-html='codefmt.Show("html",`<pkg:Comp 
+    StringField="some string"
+    :DynamicField=&apos;/* some go expression */ 123.0&apos;
+    stringAttrMapValue="some string"
+    :dynamicAttrMapValue=&apos;/* some go expression */ 123.0&apos;
+    ></pkg:Comp>
+`)'></div>
+                      <ul>
+                        <li><code>pkg</code> is the package name - it must correspond to an import statement 
+                          or be the same as the current package.</li>
+                        <li><code>Comp</code> is the name of the component struct.  
+                          No mangling is performed on it, or any of the fields mentioned below.
+                        It should be an exported type (start with a capital letter).</li>
+                        <li><code>StringField</code> is assigned as a regular Go struct field 
+                          using the string "some string"</li>
+                        <li><code>DynamicField</code> is assigned as a regular Go struct field but 
+                          <code>/* some go expression */ 123.0</code> is emitted directly into the 
+                          code-generated file and thus evaluated as Go code.</li>
+                        <li><code>stringAttrMapValue</code> (lower-case first letter) is assigned as a 
+                          key of to a field that you must declare as <code>AttrMap map[string]interface{}</code> - 
+                          this allows you to accept arbitrary values as component input, or not.</li>
+                        <li><code>dynamicAttrMapValue</code> (lower-case first letter) works like 
+                          <code>stringAttrMapValue</code> but is evaluated as Go code instead of a static string.</li>
+                      </ul>
+
+                      <!-- <div class="alert alert-warning" role="alert">
+                        <i class="icon-alert-circle"></i>
+                        <h4 class="fs-22">Please Note</h4>
+                        <p>
+                          The syntax for custom component tags will likely be changed from
+                          <code>pkg:Comp</code> to <code>pkg-Comp</code>.
+                          The rationale is that using a colon creates an ambiguity between components
+                          and HTML namespaces such as <code>svg</code>, and since component types are 
+                          always exported (start with a capital letter), this makes <code>pkg-Comp</code> unambiguous 
+                          from other customs tags which would be all lower case.
+                          If this change is made both syntaxes will be supported for a while in 
+                          order to ease transition.
+                        </p>
+                      </div> -->
+              
+                      <!-- <p>  TODO: update this
+                        Vugu needs a way to determine, when re-rendering the HTML, which components are the same and which 
+                        are now different and should be re-created.  This is determined by calling 
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComputeHash">ComputeHash</a>
+                        on the attributes (including dynamically evaluted/colon prefixed ones after evaluation) and if the hash 
+                        is different a new instance is created.  If it's the same, the same one is re-used.
+                      </p> -->
+                      
+                      <p>
+                        Any component can include any other component. But if components include each other 
+                        in a loop the behavior is undefined (but I can promise you it won't be good).
+                      </p>
+
+                    <!-- <div class="alert alert-warning" role="alert">
+                        <i class="icon-alert-circle"></i>
+                        <h4 class="fs-22">Note</h4>
+                        <p>By default components register themselves in an <code>init()</code> function by calling 
+                          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#RegisterComponentType">RegisterComponentType</a>.
+                          And by default in <code>main()</code> all registered components are retrieved and made available.
+                          So you can place <code>import _ "your/package"</code> in any file and if that package contains components 
+                          they will be available for use.  This behavior can also easily be changed by modifying the appropriate 
+                          behavior in main_wasm.go, in case you need more control over what components are available
+                          under what names.</p>
+                      </div> -->
+</div>
+
+<script type="application/x-go">
+
+import "github.com/vugu/vugu-site/app/codefmt"
+
+type Components struct {}
+
+func (c *Components) Title() string { return "Using Components" }
+func (c *Components) MetaDescription() string { return "Components are individual files which are used to organize your user interface code. Each component lives in a .vugu file. Each .vugu file is processed to produce a .go file." }
+
+</script>

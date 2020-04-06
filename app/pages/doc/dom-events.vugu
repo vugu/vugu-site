@@ -1,0 +1,102 @@
+<div>
+
+
+  
+
+<p>Using the browser's 
+    <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">Document Object Model (DOM)</a>,
+    <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/Events">events</a> can be attached to HTML elements by providing an attribute of the event name
+    prefixed with <code>@</code>.  For example <nobr><code>&lt;div @click='c.HandleClick()'></code></nobr>
+  </p>
+
+  <p>The name of the event correspoonds to a regular DOM event as would be provided to
+      <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">addEventListener</a>.
+  </p>
+
+  <p>The Go expression provided may be a Go method 
+      call or other statement(s).</p>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <div vg-if=&apos;c.Show&apos;>I am here!</div>
+    <button @click=&apos;c.Toggle()&apos;>Toggle me Silly</button>
+</div>
+
+<script type="application/x-go">
+func (c *Root) Toggle() { c.Show = !c.Show }
+type Root struct {
+    Show bool `+"`"+`vugu:"data"`+"`"+`
+}
+</script>`)'></div>
+
+<p>You can also place statements directly in the event tag, like so:</p>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <div vg-if=&apos;c.Show&apos;>I am here!</div>
+    <button @click=&apos;c.Show = !c.Show; log.Print("toggled!")&apos;>
+        Toggle me, Silly
+    </button>
+</div>
+
+<script type="application/x-go">
+import "log"
+type Root struct {
+    Show bool `+"`"+`vugu:"data"`+"`"+`
+}
+</script>`)'></div>
+
+  <ul>
+    <li class="pb-2">
+        <strong>The special variable <code>event</code></strong> (of type 
+        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a>) 
+        corresponds to the event data sent to us by the browser. It also provides some useful functionality 
+        such as a <code>PreventDefault()</code> method which corresponds to 
+        <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault">preventDefault</a>
+    </li>
+    <li class="pb-2">
+      <strong>For operations that involve blocking</strong> (waiting for I/O, such as fetching data from a URL), 
+      you should create a goroutine and use
+      <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">event.EventEnv()</a> to acquire 
+      a lock before modifying data, and release it afterward.  
+      However the lock should only be held during the variable assignment, not while blocking.
+      <br/>&nbsp;
+
+      <div class="alert alert-warning" role="alert">
+          <i class="icon-alert-circle"></i>
+          <h4 class="fs-22">Important</h4>
+          <p>
+            When your event handler method is called, an exclusive lock is already acquired 
+            against the rendering environment. It is released automatically when your handler method exits.
+            Do not block waiting for I/O inside your handler directly, instead use a goroutine.
+            Inside the goroutine (and <strong>only inside goroutines, not directly in your handler method</strong>)
+            you must
+            use 
+            <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv"><code>event.EventEnv().Lock()</code></a>
+             and <code>event.EventEnv().UnlockRender()</code>
+            (or <code>UnlockOnly()</code>) to ensure only one thing is accessing your information at a time.
+            You can also use <code>RLock()</code> and <code>RUnlock()</code> for read-only access from a goroutine.  
+            These methods behave exactly as you would expect from 
+            <a target="_blank" href="https://golang.org/pkg/sync/#RWMutex">RWMutex</a>
+            (and if you have never used one of those, now would be a great time to bone up on them).</p>
+        </div>
+
+        
+        See <a href="/doc/files/code">Code</a>
+         for an example of using a goroutine to fetch data and locking/unlocking when 
+        handling the results.
+
+    </li>
+  </ul>
+
+</div>
+
+<script type="application/x-go">
+
+import "github.com/vugu/vugu-site/app/codefmt"
+
+type DomEvents struct {}
+
+func (c *DomEvents) Title() string { return "DOM Events" }
+func (c *DomEvents) MetaDescription() string { return "Events can be attached to HTML elements by providing an attribute of the event name prefixed with '@'. The name of the event correspoonds to a regular DOM event as would be provided to addEventListener." }
+
+
+</script>

@@ -1,0 +1,110 @@
+<div class="site-home">
+
+    <!-- hero -->
+    <section class="bg-primary">
+        <br/>&nbsp;
+        <br/>&nbsp;
+        <br/>&nbsp;
+      <div class="container">
+      	<div class="row justify-content-center">
+      	  <div class="col-lg-10 text-white text-center">
+              <h1 class="font-weight-light">Build a web front-end in Go that runs in your browser, today.</h1>
+              <div>
+                Pure Go.  Targets WebAssembly (and/or server).
+                Modern browsers supported.  Experimental, for now. Really cool.</div>
+      	  </div>
+      	</div>
+        <div class="row">
+          <div class="col text-center">
+            <a href="/doc/start" notclick='data.Router.BrowseTo("/doc/start", event)' class="btn btn-white">Start Now &gt;</a>
+          </div>
+          <br/>&nbsp;
+          <br/>&nbsp;
+        </div>
+      </div>
+    </section>
+    <!-- / hero -->
+
+
+
+
+    <!-- components -->
+    <section class="pt-0 pb-3">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center">
+            <br/>&nbsp;
+            <h2>
+                <b>Vugu:</b> A modern UI library for <b>Go+WebAssembly</b>
+             </h2>
+
+            <p>Inspired by tools like <b>Vue</b> and <b>React</b>, Vugu is a library written in Go and 
+                able to run in modern browsers using WebAssembly.</p>
+
+            <hr/>
+
+            <p><strong>PLEASE NOTE: This is <span style="color:red">experimental</span> technology!  <a href="/faq#stability" notclick='data.Router.BrowseTo("/faq#stability", event)'>(read more)</a></strong></p>
+
+
+            <hr/>
+
+            <!-- <ul class="pt-2"> -->
+                <p>Inspired by modern web UI libraries like Vue, Angular and React.</p>
+                <p>Single-file components.</p>
+                <p>Runs in most modern browsers.</p>
+                <p>Simple and sane dev and build environment.  (Say goodbye to that node_modules folder!)</p>
+                <p>Write UIs with the ease of HTML+CSS for presentation, and the facility of Go for interface logic.
+                    It's pretty cool!  See the <a href="/doc/start" notclick='data.Router.BrowseTo("/doc/start", event)'>Getting Started</a> page.</p>
+            <!-- </ul> -->
+
+            <hr/>
+
+            <h4>Updates <span style="color: red">♨</span></h4>
+
+            <div class="text-left">
+
+                <ul>
+                  <li><strong>2020-03-29</strong> Vugu URL router is now functional (<a href="https://github.com/vugu/vgrouter" target="_blank">github.com/vugu/vgrouter</a>). Features include optional fragment support, client and server-side use, two-way data binding for query and path parameters, and automatic route generation based on folder structure. The `vg-comp` tag now allows programmatic component selection.  A pattern for wiring large applications with lots of components is in place and will be tested further as dev moves forward. Next steps include just a bit more dev and testing on the router and then updating vugu.org to use these new features and bring the documentation up to date.</li>
+                  <li><strong>2019-12-08</strong> First Vugu program successfully compiles with Tinygo. Testing and a bit more alternate implementation is still required but at least the compilation works now.</li>
+                  <li><strong>2019-11-24</strong> WASM test suite now working in Travis CI; getting closer on TinyGo support and merged refactor into master.</li>
+                  <li><strong>2019-11-10</strong> Support for TinyGo is in-progress on the tinygo branch.  No known blocking issues as yet, some minor refactor required but looks promising.</li>
+                  <li><strong>2019-09-29</strong> Router is work-in-progress.  Will use radix tree to efficiently combine common prefixes.  Struct tags will usable to two-way-bind path and query params, or it can be done manually.  Some similarities to Angular and Vue routers but will be less declarative and more functional (instead of a big tree of objects with various config, you write path handler functions to set whatever properties need to be set, establish binding, etc).  Plan is to get the bulk of this coded by next week.</li>
+                  <li><strong>2019-09-22</strong> Static HTML renderer (re)implemented. EventEnv bug fix and added it to to JS renderer to allow background requests at startup.  Some initial work on a router: <a href="https://github.com/vugu/vgrouter" target="_blank">https://github.com/vugu/vgrouter</a></li>
+                  <li><strong>2019-09-15</strong> Refactor changes merged into master. Includes: updated sample code, component resolution at code-generation time, type-safe component params, optional component param map, BeforeBuild lifecycle callback, modification tracking system, JS property assignment syntax, "full HTML" support, improved DOM event handling, Go 1.13 support, import deduplication, and a brand new rendering pipeline! Initial documentation at <a target="_blank" href="https://github.com/vugu/vugu/wiki/Refactor-Notes---Sep-2019">https://github.com/vugu/vugu/wiki/Refactor-Notes---Sep-2019</a></li>
+                  <li><strong>2019-09-08</strong> Implemented ModTracker to keep track of changes to components and their data (this is also the beginning of Vuex-like functionality but without wrappers or events). Worked out the lifecycle of components in much more detail and work in progress on nested components implementation (component-refactor branch currently broken, but finally the core nested component functionality is going in - hopefully will finish next week).</li>
+                  <li><strong>2019-09-07</strong> Updated everything for Go 1.13, including both master and component-refactor branches, Vugu's js wrapper package, site documentation.</li>
+                  <li><strong>2019-09-01</strong> On component-refactor branch: Form element values and other related data now available on DOMEvent, <code>.prop=</code> syntax implemented, various cleanup, imports are deduplicated automatically now, started on nested component implementation and all of that craziness.</li>
+		              <li><strong>2019-08-25</strong> CSS now supported on component-refactor branch, including in full-HTML mode, working sample that pulls in Bootstrap CSS.  Vugu's <a href="https://godoc.org/github.com/vugu/vugu/js" target="_blank">js wrapper package</a> copied to master and made available.</li>
+                  <li><strong>2019-08-18</strong> Full HTML (root component can start with <html> tag) now supported on component-refactor branch, updated CSS and JS support figured out and implementation in-progress.</li>
+                  <li><strong>2019-08-12</strong> Refactored DOM event listener code in-progress, event registration/deregistration works(-ish), filling out the remaining functionality to provide event summary, calls like preventDefault(), etc.</li>
+                  <li><strong>2019-08-04</strong> Some basic stuff in there on the DOM syncing rewrite and the new instruction workflow from VGNode -> binary encoded to raw bytes in Go -> read with DataView in JS -> DOM tree manipulation. With the pattern in place the rest should get easier.</li>
+                  <li><strong>2019-07-28</strong> Making some hard choices on how to do DOM syncing in a performant and reliable way.  <a href="https://github.com/vugu/vugu/wiki/DOM-Syncing-Instructions" target="_blank">https://github.com/vugu/vugu/wiki/DOM-Syncing-Instructions</a></li>
+                  <li><strong>2019-07-20</strong> Some design info on how "data binding" (hashing actually) will work in Vugu: <a href="https://github.com/vugu/vugu/wiki/Data-Hashing-vs-Binding" target="_blank">https://github.com/vugu/vugu/wiki/Data-Hashing-vs-Binding</a></li>
+                  <li><strong>2019-07-16</strong> Vugu has a logo! <a href="https://www.instagram.com/p/Bz3zmtYAYcM/" target="_blank">https://www.instagram.com/p/Bz3zmtYAYcM/</a>  Good things are in the works, the plan is to get a bunch of much-awaited updates pushed to master before the end of the month.</li>
+                  <li><strong>2019-05-19</strong> Refactor still in progress - this is the cleaned-up architecture concept: <a href="https://github.com/vugu/vugu/wiki/Architecture-Overview" target="_blank">https://github.com/vugu/vugu/wiki/Architecture-Overview</a></li>
+                  <li><strong>2019-04-07</strong> The Vugu Playground is up at: <a href="https://play.vugu.org/" target="_blank">https://play.vugu.org/</a></li>
+                  <li><strong>2019-04-05</strong> Thanks to @erinpentecost, **vugufmt is now available** and provides gofmt-like functionality on your .vugu files. (<code>go get github.com/vugu/vugu/cmd/vugufmt && go install github.com/vugu/vugu/cmd/vugufmt</code>)</li>
+                  <li><strong>2019-04-05</strong> The component playground should be available soon; followed by some internal work to properly handle nested components in a type-safe way; then probably a router...</li>
+                </ul>
+  
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+    </section>
+
+</div>
+
+<script type="application/x-go">
+
+type Index struct {}
+
+func (c *Index) Title() string { return "Vugu: A modern UI library for Go+WebAssembly" }
+func (c *Index) ShortTitle() string { return "Vugu Home" }
+func (c *Index) MetaDescription() string { return "Pure Go. Targets WebAssembly (and/or server). Most modern browsers supported. Experimental, for now. Really cool." }
+
+</script>

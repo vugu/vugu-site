@@ -1,0 +1,56 @@
+<div>
+
+<p>Style blocks are a way to express CSS that corresponds to your component and is output
+    along with your component markup. Example:</p>
+
+<div vg-html='codefmt.Show("html",`<div class="some-component-here">
+    <strong>"Fashions fade, style is eternal."</strong> —Yves Saint Laurent
+</div>
+
+<style>
+.some-component-here strong {
+    color: #7c5a9e;
+}
+</style>`)'></div>
+
+
+  <p>
+    A few words of widsom and caution regarding style blocks:
+    <ul>
+      <li>
+        It is good practice to <strong>prefix your styles</strong> and make them correspond to your component's main HTML element - 
+        either a <strong>class</strong> or <strong>id</strong>.  In the example above you can see we use <code>.some-component-here</code>
+        as a prefix to avoid style collisions.  Generally, using the exact component name (the name of the .vugu file minus the extension)
+        is a good way to go.
+      </li>
+      <li><strong>Styles are deduplicated</strong> as literal strings of the entire contents of the <code>&lt;style></code> tag, 
+        so only one of the same block of styles is ever output.</li>
+      <li>
+        <strong>Styles are inserted in one place, at or above your root component</strong> and in the order that components are 
+        rendered.   This usually produces the right effect but it's worth knowing when you are debugging style issues.
+      </li>
+      <li>You probably do <strong>not want to use @import to load external style sheets.</strong>
+        If your component is shown and then
+        hidden and shown again it will cause the import to be removed from the page and then re-added and 
+        most likely your browser will load the stylesheet again.  For styles which should always be 
+        present, it is better to add them to the root component. 
+      </li>
+      <li>
+        Go expressions or other <strong>dynamic elements are not currently supported in styles</strong>.
+        <!-- It is entirely possible such functionality will be added in the future if it can be made to work cleanly. -->
+      </li>
+    </ul>
+
+</div>
+
+<script type="application/x-go">
+
+import "github.com/vugu/vugu-site/app/codefmt"
+
+type Style struct {}
+
+func (c *Style) Title() string { return "Vugu Files: Styles (CSS)" }
+func (c *Style) ShortTitle() string { return "Styles (CSS)" }
+func (c *Style) MetaDescription() string { return "Style blocks are simply a way to express CSS that corresponds to your component and is output along with your component markup. Example..." }
+
+</script>

@@ -1,0 +1,297 @@
+<div>
+
+                  <p>Vugu takes a number of steps to make the development process easy to rapidly 
+                    get started and prototype user interfaces.  That said, it's important to 
+                    understand the overall program structure and how a Vugu program works (at least by
+                    default), so you can customize it to your needs when building a sophisticated 
+                    application.  The basics are fairly simple.
+                  </p>
+
+                  <p>
+                    When you use the HTTP handler in development mode (as shown on the 
+                    <a href="/doc/start" notclick='data.Router.BrowseTo("/doc/start", event)'>Getting Started</a> page), upon page load 
+                    Vugu will convert your .vugu files into .go and also by default attempt to generate a main_wasm.go if it does not exist.
+                    (You can edit main_wasm.go as needed. It is only a template to get your started. Vugu will not overwrite it.)
+                  </p>
+
+                  <h2>WebAssembly main()</h2>
+
+                  <p>
+                    Like any Go program, it starts with <code>main()</code>.   The build constraint at the top (see 
+                    <a href="#dual-build">Dual-Build</a> below) indicates this is the WebAssembly entry point:
+                  </p>
+
+<div vg-html='codefmt.Show("go",`// +build wasm
+
+package main
+
+import (
+	// ...
+	"github.com/vugu/vugu"
+)
+
+func main() {`)'></div>
+
+
+                  <!--
+                  <p>TODO: we need to explain key concepts here like the rneder loop and touch upon lock with EventEnv - 
+                    maybe not the deep dive through every line.  Also touch upon the build tags producing two programs - one for wasm 
+                    and one that's the server (default setup, normal GO package and module system applies and we're not doing 
+                    anything that isn't standard Go.)  
+
+                    An example of http.Get and the locking should probably go here 
+                  </p>
+                  -->
+
+                  <!--
+                  <h2>Main</h2>
+
+                  <p>
+                    Here is an example of a working <code>main.go</code>:
+                  </p>
+                  
+                  <p><pre><code>// +build wasm
+
+package main
+
+import (
+	"log"
+	"os"
+
+	"github.com/vugu/vugu"
+)
+
+func main() {
+
+	println("Entering main()")
+	defer println("Exiting main()")
+
+	rootInst, err := vugu.New(&Root{}, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	env := vugu.NewJSEnv("#root_mount_parent", rootInst, vugu.RegisteredComponentTypes())
+	env.DebugWriter = os.Stdout
+
+	for ok := true; ok; ok = env.EventWait() {
+		err = env.Render()
+		if err != nil {
+			panic(err)
+		}
+	}
+
+}
+</code></pre></p>
+-->
+
+                  <!--
+                  <p>That's a fair bit to take in.  Let's go through each part.</p>
+
+                  <p>
+                    The first line is a <a target="_blank" href="https://golang.org/pkg/go/build/#hdr-Build_Constraints">build tag</a>,
+                    indicating that this program should only be compiled for WebAssembly:
+                    <pre><code>// +build wasm</code></pre></p>
+
+                  <p>Program Overview (incl: Render loop)</p>
+                  -->
+
+                  <h2>Root Component</h2>
+
+                  <p>To render a page to HTML, you need to have "root" component. This is the top level component that
+                    houses everything else.  By default this component lives in root.vugu, gets code generated to 
+                    root_vgen.go, which has a Root struct type.  The generated main_wasm.go file creates an instance 
+                    of this Root struct and uses it as the beginning of the tree of components to be rendered.
+                   </p>
+
+                   <h2>BuildEnv</h2>
+
+                   <p><a target="_blank" href="https://godoc.org/github.com/vugu/vugu#BuildEnv">BuildEnv</a> 
+                  keeps track of component state across render cycles.  Component re-use from render to render
+                  and detecting which components are changed are handled here.  You can get a new instance by 
+                  calling <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#NewBuildEnv">vugu.NewBuildEnv</a>.
+                </p>
+
+                  <h2>JSRenderer</h2>
+
+                  <p>Once we have a root component instance, we need an environment.  There are two environments currently implemented:
+                    <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/domrender">the DOM renderer</a>
+                    for use in WebAssembly applications, and 
+                    <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/staticrender">the static renderer</a> 
+                    which can be used for server-side rendering and tests. 
+                    <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/domrender#JSRenderer">domrender.JSRenderer</a>
+                    is what performs the syncing of the virtual DOM from 
+                    our root component and any nested components to the browser DOM.
+                  </p>
+
+<!-- 
+                  <p>
+                    <ul>
+                      <li class="pb-2">
+                    The first argument is the location in the page (CSS selector, readable by 
+                    <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector">querySelector</a>)
+                    of where the component is "mounted".  By default <code>#root_mount_parent</code> corresponds to 
+                    a <code>&lt;div></code> immediately inside the <code>&lt;body></code> tag.</li>  
+                    <li class="pb-2">The second argument is the 
+                    component instance we created above.  </li>
+                    <li>
+                    And the last argument is a map of which component types are available 
+                    under which names. The function 
+                    <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#RegisteredComponentTypes">vugu.RegisteredComponentTypes</a>
+                     will retreive all of the components that have 
+                    registered themselves with 
+                    <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#RegisterComponentType">vugu.RegisterComponentType</a>
+                    (which is the case for all components by default).
+                    This makes it so you can simply <code>import _ "path/to/other/components"</code> and they will be 
+                    available automatically.  Components defined directly in your main package are also always available by default.
+                  </li>
+                    </ul>
+                  </p>
+                    <p>If you need more control over which component types are available during rendering and the names
+                    they use, or where your application is output on the page, customizing what you pass to <code>NewJSEnv</code> is the way to do it.
+                  </p> -->
+
+                  <h2>Render Loop</h2>
+
+                  <p>The render loop is where the magic happens.  Your components' virtual DOM output (see 
+                    <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#BuildOut">BuildOut</a>) 
+                    is generated and then synchronized with 
+                    the browser's DOM to give you a matching HTML page.  This involves various optimizations including keeping 
+                    track of which components have changed and caching those that haven't.
+                  </p>
+
+<div vg-html='codefmt.Show("go",`for ok := true; ok; ok = renderer.EventWait() {
+    buildResults := buildEnv.RunBuild(rootBuilder)
+    err = renderer.Render(buildResults)
+    if err != nil {
+        panic(err)
+    }
+}`)'></div>
+
+                  <p>
+                    This will call <code>RunBuild</code> and then <code>Render</code> immediately the first time and then wait for 
+                    <code>renderer.EventWait()</code> to return and render again.
+                  </p>
+
+
+                  <div class="alert alert-warning" role="alert">
+                      <i class="icon-alert-circle"></i>
+                      <h4 class="fs-22">Important Note</h4>
+                      <p>When 
+                          <a href="/doc/dom-events" notclick='data.Router.BrowseTo("/doc/dom-events", event)'>DOM Events</a> 
+                          are handled, a (write) lock is acquired against the environment automatically
+                        and then released when your event handler returns.  When things that would block (like fetching 
+                        data from the server over HTTP) need to be done, this must be run in a goroutine which uses
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent.EventEnv">event.EventEnv()</a> 
+                        to acquire their own lock before modifying any component data, to ensure they don't interfere with the render loop or other code.
+                        Locking should only be done during data modification and then unlocked immediately afterward.  <strong>Do not put a
+                          <code>Lock()</code> before <code>http.Get()</code> or other such 
+                          <a target="_blank" href="https://en.wikipedia.org/wiki/Blocking_(computing)">blocking</a> calls.</strong>  Instead <code>Lock()</code> after 
+                          you have your data and before updating
+                        the state of your component.
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv.UnlockRender()</a>
+                        will cause the <code>renderer.EventWait()</code> call above to return and update the page.
+                        (Whereas <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv.UnlockOnly()</a>
+                        will release the lock but not cause the page update. This is useful if 
+                        you need to do several updates to data at different times
+                        but only care to refresh the page after they are all done.)
+                        See <a href="/doc/files/code">Code</a> for a correct example.</p>
+                    </div>
+  
+
+                  <p><code>EventWait</code> will return false if it detects something wrong with the environment
+                    and the program should exit.
+                    This should release any resources and be a clean exit from the program when the page goes away.
+                  </p>
+
+
+                  <h2>main_wasm.go</h2>
+
+                  <p>If we take a look at the main_wasm.go file that is generated by default, it gives us a pretty good 
+                    idea of how these fit together:
+                  </p>
+
+<div vg-html='codefmt.Show("go",`// +build wasm
+
+package main
+
+import (
+    "log"
+    "fmt"
+    "flag"
+
+    "github.com/vugu/vugu"
+    "github.com/vugu/vugu/domrender"
+)
+
+func main() {
+
+    mountPoint := flag.String("mount-point", "#vugu_mount_point", "The query selector for the mount point for the root component, if it is not a full HTML component")
+    flag.Parse()
+
+    fmt.Printf("Entering main(), -mount-point=%q\n", *mountPoint)
+    defer fmt.Printf("Exiting main()\n")
+
+    rootBuilder := &Root{}
+
+    buildEnv, err := vugu.NewBuildEnv()
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    renderer, err := domrender.NewJSRenderer(*mountPoint)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer renderer.Release()
+
+    for ok := true; ok; ok = renderer.EventWait() {
+
+        buildResults := buildEnv.RunBuild(rootBuilder)
+
+        err = renderer.Render(buildResults)
+        if err != nil {
+            panic(err)
+        }
+    }
+	
+}
+`)'></div>
+
+
+                  <h2 id="dual-build">The Dual-Build Approach</h2>
+
+                  <p>The discussion above is only about the WebAssembly side of your application.</p>
+
+                  <p>
+                    Using Go's <a href="https://golang.org/pkg/go/build/#hdr-Build_Constraints">build constraints</a>
+                    it is easy to output two different executables from your same package directory.
+                    The common case is that you want a client-side build that compiles to WebAssembly (as discussed above), 
+                    as well as a server-side executable to act as a web server.  These each need different 
+                    main() and likely other functions, but your components and other functionality should
+                    be available both in your WebAssembly output and in your server program.
+                  </p>
+
+                  <p>
+                    This is why the <code>main()</code> function for your client-side application lives in 
+                    <em>main_wasm.go</em>.  The "_wasm" part indicates that the file should be included during 
+                    a WebAssembly build.  You can and should include a server-side <code>main()</code> in another file
+                    and use <nobr><code>// +build !wasm</code></nobr> at the top as the inverse build constraint. 
+                    See <a href="/doc/build-and-dist" notclick='data.Router.BrowseTo("/doc/build-and-dist", event)'>Building and Distribution</a>
+                    for more info.
+                  </p>
+
+
+</div>
+
+<script type="application/x-go">
+
+import "github.com/vugu/vugu-site/app/codefmt"
+
+type Program struct {}
+
+func (c *Program) Title() string { return "Vugu Program Structure" }
+func (c *Program) ShortTitle() string { return "Program Structure" }
+func (c *Program) MetaDescription() string { return "WebAssembly main: Like any Go program, it starts with main function. To render a page to HTML, you need a root component - lives in root.vugu by default. Once we have a root component instance, we need an environment." }
+
+</script>

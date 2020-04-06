@@ -1,0 +1,68 @@
+
+    <header class="header">
+        <div class="container">
+          <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a href="/" class="navbar-brand"><img src="/assets/images/logo-white.svg" alt="Logo"></a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+  
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item">
+                    <a :class='"nav-link"+c.activeIfEq("/")' href="/">Home</span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a :class='"nav-link"+c.activeIfEq("/doc/start")' href="/doc/start">Getting Started</span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a :class='"nav-link"+c.activeIfDocButNotDocStart()' href="/doc">Documentation</span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a :class='"nav-link"+c.activeIfEq("/faq")' href="/faq">faq</span></a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/vugu/vugu" target="_blank">GitHub</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://godoc.org/github.com/vugu/vugu" target="_blank">GoDoc</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://play.vugu.org/" target="_blank">Playground</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+<script type="application/x-go">
+
+import "strings"
+
+import "github.com/vugu/vugu-site/app/state"
+
+type Header struct {
+    state.PageInfoRef
+}
+
+func (c *Header)activeIfEq(p string) string {
+  if c.PageInfo.Path == p { return " active " }
+  return ""
+}
+
+func (c *Header)activeIfPfx(p string) string {
+  if c.PageInfo.Path == p || strings.HasPrefix(c.PageInfo.Path, p+"/") { return " active " }
+  return ""
+}
+
+func (c *Header)activeIfDocButNotDocStart() string {
+  if (c.PageInfo.Path == "/doc" || strings.HasPrefix(c.PageInfo.Path, "/doc/") ) && c.PageInfo.Path != "/doc/start" { return " active " }
+  return ""
+}
+
+</script>
