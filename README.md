@@ -7,7 +7,8 @@ vugu.org website
 
 # Distribute
 
-Make sure you have vugu.github.io checked out in an adjacent directory and then:
+Make sure you have vugu.github.io checked out in an adjacent directory (the files in which will be overwritten) and then:
 
-<!-- `go run dist.go` -->
+`cd server; go build . && ./server -build`
+
 

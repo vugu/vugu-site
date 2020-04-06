@@ -23,7 +23,7 @@ func VuguSetup(buildEnv *vugu.BuildEnv, eventEnv vugu.EventEnv) (*App, vugu.Buil
 	pageMap := pages.MakeRoutes().WithRecursive(true).WithClean(true).Map()
 	pageSeq := &state.PageSeq{
 		PageMap:  pageMap,
-		PathList: siteNavPathList,
+		PathList: SiteNavPathList,
 	}
 	app.PageSeq = pageSeq
 
@@ -96,8 +96,8 @@ type App struct {
 	*state.PageSeq
 }
 
-// sequence of the previous and next links and the doc sidebar uses this sequence for the things under /doc
-var siteNavPathList = []string{
+// SiteNavPathList is the sequence of the previous and next links and the doc sidebar uses this sequence for the things under /doc
+var SiteNavPathList = []string{
 	"/doc",
 	"/doc/start",
 	"/doc/files",

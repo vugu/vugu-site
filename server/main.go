@@ -4,17 +4,21 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
 
+	"github.com/vugu/vugu/distutil"
+
 	"github.com/vugu/vgrouter"
 
 	"github.com/d0sbit/werr"
 	"github.com/vugu/vugu"
 	"github.com/vugu/vugu-site/app"
+	"github.com/vugu/vugu-site/app/pages"
 	"github.com/vugu/vugu/staticrender"
 )
 
@@ -33,7 +37,13 @@ func main() {
 		runDevServer(*devhttp)
 
 	case *build:
-		panic(fmt.Errorf("not yet implemented"))
+		chdirToGomod()
+		// err := staticGenerate("./dist")
+		err := staticGenerate("../vugu.github.io")
+		if err != nil {
+			panic(err)
+		}
+
 	default:
 		log.Fatal("A mode must be specified, try with -h for help")
 	}
@@ -144,6 +154,91 @@ func runDevServer(addr string) {
 
 	log.Fatal(srv.ListenAndServe())
 
+}
+
+func staticGenerate(outDir string) error {
+
+	if outDir == "" {
+		return fmt.Errorf("empty outDir")
+	}
+
+	outDir, err := filepath.Abs(outDir)
+	if err != nil {
+		return err
+	}
+
+	_, err = os.Stat(outDir)
+	if err != nil {
+		return fmt.Errorf("outDir must exist: %w", err)
+	}
+
+	// // nuke and re-create outDir
+	// os.RemoveAll(outDir)
+	// os.Mkdir(outDir, 0755)
+
+	// copy static files
+	log.Printf("Copying static files...")
+	distutil.MustCopyDirFiltered("./static", outDir, nil)
+
+	pageMap := pages.MakeRoutes().WithRecursive(true).WithClean(true).Map()
+	pathList := make([]string, 0, len(pageMap))
+	for k := range pageMap {
+		pathList = append(pathList, k)
+	}
+	// pathList := app.SiteNavPathList
+	pathList = append(pathList, "/404")
+	for _, p := range pathList {
+
+		path.Clean("/" + p)
+
+		fileName := filepath.Join(outDir, p)
+		if p == "/" {
+			fileName = filepath.Join(outDir, "index.html")
+		} else if filepath.Ext(fileName) == "" {
+			fileName += ".html"
+		}
+
+		log.Printf("Processing file for: %s (%s)", p, fileName)
+
+		buildEnv, err := vugu.NewBuildEnv()
+		if err != nil {
+			return err
+		}
+		var rbuf bytes.Buffer
+		renderer := staticrender.New(&rbuf)
+		app, rootBuilder := app.VuguSetup(buildEnv, renderer.EventEnv())
+
+		// notFound := false
+		// nfh := app.Router.GetNotFound()
+		// app.Router.SetNotFound(vgrouter.RouteHandlerFunc(func(rm *vgrouter.RouteMatch) {
+		// 	notFound = true
+		// 	if nfh != nil {
+		// 		nfh.RouteHandle(rm)
+		// 	}
+		// }))
+
+		req, err := http.NewRequest("GET", "http://localhost"+p, nil)
+		if err != nil {
+			return err
+		}
+		app.Router.ProcessRequest(req)
+
+		buildResults := buildEnv.RunBuild(rootBuilder)
+		// log.Printf("CSS len = %d", len(buildResults.Out.CSS))
+		err = renderer.Render(buildResults)
+		if err != nil {
+			return err
+		}
+
+		os.MkdirAll(filepath.Dir(fileName), 0755)
+		err = ioutil.WriteFile(fileName, rbuf.Bytes(), 0644)
+		if err != nil {
+			return err
+		}
+
+	}
+
+	return nil
 }
 
 // buildEnv, err := vugu.NewBuildEnv()
