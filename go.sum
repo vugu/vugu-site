@@ -42,11 +42,15 @@ github.com/vugu/html v0.0.0-20190914200101-c62dc20b8289 h1:w3hfLuU5tKlcf+hhfmx6U
 github.com/vugu/html v0.0.0-20190914200101-c62dc20b8289/go.mod h1:Y3pLGz8dZUSrB9SARXqFmtW8RNs4HIGAr0+JaWL31Vg=
 github.com/vugu/vgrouter v0.0.0-20200329232854-e86f63aafd65 h1:y6IEQP9oIxL7DRJV096uHu23piAkEN26RR9ToH8a83I=
 github.com/vugu/vgrouter v0.0.0-20200329232854-e86f63aafd65/go.mod h1:Ld4KbH0uVgB6HdtenQhYqRrnGjt/RY8aAkdo6rum6us=
+github.com/vugu/vgrouter v0.0.0-20200406224410-145a62403c71 h1:kfhEwSRojpWVhmGIbk+mmaf48w3HontRJHBvLKIushc=
+github.com/vugu/vgrouter v0.0.0-20200406224410-145a62403c71/go.mod h1:dm0rVRcqBLwqSq4F9Mr12VY7p6bBhAm+vZ58+ff4sB4=
 github.com/vugu/vjson v0.0.0-20191111004939-722507e863cb h1:svqBUd2ETVrsM31o/toxvK1WeVMan3vCgrpecE5vMlA=
 github.com/vugu/vjson v0.0.0-20191111004939-722507e863cb/go.mod h1:z7mAqSUjRDMQ09NIO18jG2llXMHLnUHlZ3/8MEMyBPA=
 github.com/vugu/vugu v0.1.0/go.mod h1:XcDIa6J18Rk/c56X88PTzawJTS2pSAGdTN6u5RE1ZWc=
 github.com/vugu/vugu v0.1.1-0.20200330101439-908c5990954b h1:jeTC454JUjKwsQLrgx6LtSoVJhwiCMgWsHdzRJHzDw4=
 github.com/vugu/vugu v0.1.1-0.20200330101439-908c5990954b/go.mod h1:ZKTep3ABw5XlGBkT+RIw00ds49bsWPvbTaZiLUe07Ys=
+github.com/vugu/vugu v0.1.1-0.20200406224150-50acda24c5ef h1:D/a/mnpFhm08XZ4OYakRYrigpMNUEwV/eUrppRUXFr0=
+github.com/vugu/vugu v0.1.1-0.20200406224150-50acda24c5ef/go.mod h1:kXK4tbS92o3x29D/W5kpOkysOm5IMd7OUu+pcqyIz0M=
 github.com/vugu/xxhash v0.0.0-20191111030615-ed24d0179019 h1:8NGiD5gWbVGObr+lnqcbM2rcOQBO6mr+m19BIblCdho=
 github.com/vugu/xxhash v0.0.0-20191111030615-ed24d0179019/go.mod h1:PrBK6+LJXwb+3EnJTHo43Uh4FhjFFwvN4jKk4Zc5zZ8=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
