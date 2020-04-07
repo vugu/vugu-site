@@ -87,6 +87,26 @@ type Root struct {
     </li>
   </ul>
 
+
+    <h3>Event Summary</h3>
+    <p>
+        <code>DOMEvent</code> has an "event summary", which is basically a blob of JSON collected in JS when the event is fired and marshalled over to Go so you can use it and get, for example, a form value without having to reach back into JS and ask for it.  The EventSummary itself is a <code>map[string]interface{}</code> populated by <code>json.Unmarshal,</code> but the <code>Prop</code> method is useful for extracting data from it, i.e. <code>event.Prop("target", "value")</code> gives you the same value as <code>event.target.value</code> would in JS (and won't panic if it is not there).  Variations for different types exist also, e.g. <code>event.PropString("target", "value")</code> returns a string.  See the 
+        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent.Prop">godoc</a> for more info.
+    </p>
+
+<div vg-html='codefmt.Show("html",`<div><form>
+    <input type="text" @changed="c.HandleChanged(event)">
+</form></div>
+        
+<script type="application/x-go">
+import "log"
+
+func (c *Root) HandleChanged(event *vugu.DOMEvent) {
+    log.Print(event.PropString("target", "value"))
+}
+</script>`)'></div>
+        
+
 </div>
 
 <script type="application/x-go">

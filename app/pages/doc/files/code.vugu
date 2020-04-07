@@ -131,7 +131,7 @@ func (c *Root) HandleClick(event *vugu.DOMEvent) {
                         This provides a simple way to <code>vg-if</code> a div, which then shows only during loading.
                         (More below on how <code>IsLoading</code> is updated.)  The <code>`vugu:"data"`</code> struct tag
                         indicates that this variable should be examined when determining if this component should be 
-                        re-rendered.
+                        re-rendered.  (See <a href="/doc/components#modification-tracking">Modification Tracking</a> for more info.)
                       </li>
                       <li class="pb-2">
                         <strong>A struct <code>bpi</code> is defined</strong> for the data we're getting from the API call.  This makes it easy 
@@ -167,6 +167,26 @@ func (c *Root) HandleClick(event *vugu.DOMEvent) {
 
                     </ul>
 
+                    <h3>github.com/vugu/vugu/js</h3>
+
+                    <p>
+                      In order to ease the development of server-side page rendering along side client-side Vugu page rendering, the package 
+                      <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/js">github.com/vugu/vugu/js</a> exists and is a lightweight 
+                      wrapper around Go's <code>syscall/js</code> package, but with the distinct difference than it will compile on non-wasm 
+                      platforms and all operations will return appropriate zero or error values (or in some cases panic). 
+                      The point is that you don't have to separate out your files with a build tag every time you need to declare a 
+                      variable of type <code>js.Value</code>.
+                    </p>
+
+                    <p>
+                      All code generated Vugu code uses <code>github.com/vugu/vugu/js</code> instead of <code>syscall/js</code> and you are encouraged to do this as well. It's very lightweight and there are no known bugs.
+                    </p>
+
+                    <h3>Import Deduplication</h3>
+
+                    <p>
+                      Go code emitted from vugugen will have its import statements deduplicated.
+                    </p>
 
 </div>
 

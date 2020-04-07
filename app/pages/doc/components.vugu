@@ -1,5 +1,4 @@
 <div>
-
                     <p>
                       <strong>Components are individual files which are used to organize your user interface code.</strong>
                       Each component lives in a .vugu file.  Each .vugu file is processed to produce 
@@ -40,6 +39,8 @@
                       interface and simply provide a <code>Build</code> method with HTML nodes they output.
                     </p>
 
+                    <h2>Static Component References</h2>
+
                     <p>
                       One component can include a <strong>tag that indicates the name of
                       a component struct to use.</strong>.  
@@ -73,7 +74,7 @@ type MyLine struct {
 </script>`)'></div>
 
                       <p>In this case the <code>&lt;main:MyLine></code> tag gets replaced with the <code>&lt;li></code> tag and its contents as 
-                        rendered by the MyLine component.
+                        rendered by the MyLine component.  The reference is emitted directly into the code generated file and resolved at Go compile time.
                       </p>
 
                       <p><code>main</code> is the name of the package.  The name of the current package ("main" or otherwise) is removed
@@ -136,6 +137,11 @@ type MyLine struct {
                           <code>stringAttrMapValue</code> but is evaluated as Go code instead of a static string.</li>
                       </ul>
 
+                      <p>The <code>vg-key</code> attribute can also be specified on a component reference to indicate an additional value which 
+                      should be used for caching purposes.  Generally this is a key used in a loop iterator.  Note that loops will automatically 
+                      select the key from the <nobr><code>vg-for</code>,</nobr> but you can override what is used for caching purposes by specifying 
+                      <nobr><code>vg-key</code></nobr> on your component reference.</p>
+
                       <!-- <div class="alert alert-warning" role="alert">
                         <i class="icon-alert-circle"></i>
                         <h4 class="fs-22">Please Note</h4>
@@ -175,6 +181,69 @@ type MyLine struct {
                           behavior in main_wasm.go, in case you need more control over what components are available
                           under what names.</p>
                       </div> -->
+
+                      <h2>Dynamic Component References</h2>
+
+                      <p>Component references can also be done dynamically based on an arbitrary Go expression.  This is done with 
+                        a <code>&lt;vg-comp expr="">&lt;vg-comp></code> tag, and the expression must 
+                        resolve to a type compatible with <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#Builder">vugu.Builder</a>.
+                        This allows you to instantiate a component in your own Go code and reference it directly during render.  Example:
+                      </p>
+
+<div vg-html='codefmt.Show("html",`<!-- root.vugu -->
+<div>
+    <vg-comp expr="c.MyChildComp"></vg-comp>
+</div>
+
+<script type="application/x-go">
+
+type Root struct {
+    MyChildComp vugu.Builder
+}
+
+func (c *Root) BeforeBuild() {
+    if c.MyChildComp == nil {
+        c.MyChildComp = &someother.ComponentHere{}
+    }
+}
+
+</script>
+`)'></div>
+
+                      <h2>BeforeBuild()</h2>
+
+                      <p>For a component, after any field assignments are done and before the actual virtual DOM building occurs, the 
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#BeforeBuilder">BeforeBuild()</a> method is called on a component if it exists.</p>
+
+                      <p>This is for use in implementing "computed fields" (to use Vue's terminology), and doing any precomputation prior to building.</p>
+
+                      <h2 id="modification-tracking">Modification Tracking</h2>
+
+                      <p>Modification tracking is done with <code>ModTracker</code>, it is used internally, you won't need to instantiate it yourself.</p>
+                      
+                      <p>ModTracker determines "changed" from one render pass to the next based on these rules:</p>
+                      
+                      <ul>
+                      <li><strong>Component (and other structs) fields are traversed by calling <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ModCheckAll">ModCheckAll</a> on each with the struct tag <code>`vugu:"data"`</code>.</strong>  Any struct fields used as component input should be tagged as such, or you must implement the 
+                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ModChecker">ModChecker</a>
+                        interface.  "Computed fields", populated during <code>BeforeBuild()</code> should generally not be tagged like this.</li>
+                      <li><strong>Then modification checking continues to traverse based on these rules:</strong></li>
+                      <li><strong>For values implementing the <code>ModChecker</code> interface,</strong> the <code>ModCheck</code> method will be called.</li>
+                      <li><strong>All values passed should be pointers</strong> to the types described below.</li>
+                      <li><strong>Single-value primitive types</strong> are supported.  </li>
+                      <li><strong>Arrays and slices of supported types are supported,</strong> their length is compared as well as a pointer to each member.</li>
+                      <li><strong>As a special case, []byte is treated like a string.</strong></li>
+                      <li><strong>Maps are not supported</strong> at this time.</li>
+                      <li><strong>Other weird and wonderful things like channels and funcs are not supported.</strong></li>
+                      <li><strong>Passing an unsupported type will result in a panic.</strong></li>
+                      </ul>
+
+                      <p>
+                      The point of all this is that <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ModTracker">ModTracker</a> will scan your component and follow the graph of objects to determine if it is "modified" before re-rendering.  The 
+                      <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ModChecker">ModChecker</a> interface (and if you're looking at that, have a look at <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ModCounter">ModCounter</a> as a simple implementation) allows developers to customize how modification tracking is done, for when the graph of objects gets too large and things get slow.
+                      </p>
+
+
 </div>
 
 <script type="application/x-go">

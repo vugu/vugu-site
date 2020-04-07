@@ -95,6 +95,13 @@ type Root struct {
         you can use <code>vg-for.noshadow</code> instead of <code>vg-for</code>.
       </p>
 
+      <p>
+        When <code>vg-for</code> is used in conjuction with <a href="/doc/components">nested components</a>,
+        a <code>vg-key</code> attribute can be used to determine which components to re-use across render cycles.
+        When vg-key appears on a vg-for it specifies the default expression for component references inside the loop.
+        This can then be overridden on individual component references as needed.
+      </p>
+
       <h3>Raw HTML with <code>vg-html</code></h3>
 
       <p>The vg-html attribute is used to output an expression as HTML into the contents of an element.
@@ -140,6 +147,19 @@ type Root struct {
         In this case, the attributes are not converted to strings but are kept as regular Go expressions.  See the 
         <a href="/doc/components">Components</a> page for more info.
       </p>
+
+      <h3>Property Assignment with <code>.</code></h3>
+
+      <p>Completely separate from HTML attributes, HTML DOM elements have JavaScript properties associated with them.
+        These can be assigned from a Go expression by using a property name that starts with a period.  Example:</p>
+
+<div vg-html='codefmt.Show("html",`<div>
+    <input type="checkbox" .checked="false"/>
+</div>`)'></div>
+
+      <p>Values are evaluated as a Go expression (<code>false</code> in this case) and then run through <code>json.Marshal</code> and the resulting value is assigned in JS.</p>
+
+      <p>This can be useful for form or other elements that have JS properties which do not have an exact corresponding HTML attribute.</p>
 
       <h3>DOM Events with <code>@</code></h3>
 
@@ -210,14 +230,45 @@ type Root struct {
         <li><code>key</code> and <code>value</code> - See section covering vg-for above.  These are the 
           default names used for implied range expressions.
       </ul>
-
+      
       <p>Please note that variables that your code declares, e.g. in a vg-for loop, should not start with <code>vg</code>, in order 
         to avoid conflicting with generated code.
       </p>
 
-      <!-- <h3 id="full-html">Full HTML Mode</h3>
+      <h3>Tag and Attribute Naming Conventions</h3>
 
-      <p>(TODO)</p> -->
+      <p>The following is a general list of rules which apply as regards the names of tags and attributes in Vugu markup:</p>
+
+      <ul>
+        <li><strong>Attributes (with no prefix character) are just strings.</strong>  Given <code>&lt;div id="blah"></code>, "blah" is just a string (no quotes included).</li>
+        <li><strong>Attribute names preceded with a colon are Go expressions.</strong>  Given <code>&lt;div :id='"bl"+"ah"'>`</code>, <code>"bl"+"ah"</code> is a Go expression.</li>
+        <li><strong>Attributes beginning with <code>vg-</code> contain Go code, according to their named purpose.</strong>  E.g. <code>vg-html</code> is used for an expression that gets <code>fmt.Sprint</code>ed, <code>vg-for</code> contains the loop of a for statement, and <code>vg-if</code> contains the condition of an if statement.</li>
+        <li><strong>Tags that start with <code>vg-</code> can have specilized attributes</strong> which are not prefixed (e.g. <code>&lt;vg-comp expr="....</code>)</li>
+        <li><strong>Static component references contain a colon in the element name</strong> in the form of <code>pkg:Component</code>.  E.g. <code>&lt;somepkg:SomeComp></code> corresponds to a struct named <code>SomeComp</code> in a package imported as "somepkg".</li>
+        <li><strong>Attribute names that start with an upper case letter correspond to Go struct field names.</strong>  It seems a happy coincidence that modern HTML documents almost always do (and always can) use lower case attribute names.  This leaves attribute names that start with an upper case letter to have the meaning of corresponding to a (exported) Go struct field name.  E.g. given <code>&lt;somepkg:SomeComp :FieldA="1" FieldB="blah"></code>, <code>FieldA</code> and <code>FieldB</code> are struct fields on <code>SomeComp</code>, but notice the colon and so these correspond to <code>someCompInst.FieldA = 1</code> and <code>someCompInst.FieldB = "blah"</code></li>
+        <li><strong>Lower case attributes on components are dynamic</strong></li>
+      </ul>
+        
+      <h3 id="full-html">Full-HTML Mode</h3>
+
+      <p>
+      Your root.vugu can now start with an <code>&lt;html></code> tag.</p>
+
+      <p>This allows access to title and meta tags as well as style and JS script includes.</p>
+
+      <p>Certain aspects of full-HTML mode are still under construction.  Please create an 
+        <a target="_blank" href="https://github.com/vugu/vugu/issues">issue on GitHub</a> if you run into something missing that you need.</p>
+
+      <p>A few rules that apply when using full-HTML mode:</p>
+
+      <ul>
+        <li><strong>Only the root component</strong> in the application can start with an &lt;html> tag.</li>
+        <li><strong>Style and script tags</strong> have their sequence preserved but may be output at a different location on the page than where you put them.
+        (This is for reasons having to do with how Vugu accumulates and renders style and script elements in various components and how it copes with the 
+        disparity between full-HTML and regular components.)</li>
+        <li><strong>The body tag must contain a single element</strong> and this is used as the main content of the component during rendering.  Attempting 
+        to include multiple elements directly inside &lt;body> may lead to unspecified behavior and/or errors.</li>
+      </ul>
 
 </div>
 
