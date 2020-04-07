@@ -1,1 +1,7 @@
-<div>page not found</div>
+<div>
+    <h3>Not Found</h3>
+    <p>Sorry, the requested page was not found.</p>
+    <div style="text-align: center">
+        <img src="/assets/images/no-gopher.jpg">
+    </div>
+</div>
