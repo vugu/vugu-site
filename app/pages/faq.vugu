@@ -52,7 +52,7 @@
                   <div class="card-body">
                       <p>
                           The binaries can be big, yes.  However, they gzip better than one might expect for a binary.  The average 
-                          browser download of compressed content for a reasonably sized-program is several megabytes.
+                          browser download of compressed content for a reasonably-sized program is several megabytes.
                           For some use cases this is completely workable, others it's a problem.
                           Future improvements in size can be expected as the WebAssembly spec and Go's support for it both evolve.
                       </p>
