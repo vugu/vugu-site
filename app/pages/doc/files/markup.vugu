@@ -18,6 +18,8 @@
           <code>&lt;div vg-if="myvar == &amp;#34;myval&amp;#34;"></code>, but the former is easier to read. </p>
       </div>
 
+      <p>Note that HTML namespaces like <code>svg</code> and <code>math</code> should work as expected.</p>
+
       <h3>Conditionals with <code>vg-if</code></h3>
 
       <p>
@@ -125,7 +127,7 @@ import "html"
           Regular Go variable scoping rules apply, where each nested DOM element is equivalent to a Go <code>{</code> code block <code>}</code>.
         </p>
 
-      <h3>Dynamic Attributes with <code>:</code></h3>
+      <h3>Dynamic Attributes with <code>:</code> and <code>vg-attr</code></h3>
 
       <p>
         The values of HTML attributes can be made dynamic and accept Go expressions.  
@@ -142,11 +144,66 @@ type Root struct {
 }
 </script>`)'></div>
 
-      <p>Note that in addition to the above use, dynamic attributes are frequently used in conjuction with 
-        components, where attributes that start with an uppercase letter become struct field assignments.
-        In this case, the attributes are not converted to strings but are kept as regular Go expressions.  See the 
-        <a href="/doc/components">Components</a> page for more info.
-      </p>
+<p>Note that in addition to the above use, dynamic attributes are frequently used in conjuction with 
+  components, where attributes that start with an uppercase letter become struct field assignments.
+  In this case, the attributes are not converted to strings but are kept as regular Go expressions emitted directly
+  into the generated code.  See the 
+  <a href="/doc/components">Components</a> page for more info.
+</p>
+
+<p>For HTML elements (as opposed to components), the following rules apply to dynamic attribute values:</p>
+
+<ul>
+  <li><strong>string</strong> values are placed as-is into the attribute's value</li>
+  <li><strong>numbers</strong> (built-in types beginning with <code>int</code>, <code>uint</code>, <code>float</code>) 
+    are converted to a string using the applicable function in <a target="_blank" href="https://golang.org/pkg/strconv/">strconv</a></li>
+  <li><strong>bool</strong> values that are true result in the attribute being included in the output, false will omit the attribute 
+    (e.g. <code>&lt;video :autoplay='someBool'></code>)</li>
+  <li><strong>pointers</strong> which are not nil are followed and the rule for the type pointed to applied</li>
+  <li><strong>nil</strong> pointer or interface values result in omitting the attribute from the output</li>
+  <li><strong>fmt.Stringer</strong> values (with a <code>String() string</code> method) which are not nil are converted to a string by calling that method</li>
+  <li>Any other possible value does not have well-defined behavior and should be avoided.  The current implementation will
+    convert to a string per the <code>fmt</code> package.
+  </li>
+  <li>The above is implemented by <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#VGNode.AddAttrInterface">AddAttrInterface</a></li>
+</ul>
+
+<p>You can also provide a value which implements 
+  <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#VGAttributeLister">VGAttributeLister</a> and specify that 
+it should be called with <code>vg-attr=</code>.  Example:</p>
+
+<!--
+<div vg-html='codefmt.Show("html",`<div>
+  <p vg-attr=&apos;vugu.VGAttributeListerFunc(func() (ret []vugu.VGAttribute) {
+    ret = append(ret, vugu.VGAttribute{
+      Key:"style",
+      Val:"background:"+c.BgColor,
+    })
+    return
+  })&apos;></p>
+</div>
+-->
+
+<div vg-html='codefmt.Show("html",`<div>
+  <p vg-attr=&apos;vugu.VGAttributeListerFunc(c.makeAttrs)&apos;></p>
+</div>
+
+<script type="application/x-go">
+type Root struct {
+  BgColor string // e.g. "blue"
+}
+func (c *Root) makeAttrs() (ret []vugu.VGAttribute) {
+  ret = append(ret, vugu.VGAttribute{
+    Key:"style",
+    Val:"background:"+c.BgColor,
+  })
+  return
+}
+</script>`)'></div>
+
+<p><code>:=</code> is shorthand for <code>vg-attr</code>, e.g. <code>&lt;p :=&apos;vugu.VGAttributeListerFunc(c.makeAttrs)&apos;></code>
+is also valid with the same behavior.</p>
+
 
       <h3>Property Assignment with <code>.</code></h3>
 
