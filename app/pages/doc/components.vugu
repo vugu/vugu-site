@@ -44,11 +44,12 @@
                     <p>
                       One component can include a <strong>tag that indicates the name of
                       a component struct to use.</strong>.  
-                      When this happens, it says than an instance 
+                      When this happens, it says that an instance
                       of this other component should be created.  Let's look at an example:
                     </p>
 
 <div vg-html='codefmt.Show("html",`<!-- root.vugu -->
+
 <div class="root">
     <ul>
       <main:MyLine FileName="example.txt" :LineNumber="rand.Int63n(100)" ></main:MyLine>
