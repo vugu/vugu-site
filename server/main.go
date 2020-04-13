@@ -97,7 +97,7 @@ func runDevServer(addr string) {
 				}
 				var rbuf bytes.Buffer
 				renderer := staticrender.New(&rbuf)
-				app, rootBuilder := app.VuguSetup(buildEnv, renderer.EventEnv())
+				app, rootBuilder := app.VuguSetup(buildEnv, renderer.EventEnv(), &app.VuguSetupOptions{AutoReload: true})
 
 				notFound := false
 				nfh := app.Router.GetNotFound()
@@ -206,7 +206,7 @@ func staticGenerate(outDir string) error {
 		}
 		var rbuf bytes.Buffer
 		renderer := staticrender.New(&rbuf)
-		app, rootBuilder := app.VuguSetup(buildEnv, renderer.EventEnv())
+		app, rootBuilder := app.VuguSetup(buildEnv, renderer.EventEnv(), nil)
 
 		// notFound := false
 		// nfh := app.Router.GetNotFound()

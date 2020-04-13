@@ -30,6 +30,7 @@
 <!-- {{end}}{{end}} -->
 <script src="https://cdn.jsdelivr.net/npm/text-encoding@0.7.0/lib/encoding.min.js"></script> <!-- MS Edge polyfill -->
 <!-- <script src="/wasm_exec.js"></script> -->
+<script vg-if='c.AutoReload' src="http://localhost:8324/auto-reload.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137242493-1"></script>
@@ -151,6 +152,8 @@ type Root struct {
     FullBody vugu.Builder // body section without any wrapping
 
     state.PageInfoRef
+
+    AutoReload bool // set to true during dev
 }
 
 </script>

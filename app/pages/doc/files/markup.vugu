@@ -20,7 +20,7 @@
 
       <p>Note that HTML namespaces like <code>svg</code> and <code>math</code> should work as expected.</p>
 
-      <h3>Conditionals with <code>vg-if</code></h3>
+      <h3 id="vg-if">Conditionals with <code>vg-if</code></h3>
 
       <p>
         You can choose a condition for an element to be displayed using <code>vg-if='condition'</code>. The 
@@ -44,7 +44,7 @@ type Root struct { // component for "root"
 
       <p>Note the use of <code>c</code> as the name of the method receiver (i.e. <code>c</code> is "the component I am in").</p>
 
-      <h3>Loops with <code>vg-for</code></h3>
+      <h3 id="vg-for">Loops with <code>vg-for</code></h3>
 
       <p>Loops correspond directly to <code>for</code> blocks in Go code.  All forms of loops are supported
         including the <code>init; condition; post</code> syntax as well as <code>range</code> expressions.
@@ -104,7 +104,7 @@ type Root struct {
         This can then be overridden on individual component references as needed.
       </p>
 
-      <h3>Raw HTML with <code>vg-html</code></h3>
+      <h3 id="vg-html">Raw HTML with <code>vg-html</code></h3>
 
       <p>The vg-html attribute is used to output an expression as HTML into the contents of an element.
         (It corresponds to the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML">innerHTML</a> property.)
@@ -127,7 +127,7 @@ import "html"
           Regular Go variable scoping rules apply, where each nested DOM element is equivalent to a Go <code>{</code> code block <code>}</code>.
         </p>
 
-      <h3>Dynamic Attributes with <code>:</code> and <code>vg-attr</code></h3>
+      <h3 id="dynamic-attributes">Dynamic Attributes with <code>:</code> and <code>vg-attr</code></h3>
 
       <p>
         The values of HTML attributes can be made dynamic and accept Go expressions.  
@@ -205,7 +205,7 @@ func (c *Root) makeAttrs() (ret []vugu.VGAttribute) {
 is also valid with the same behavior.</p>
 
 
-      <h3>Property Assignment with <code>.</code></h3>
+      <h3 id="property-assignment">Property Assignment with <code>.</code></h3>
 
       <p>Completely separate from HTML attributes, HTML DOM elements have JavaScript properties associated with them.
         These can be assigned from a Go expression by using a property name that starts with a period.  Example:</p>
@@ -218,7 +218,7 @@ is also valid with the same behavior.</p>
 
       <p>This can be useful for form or other elements that have JS properties which do not have an exact corresponding HTML attribute.</p>
 
-      <h3>DOM Events with <code>@</code></h3>
+      <h3 id="dom-events">DOM Events with <code>@</code></h3>
 
       <p>Event handlers can be attached to HTML elements (à la 
         <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">addEventListener</a>)
@@ -264,7 +264,7 @@ type Root struct {
 
       <p>You can also place statements directly in the event tag.  For example <code>@click=&apos;c.Show=!c.Show&apos;</code> is valid.</p>
 
-      <h3>Special Variable Names</h3>
+      <h3 id="special-variable-names">Special Variable Names</h3>
 
       <p>
         Several variable names have special meaning and are useful when writing .vugu files:
@@ -292,7 +292,7 @@ type Root struct {
         to avoid conflicting with generated code.
       </p>
 
-      <h3>Tag and Attribute Naming Conventions</h3>
+      <h3 id="naming-conventions">Tag and Attribute Naming Conventions</h3>
 
       <p>The following is a general list of rules which apply as regards the names of tags and attributes in Vugu markup:</p>
 
@@ -300,7 +300,7 @@ type Root struct {
         <li><strong>Attributes (with no prefix character) are just strings.</strong>  Given <code>&lt;div id="blah"></code>, "blah" is just a string (no quotes included).</li>
         <li><strong>Attribute names preceded with a colon are Go expressions.</strong>  Given <code>&lt;div :id='"bl"+"ah"'>`</code>, <code>"bl"+"ah"</code> is a Go expression.</li>
         <li><strong>Attributes beginning with <code>vg-</code> contain Go code, according to their named purpose.</strong>  E.g. <code>vg-html</code> is used for an expression that gets <code>fmt.Sprint</code>ed, <code>vg-for</code> contains the loop of a for statement, and <code>vg-if</code> contains the condition of an if statement.</li>
-        <li><strong>Tags that start with <code>vg-</code> can have specilized attributes</strong> which are not prefixed (e.g. <code>&lt;vg-comp expr="....</code>)</li>
+        <li><strong>Tags that start with <code>vg-</code> can have specialized attributes</strong> which are not prefixed (e.g. <code>&lt;vg-comp expr="....</code>)</li>
         <li><strong>Static component references contain a colon in the element name</strong> in the form of <code>pkg:Component</code>.  E.g. <code>&lt;somepkg:SomeComp></code> corresponds to a struct named <code>SomeComp</code> in a package imported as "somepkg".</li>
         <li><strong>Attribute names that start with an upper case letter correspond to Go struct field names.</strong>  It seems a happy coincidence that modern HTML documents almost always do (and always can) use lower case attribute names.  This leaves attribute names that start with an upper case letter to have the meaning of corresponding to a (exported) Go struct field name.  E.g. given <code>&lt;somepkg:SomeComp :FieldA="1" FieldB="blah"></code>, <code>FieldA</code> and <code>FieldB</code> are struct fields on <code>SomeComp</code>, but notice the colon and so these correspond to <code>someCompInst.FieldA = 1</code> and <code>someCompInst.FieldB = "blah"</code></li>
         <li><strong>Lower case attributes on components are dynamic</strong></li>

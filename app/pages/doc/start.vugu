@@ -2,20 +2,112 @@
 
 
                     <p>
-                      Let's make a basic working Vugu application that runs in your browser.  It 
-                      only takes three small files to start.  Make sure you have at least 
+                      Let's make a basic working Vugu application that runs in your browser.
+                      A few commands will get you started and a minimal Vugu application 
+                      is quite small.
+                      Make sure you have at least 
                       <strong><a target="_blank" href="https://golang.org/dl/">Go</a> 1.14</strong> installed.
                     </p>
+
+                    <div class="alert alert-warning" role="alert">
+                      <i class="icon-alert-circle"></i>
+                      <h4 class="fs-22">Note</h4>
+                      <p>
+                        The tools you install below are not required for Vugu programs run or compile.
+                        Vugu programs <em>are just Go programs</em>.  Code generation is done via 
+                        <a target="_blank" href="https://blog.golang.org/generate">go&nbsp;generate</a>
+                        which runs a command called <code>vugugen</code>.  The <code>vgrun</code> tool is a simple 
+                        wrapper around <code>go generate; go build; go run</code> that provides nice features like file watching
+                        and automatic generate, build and page refresh upon edit.  You are not required to use these tools 
+                        and Vugu programs do and will continue to operate as plain old Go programs.
+                        That said, the example shown below uses these tools to make things easy to rapidly get started.
+                      </p>
+                    </div>
+              
+
 
                   <section id="section-1">
                     <!-- <h2 class="section-title-2">Quick Start <a data-scroll href="#section-2" class="anchor" data-toggle="tooltip" data-placement="top" title="Copy URL"><i class="icon-hash"></i></a></h2> -->
                     <ol class="step-list">
+
+                      <li><div>
+                        <p>
+                          <strong>Install vgrun and related utilities</strong> with the commands:
+<div vg-html='codefmt.Show("bash",`go install github.com/vugu/vgrun
+vgrun -install-tools`)'></div>                            
+                        </p>
+                      </div></li>
+
+                      <li><div>
+                        <p>
+                          <strong>Create a new empty folder anywhere you like.</strong>  From that directory, tell vgrun to make 
+                          you a sample application:
+                          <div vg-html='codefmt.Show("text",`vgrun -new-from-example=simple .`)'></div> 
+                        </p>
+                      </div></li>
+
+                      <li><div>
+                        <p>
+                          <strong>Now run the development server</strong> with vgrun:
+<div vg-html='codefmt.Show("bash",`vgrun devserver.go`)'></div> 
+                        </p>
+                      </div></li>
+
+                      <li><div>
+                        <p><strong>Browse to it</strong>: <a target="_blank" href="http://127.0.0.1:8844/">http://127.0.0.1:8844/</a>
+                          and marvel at the wonder you have created.  Now let's take a quick look at the files 
+                          it created.
+                      </div></li>
+
+                      <li><div>
+                        <p><strong>Aside from familiar files</strong> like <code>.gitignore</code> and <code>README.md</code>
+                          and <code>go.mod</code>,
+                          there is a <code>generate.go</code> file which just has the appropriate Go generate comment in it to
+                          invokve the Vugu code generator:
+                          <div vg-html='codefmt.Show("text",`//go:generate vugugen -s`)'></div> 
+                          (The <code>-s</code> flag tells it to put the generated code in a single file.  <code>-r</code>
+                          is available too for recursive operation.)
+                      </div></li>
+
+                      <li><div>
+                        <p>
+                          <strong>The file <code>root.vugu</code></strong>  Contains a simple Vugu component that demonstrates
+                          how HTML elements and Go code are combined together.  It looks like so (abbreviated for clarity):
+                        </p>
+
+                      <div vg-html='codefmt.Show("html",`<div>
+  <main role="main" class="container text-center">
+    <div class="mt-5">
+      <h1>Welcome to Vugu</h1>
+      <p class="lead">This page is being rendered via 
+        <a @click=&apos;event.PreventDefault();c.ShowWasm=!c.ShowWasm&apos; 
+           href="https://webassembly.org/">WebAssembly</a>...
+      </p>
+      <div vg-if=&apos;c.ShowWasm&apos; class="alert 
+           alert-primary" role="alert">
+        <strong>WebAssembly</strong> (abbreviated Wasm) is a 
+        binary instruction format...
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="application/x-go">
+type Root struct {
+    ShowWasm bool `+"`"+`vugu:"data"`+"`"+`
+}
+</script>`)'></div> 
+                      </div></li>
+
+
+                      <!--
                       <li><div>
                         <p>
                           <strong>Create a new empty folder anywhere you like.</strong>  We'll use the name <code>testapp</code> as an example. 
                           Each file you create will be directly in this folder, no subfolders are needed.
                         </p>
                       </div></li>
+
                       <li><div>
                         <p><strong>Create</strong> <code>go.mod</code> which specifies a 
                           <a target="_blank" href="https://github.com/golang/go/wiki/Modules#gomod">Go module</a> name.  To get started, you can 
@@ -49,35 +141,53 @@ func (c *Root) Toggle() { c.Show = !c.Show }
                         </p>
                       </div></li>
                       <li><div>
-                        <p><strong>Create a development server file.</strong>  Note that this does not get compiled to WebAssembly.
-                          This is a server which serves your program up to the browser.
-                          <code>devserver.go</code>:
-                        <p><div vg-html='codefmt.Show("go",`// +build ignore
+
+                        -->
+                        <li><div>
+                          <p><strong>The file <code>devserver.go</code></strong> is a simple development
+                          web server. Note that this does not get compiled to WebAssembly.
+                          This is a server which serves your program up to the browser.  It starts an 
+                          http server, a wasm compiler tool (a thin wrapper around <code>GOOS=js GOARCH=wasm go build</code>)
+                          and hooks up a default index page, the necessary JS support file and includes Bootstrap. (Which is just an example,
+                          Vugu has no dependency on bootstrap or any other CSS/JS framework.)
+                          These pieces are easily customizable, see the 
+                          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil">docs</a>.
+                          <!-- <code>devserver.go</code>: --></p>
+
+                        <div vg-html='codefmt.Show("go",`// +build ignore
 
 package main
 
 import (
 	"log"
 	"net/http"
-	"os"
 
-	"github.com/vugu/vugu/simplehttp"
+	"github.com/vugu/vugu/devutil"
 )
 
 func main() {
-	wd, _ := os.Getwd()
 	l := "127.0.0.1:8844"
 	log.Printf("Starting HTTP Server at %q", l)
-	h := simplehttp.New(wd, true)
-	// include a CSS file
-	// simplehttp.DefaultStaticData["CSSFiles"] = []string{ "/my/file.css" }
-	log.Fatal(http.ListenAndServe(l, h))
+
+	wc := devutil.NewWasmCompiler().SetDir(".")
+	mux := devutil.NewMux()
+	mux.Match(devutil.NoFileExt, devutil.DefaultAutoReloadIndex.Replace(
+		`+"`"+`<!-- styles -->`+"`"+`,
+		`+"`"+`<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">`+"`"+`))
+	mux.Exact("/main.wasm", devutil.NewMainWasmHandler(wc))
+	mux.Exact("/wasm_exec.js", devutil.NewWasmExecJSHandler(wc))
+	mux.Default(devutil.NewFileServer().SetDir("."))
+
+	log.Fatal(http.ListenAndServe(l, mux))
 }
+
 `)'></div>
 <!-- </code></pre> -->
-                        </p>
+                        
                       </div></li>
-                      <li><div>
+
+                      <!-- <li><div> -->
+                        <!--
                         <p><strong>Run the server</strong>.
                           While in the same directory, run the command <code>go run devserver.go</code></p>
                         <p>After a few brief moments, the server should start.  It works the same on 
@@ -89,6 +199,7 @@ func main() {
                       <li><div>
                           <p>Marvel at the wonder you have created.
                         </div></li>
+                        -->
   
                     </ol>
                   </section>

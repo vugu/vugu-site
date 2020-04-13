@@ -3,6 +3,10 @@ vugu.org website
 
 # Build & Run
 
+## Fancy New Way
+`vgrun -watch-dir=app server -dev`
+
+## Old Crusty Way
 `cd server; go generate ../app && go build . && ./server -dev`
 
 # Distribute

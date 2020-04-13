@@ -8,12 +8,16 @@ import (
 	"github.com/vugu/vugu-site/app/state"
 )
 
-//go:generate vugugen -r -skip-go-mod -skip-main ./components
-//go:generate vugugen -s -r ./pages
-//go:generate vgrgen -r ./pages
+type VuguSetupOptions struct {
+	AutoReload bool
+}
 
 // VuguSetup performs UI setup and wiring.
-func VuguSetup(buildEnv *vugu.BuildEnv, eventEnv vugu.EventEnv) (*App, vugu.Builder) {
+func VuguSetup(buildEnv *vugu.BuildEnv, eventEnv vugu.EventEnv, opts *VuguSetupOptions) (*App, vugu.Builder) {
+
+	if opts == nil {
+		opts = &VuguSetupOptions{}
+	}
 
 	app := &App{
 		Router:   vgrouter.New(eventEnv),
@@ -43,7 +47,9 @@ func VuguSetup(buildEnv *vugu.BuildEnv, eventEnv vugu.EventEnv) (*App, vugu.Buil
 
 	})
 
-	root := &components.Root{}
+	root := &components.Root{
+		AutoReload: opts.AutoReload,
+	}
 	buildEnv.WireComponent(root)
 
 	// changes by section
