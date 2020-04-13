@@ -33,7 +33,8 @@
                       <li><div>
                         <p>
                           <strong>Install vgrun and related utilities</strong> with the commands:
-<div vg-html='codefmt.Show("bash",`go install github.com/vugu/vgrun
+<div vg-html='codefmt.Show("bash",`go get -u github.com/vugu/vgrun
+go install github.com/vugu/vgrun
 vgrun -install-tools`)'></div>                            
                         </p>
                       </div></li>
