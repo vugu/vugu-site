@@ -55,6 +55,8 @@ github.com/vugu/vugu v0.2.1-0.20200407014523-bc8ee9573a3f h1:GET6OKKCm715V/n1R3J
 github.com/vugu/vugu v0.2.1-0.20200407014523-bc8ee9573a3f/go.mod h1:kXK4tbS92o3x29D/W5kpOkysOm5IMd7OUu+pcqyIz0M=
 github.com/vugu/vugu v0.2.2 h1:py8u8luiLwKpA7tfoG6c/5IBDtY9k9jG6psu2ZAFbPM=
 github.com/vugu/vugu v0.2.2/go.mod h1:RFwOrlJHEkdZvrFcde4d6c0/7SqlRA8E4l2yz1Rs8xM=
+github.com/vugu/vugu v0.2.3-0.20200414050118-0c43e1095189 h1:qRG1ROlFzJc5IinoJ/ejRofaIk0YqTkIpe3r+QLWYbI=
+github.com/vugu/vugu v0.2.3-0.20200414050118-0c43e1095189/go.mod h1:RFwOrlJHEkdZvrFcde4d6c0/7SqlRA8E4l2yz1Rs8xM=
 github.com/vugu/xxhash v0.0.0-20191111030615-ed24d0179019 h1:8NGiD5gWbVGObr+lnqcbM2rcOQBO6mr+m19BIblCdho=
 github.com/vugu/xxhash v0.0.0-20191111030615-ed24d0179019/go.mod h1:PrBK6+LJXwb+3EnJTHo43Uh4FhjFFwvN4jKk4Zc5zZ8=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=

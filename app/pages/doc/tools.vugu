@@ -1,0 +1,105 @@
+<div>
+
+
+    <p>
+        Vugu includes/supports some command line utilities intended to make development
+        simpler.  One of the core philosophies of this project is that <strong>Vugu programs 
+        are just Go programs</strong>.  Although there is code generation involved, the normal 
+        go tools like <code>go&nbsp;generate</code> and <code>go&nbsp;build</code>, the module system, etc.,
+        are all used in the usual way.  These commands are here to make development more convenient
+        and none of them are used at run time.
+    </p>
+
+    <h3 id="vgrun">vgrun</h3>
+    <h5>Easily run and automatically rebuild your Vugu program.</h5>
+
+    <p>While developing a web UI application the task of having to constantly restart your 
+        server for every change can be come tedious.  To address this <code>vgrun</code>
+        is a wrapper around <code>go generate</code> and <code>go build</code> that 
+        builds and runs your Vugu program and starts a file system watcher.  Any 
+        files with a .vugu extension being added/removed/written will result in 
+        the generate, build, run sequence again.  It also starts a lightweight webserver
+        which can be used to automatically refresh the page when your server is back up
+        (the example in <a href="/doc/start">Getting Started with Vugu</a> and others include this feature).
+    </p>
+
+    <p>You should use <code>vgrun</code> from the folder where your project lives and specify
+    what to run (a .go file for simple examples or the path to the package where <code>main</code> lives). Examples:</p>
+
+    <div><strong>For a project with a simple single-file development server:</strong></div>
+    <div vg-html='codefmt.Show("text",`vgrun devserver.go`)'></div>
+
+    <div><strong>For a project with main package in the server folder:</strong></div>
+    <div vg-html='codefmt.Show("text",`vgrun server`)'></div>
+
+    <p>It also has a feature to create new project from an existing sample application as 
+        well as an option to install the other tools on this page.  See 
+        <a href="/doc/start">Getting Started</a>.
+    </p>
+
+
+    <p><strong>Useful options:</strong></p>
+
+    <ul>
+        <li><strong>-install-tools</strong> downloads and installs the other tools on this page via <code>go get</code> and <code>go install</code>.</li>
+        <li><strong>-new-from-example=[name]</strong> creates a new project based on the example under 
+            <a target="_blank" href="https://github.com/vugu-examples/">vugu-examples</a>.  Follow it with the path of where to put the project.</li>
+        <li><strong>-no-generate</strong> skip the <code>go generate</code> step</li>
+        <li><strong>-watch-dir</strong> specify an alternate directory to (recursively) watch other than the current one</li>
+        <li><strong>-v</strong> enable verbose output (like if you need to report a bug for example this is helpful info ☺️).</li>
+        <li><strong>-1</strong> run only once and exit.  Disables the file watcher.</li>
+    </ul>
+
+    <h3 id="vugugen">vugugen</h3>
+    <h5>Generate .go files from your .vugu files.</h5>
+
+    <p><code>vugugen</code> is an important part of the Vugu ecosystem and provides the code generation functionality 
+        that converts .vugu files into .go files.  It is a thin wrapper around the
+        <a href="https://godoc.org/github.com/vugu/vugu/gen">github.com/vugu/vugu/gen</a> package.
+        Output produced by vugugen goes into files that end with <code>_vgen.go</code> and they are normally
+        included in <code>.gitignore</code> because they are re-created frequently.
+    </p>
+
+    <p>The normal way to use vugugen is via go generate.  For clarity and simplicity the recommendation is to
+        place a file in your top level project directory called <code>generate.go</code> and put the appropriate 
+        generate comments in it.  The rationale is that Vugu programs (and I would argue UI applications in general)
+        often need their different packages to work together and generating everything for the project is frequent 
+        and usually necessary.  If you discover that some portion of your application changes less frequently
+        you can always move the generate comments into that package and run them manually when needed (in which case 
+        you should probably also commit those _vgen.go files it outputs to your versin control system).
+    </p>
+
+    <p>Example generate.go file:</p>
+    <div vg-html='codefmt.Show("go",`package yourpackage
+
+//go:generate vugugen
+`)'></div>
+
+    <p><strong>Useful options:</strong></p>
+
+    <ul>
+        <li><strong>-s</strong> will enable single-file mode where the output for each package is placed into a single file for the package (as opposed to a _vgen.go file corresponding to each individual .vugu file)</li>
+        <li><strong>-r</strong> enables recursion into subdirectories</li>
+    </ul>
+
+    <h3 id="vgrgen">vgrgen</h3>
+    <h5>Generate route information from .vugu files.</h5>
+
+    <p>The <a target="_blank" href="https://github.com/vugu/vgrouter">router</a> is a work in progress.
+        This page will be updated once some of the rough edges are smoothed out.
+        But the idea is you can drop .vugu files in the same folder structure you want for your 
+        site/app and appropriate route information will be generated automatically from it (using this tool via
+        <code>go generate</code>); so you can just put a .vugu file in place, browse right to it and hack away.
+    </p>
+
+</div>
+
+<script type="application/x-go">
+
+type Tools struct {}
+
+func (c *Tools) Title() string { return "Vugu Tools" }
+func (c *Tools) ShortTitle() string { return "Tools" }
+//func (c *Tools) MetaDescription() string { return "Let's make a basic working Vugu application that runs in your browser. It only takes three small files to start." }
+
+</script>

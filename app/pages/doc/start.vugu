@@ -42,7 +42,7 @@ vgrun -install-tools`)'></div>
                       <li><div>
                         <p>
                           <strong>Create a new empty folder anywhere you like.</strong>  From that directory, tell vgrun to make 
-                          you a sample application:
+                          you an example application:
                           <div vg-html='codefmt.Show("text",`vgrun -new-from-example=simple .`)'></div> 
                         </p>
                       </div></li>
@@ -60,7 +60,7 @@ Note that this also starts a file watcher to automatically reload the page when 
                       <li><div>
                         <p><strong>Browse to it</strong>: <a target="_blank" href="http://127.0.0.1:8844/">http://127.0.0.1:8844/</a>
                           and marvel at the wonder you have created.  Now let's take a quick look at the files 
-                          it created.
+                          that were produced.
                       </div></li>
 
                       <li><div>

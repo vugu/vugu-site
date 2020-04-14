@@ -113,5 +113,6 @@ var SiteNavPathList = []string{
 	"/doc/dom-events",
 	"/doc/components",
 	"/doc/program",
+	"/doc/tools",
 	"/doc/build-and-dist",
 }
