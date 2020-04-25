@@ -47,7 +47,7 @@ type Root struct {
   <ul>
     <li class="pb-2">
         <strong>The special variable <code>event</code></strong> (of type 
-        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a>) 
+        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">vugu.DOMEvent</a>) 
         corresponds to the event data sent to us by the browser. It also provides some useful functionality 
         such as a <code>PreventDefault()</code> method which corresponds to 
         <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault">preventDefault</a>
@@ -101,7 +101,7 @@ type Root struct {
 <script type="application/x-go">
 import "log"
 
-func (c *Root) HandleChanged(event *vugu.DOMEvent) {
+func (c *Root) HandleChanged(event vugu.DOMEvent) {
     log.Print(event.PropString("target", "value"))
 }
 </script>`)'></div>

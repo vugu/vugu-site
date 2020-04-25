@@ -50,13 +50,13 @@
                     </p>
                     <p>root.vugu:</p>
 
-<div vg-html='codefmt.Show("html",`<div class="demo">
+<div vg-content='codefmt.Show("html",`<div class="demo">
     <div vg-if=&apos;c.IsLoading&apos;>Loading...</div>
     <div vg-if=&apos;len(c.PriceData.BPI) > 0&apos;>
-        <div>Updated: <span vg-html=&apos;c.PriceData.Time.Updated&apos;></span></div>
+        <div>Updated: <span vg-content=&apos;c.PriceData.Time.Updated&apos;></span></div>
         <ul>
             <li vg-for=&apos;c.PriceData.BPI&apos; vg-key=&apos;key&apos;>
-                <span vg-html=&apos;key&apos;></span> <span vg-html=&apos;fmt.Sprint(value.Symbol, value.RateFloat)&apos;></span>
+                <span vg-content=&apos;key&apos;></span> <span vg-content=&apos;fmt.Sprint(value.Symbol, value.RateFloat)&apos;></span>
             </li>
         </ul>
     </div>
@@ -84,7 +84,7 @@ type bpi struct {
     } `+"`"+`json:"bpi"`+"`"+`
 }
 
-func (c *Root) HandleClick(event *vugu.DOMEvent) {
+func (c *Root) HandleClick(event vugu.DOMEvent) {
 
     c.PriceData = bpi{}
 

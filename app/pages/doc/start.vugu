@@ -34,7 +34,6 @@
                         <p>
                           <strong>Install vgrun and related utilities</strong> with the commands:
 <div vg-html='codefmt.Show("bash",`go get -u github.com/vugu/vgrun
-go install github.com/vugu/vgrun
 vgrun -install-tools`)'></div>                            
                         </p>
                       </div></li>
@@ -45,6 +44,11 @@ vgrun -install-tools`)'></div>
                           you an example application:
                           <div vg-html='codefmt.Show("text",`vgrun -new-from-example=simple .`)'></div> 
                         </p>
+                        <p>
+                          All this does is ask git to download the 
+                          <a target="_blank" href="https://github.com/vugu-examples/simple">example project</a> 
+                          for you.
+                        </p>
                       </div></li>
 
                       <li><div>
@@ -54,6 +58,10 @@ vgrun -install-tools`)'></div>
 Note that this also starts a file watcher to automatically reload the page when you change .vugu files. 
 (You can disable it and tell it to only run once with 
 <code>vgrun&nbsp;-1&nbsp;devserver.go</code>)
+                        </p>
+                        <p>
+                          Again, all vgrun is doing here is providing some additional convenience.
+                          You can just also just <code>go run devserver.go</code> you'd like.
                         </p>
                       </div></li>
 

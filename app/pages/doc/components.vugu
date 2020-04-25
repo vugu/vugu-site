@@ -6,7 +6,7 @@
                       additional .go files to it and use them as part of your component.
                       Vugu does some 
                       code generation, but otherwise does not interfere with the regular Go build 
-                      process at all.  By default, code generated files end with <em>_vgen.go</em>.
+                      process at all.  Code-generated files end with <em>_vgen.go</em>.
                     </p>
 
                     <!-- <p>
@@ -48,7 +48,7 @@
                       of this other component should be created.  Let's look at an example:
                     </p>
 
-<div vg-html='codefmt.Show("html",`<!-- root.vugu -->
+<div vg-content='codefmt.Show("html",`<!-- root.vugu -->
 
 <div class="root">
     <ul>
@@ -61,10 +61,10 @@ import "math/rand"
 </script>
 `)'></div>
 
-<div vg-html='codefmt.Show("html",`<!-- my-line.vugu -->
+<div vg-content='codefmt.Show("html",`<!-- my-line.vugu -->
 
 <li class="my-line">
-  <strong vg-html=&apos;c.FileName&apos;></strong>:<span vg-html=&apos;c.LineNumber&apos;></span>
+  <strong vg-content=&apos;c.FileName&apos;></strong>:<span vg-content=&apos;c.LineNumber&apos;></span>
 </li>
 
 <script type="application/x-go">
@@ -101,7 +101,7 @@ type MyLine struct {
                         to be created.  Like so:
                       </p>
 
-<div vg-html='codefmt.Show("html",`<!-- root.vugu -->
+<div vg-content='codefmt.Show("html",`<!-- root.vugu -->
 
 <div class="root">
     <ul>
@@ -113,11 +113,12 @@ type MyLine struct {
 
                       <p>Components used in this way also support additional features including dynamic properties, as follows:</p>
 
-<div vg-html='codefmt.Show("html",`<pkg:Comp 
+<div vg-content='codefmt.Show("html",`<pkg:Comp 
     StringField="some string"
     :DynamicField=&apos;/* some go expression */ 123.0&apos;
     stringAttrMapValue="some string"
     :dynamicAttrMapValue=&apos;/* some go expression */ 123.0&apos;
+    @Something=&apos;/* ... */&apos;
     ></pkg:Comp>
 `)'></div>
                       <ul>
@@ -132,16 +133,22 @@ type MyLine struct {
                           <code>/* some go expression */ 123.0</code> is emitted directly into the 
                           code-generated file and thus evaluated as Go code.</li>
                         <li><code>stringAttrMapValue</code> (lower-case first letter) is assigned as a 
-                          key of to a field that you must declare as <code>AttrMap map[string]interface{}</code> - 
+                          key of to a field that you must declare as <code>AttrMap vugu.AttrMap</code> (an alias for <code>map[string]interface{}</code>) - 
                           this allows you to accept arbitrary values as component input, or not.</li>
                         <li><code>dynamicAttrMapValue</code> (lower-case first letter) works like 
                           <code>stringAttrMapValue</code> but is evaluated as Go code instead of a static string.</li>
+                        <li><code>@Something</code> is used for <a href="#component-events">component events, see below.</a></li>
                       </ul>
 
                       <p>The <code>vg-key</code> attribute can also be specified on a component reference to indicate an additional value which 
                       should be used for caching purposes.  Generally this is a key used in a loop iterator.  Note that loops will automatically 
                       select the key from the <nobr><code>vg-for</code>,</nobr> but you can override what is used for caching purposes by specifying 
                       <nobr><code>vg-key</code></nobr> on your component reference.</p>
+
+                      <p>The <code>vg-var</code> attribute, if specified, will cause a Go variable declaration statement to be 
+                      made with the value of the component created.  I.e. <code>&lt;pkg:Comp vg-var="a" ...</code>
+                      will result in <code>var a = /* component reference */</code> in the resulting Go code.  This allows you to access the component 
+                      and its fields and methods directly as <code>a</code> when needed.</p>
 
                       <!-- <div class="alert alert-warning" role="alert">
                         <i class="icon-alert-circle"></i>
@@ -157,31 +164,140 @@ type MyLine struct {
                           order to ease transition.
                         </p>
                       </div> -->
-              
-                      <!-- <p>  TODO: update this
-                        Vugu needs a way to determine, when re-rendering the HTML, which components are the same and which 
-                        are now different and should be re-created.  This is determined by calling 
-                        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComputeHash">ComputeHash</a>
-                        on the attributes (including dynamically evaluted/colon prefixed ones after evaluation) and if the hash 
-                        is different a new instance is created.  If it's the same, the same one is re-used.
-                      </p> -->
                       
                       <p>
                         Any component can include any other component. But if components include each other 
                         in a loop the behavior is undefined (but I can promise you it won't be good).
                       </p>
 
-                    <!-- <div class="alert alert-warning" role="alert">
+
+                      <h2 id="component-events">Component Events</h2>
+
+                      <p>Unlike <a href="/doc/dom-events">DOM events,</a> events for components are really just a means of receiving
+                        a simple method call.  Vugu provides some facilities to declare and use your own events quickly and easily.</p>
+
+                      <p>
+                        The <code>@</code> symbol followed by an exported Go field name (starts with an uppper case letter)
+                        is a shorthand for an assignment to this field name as follows:
+                      </p>
+
+<div vg-content='codefmt.Show("html",`<pkg:Comp @Something="log.Println(event)"></pkg:Comp>`)'></div>
+                      is shorthand for:
+<div vg-content='codefmt.Show("html",`<pkg:Comp 
+  :Something=&apos;func(event pkg.SomethingEvent) { log.Println(event) }&apos;
+  ></pkg:Comp>`)'></div>
+
+                      <p>In this case <code>pkg.Comp</code> would be a struct with a field called
+                        <code>Something</code> of type <code>SomethingHandler</code>. (See more explanation below.)
+                      </p>
+
+                      <p>To faciliate creating component events, the code generation syntax 
+                        <nobr><code>//vugugen:event Something</code></nobr> exists to automatically emit the appropriate types and 
+                        interfaces if you do not declare them yourself.  Let's look at a complete example:
+                      </p>
+
+<div vg-content='codefmt.Show("html",`<!-- root.vugu -->
+
+<div id="top">
+  <main:Thing 
+    @Click=&apos;c.ShowText = fmt.Sprintf("%#v",event)&apos;
+    ></main:Thing>
+  <div vg-content="c.ShowText"></div>
+</div>
+
+<script type="application/x-go">
+import "fmt"
+type Root struct { ShowText string `+"`"+`vugu:"data"`+"`"+` }
+</script>
+`)'></div>
+
+<div vg-content='codefmt.Show("html",`<!-- thing.vugu -->
+
+<div>
+    <button @click="c.HandleButtonClick(event)">A button here</button>
+</div>
+
+<script type="application/x-go">
+
+type Thing struct {
+    Click ClickHandler
+}
+
+func (c *Thing) HandleButtonClick(event vugu.DOMEvent) {
+    if c.Click != nil {
+        c.Click.ClickHandle(ClickEvent{DOMEvent:event})
+    }
+}
+
+// ClickEvent we are declaring ourselves so we can add whatever fields we want.
+// If we had not declared it here, the comment below would cause this to have
+// be created automatically.
+type ClickEvent struct {
+    vugu.DOMEvent
+}
+
+//vugugen:event Click
+
+// The above statement will code generate the following for any of
+// these that you do not declare yourself:
+
+// ClickHandler is the interface for things that can handle ClickEvent.
+// type ClickHandler interface {
+// 	 ClickHandle(event ClickEvent)
+// }
+
+// ClickFunc implements ClickHandler as a function.
+// type ClickFunc func(event ClickEvent)
+
+// ClickHandle implements the ClickHandler interface.
+// func (f ClickFunc) ClickHandle(event ClickEvent) { f(event) }
+
+</script>
+`)'></div>
+
+                      <p>
+                        In this case our <code>Thing</code> has a field called Click which is of type 
+                        <code>ClickHandler</code>. Each of the related types: 
+                        <code>ClickEvent,</code> <code>ClickHandler,</code>
+                        <code>ClickFunc</code> will be generated automatically by the vugugen comment if they don't 
+                        exist.  This field can then be easily assigned with
+                        <code>&lt;main:Thing @Click='...'></code> as shown.
+                      </p>
+
+                      <div class="alert alert-warning" role="alert">
                         <i class="icon-alert-circle"></i>
-                        <h4 class="fs-22">Note</h4>
-                        <p>By default components register themselves in an <code>init()</code> function by calling 
-                          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#RegisterComponentType">RegisterComponentType</a>.
-                          And by default in <code>main()</code> all registered components are retrieved and made available.
-                          So you can place <code>import _ "your/package"</code> in any file and if that package contains components 
-                          they will be available for use.  This behavior can also easily be changed by modifying the appropriate 
-                          behavior in main_wasm.go, in case you need more control over what components are available
-                          under what names.</p>
-                      </div> -->
+                        <h4 class="fs-22">Tip: Component Event Naming</h4>
+                        <p>The suggested approach for naming events is to use the name of the action in the present tense.
+                          i.e. 'Save' rather than 'Saved' or another variation.</p>
+                        <p>
+                            If the component event name corresponds directly to a DOM event, use the camel case version, i.e. 
+                            DOM event "click" becomes ClickEvent defined with DOMEvent embedded into it
+                            <code>type ClickEvent struct { vugu.DOMEvent }</code>. (The code generator for <code>//vugugen:event Click</code>
+                            will do this for you if you do not otherwise declare <code>ClickEvent</code>.)
+                            This makes less hassle when writing code that involves similar DOM and components events
+                            and they can be used in similar ways. For example 
+                            <nobr><code>&lt;pkg:Comp @Click='event.PreventDefault()'></code>,</nobr> following this convention,
+                            would have the same and expected behavior as <nobr><code>&lt;button @click='event.PreventDefault()'></code></nobr>
+                        </p>
+                        <p>
+                          Also, your event types may be declared as either structs or interfaces.  Use whichever is most appropriate for your 
+                          situation. For simple one-off events structs are probably more appropriate.  For complex events 
+                          that have deep and meaningful implications throughout a large app, and interface might be better.
+                        </p>
+                      </div>
+
+                      <p>
+                        Again, this system of naming is intended to make it simple to create custom events for your components 
+                        that are both type-safe and easy to use.  If you need to do something more sophisticated you can use 
+                        the <code>:Something=</code> syntax to assign an arbitrary Go expression to a field and this works 
+                        perfectly well for component events as well.  Remember, components events are just regular struct 
+                        field assignements, with some tooling to make them easier to use with the @ syntax.
+                      </p>
+  
+                      <!-- What about the fact that vugu.DOMEvent is passed around by ptr but component events not - we want
+                      the ability to use an interface Aha! DOMEvent should be an interface instead of a struct with
+                      hidden fields, that's exactly the thing.  Can be implemented with an unexported domEvent struct. -->
+                  
 
                       <h2>Dynamic Component References</h2>
 
@@ -191,7 +307,7 @@ type MyLine struct {
                         This allows you to instantiate a component in your own Go code and reference it directly during render.  Example:
                       </p>
 
-<div vg-html='codefmt.Show("html",`<!-- root.vugu -->
+<div vg-content='codefmt.Show("html",`<!-- root.vugu -->
 <div>
     <vg-comp expr="c.MyChildComp"></vg-comp>
 </div>
@@ -210,6 +326,10 @@ func (c *Root) BeforeBuild() {
 
 </script>
 `)'></div>
+
+                      <h2>Slots</h2>
+
+                      <p>TODO</p>
 
                       <h2>BeforeBuild()</h2>
 
@@ -243,6 +363,26 @@ func (c *Root) BeforeBuild() {
                       The point of all this is that <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ModTracker">ModTracker</a> will scan your component and follow the graph of objects to determine if it is "modified" before re-rendering.  The 
                       <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ModChecker">ModChecker</a> interface (and if you're looking at that, have a look at <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ModCounter">ModCounter</a> as a simple implementation) allows developers to customize how modification tracking is done, for when the graph of objects gets too large and things get slow.
                       </p>
+
+                      <!--
+                        TODO: THE PHILOSOPHY OF WRITING COMPONENTS
+                        - Vugu is just here to let you write HTML and handle logic in Go
+                        - Do not wrap HTML with a component if it does not add functionality
+                        - If you can accomplish what you are doing with CSS, use CSS
+                        - Components frameworks love to define a wrapper for everthing,
+                          we this is a bad idea.
+                        - At first glance it may *seem* inconsistent to mix HTML and 
+                          components, but it is also (assuming you know Vugu markup syntax)
+                          obvoius what is happening.  We don't have a wrapper for <button>
+                          because it adds no value, it would just be one more thing you 
+                          have to look up the docs on to use.
+                        - Some would argue that wrapping everything with components
+                          makes things more "consistent".  Given the choice between
+                          being consistent and complex, and less consistent and simpler,
+                          we're choosing the simpler option.  You'll get used to 
+                          seeing <button> and <vgform:Select> next to each other,
+                          and once you're over that, you'll (hopefully) thank me.
+                      -->
 
 
 </div>

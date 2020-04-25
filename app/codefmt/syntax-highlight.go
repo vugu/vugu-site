@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/alecthomas/chroma/quick"
+	"github.com/vugu/vugu"
 )
 
 // var hackBodyStyleRE = regexp.MustCompile(`^body \{[^}]*\}`)
@@ -14,8 +15,8 @@ import (
 var showCodeCache = make(map[string]string, 32)
 
 // Show performs code formatting as HTML with nice pretty colors.
-func Show(syntax string, code string) string {
-	return showCode(syntax, code)
+func Show(syntax string, code string) vugu.HTMLer {
+	return vugu.HTML(showCode(syntax, code))
 }
 
 // this is rather quick and dirty, should clean it up later, but it seems to work for now...

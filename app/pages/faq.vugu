@@ -36,8 +36,10 @@
                     </p>
                     <p>
                         But everything else is just Go code running as WebAssembly.  For example when a handler for a click is registered, Vugu will
-                        call the appropriate <code>addEventListener</code> method on the DOM, but when the event is fired the Go WASM runtime immediately 
-                        translates this call into a Go method call and everything else is Go from there.
+                        call the appropriate <code>addEventListener</code> method on the DOM.  And when the event is fired, 
+                        the relevant data is collected up about the event on the JS side and a call is then made into your Go Wasm program
+                        with the event info.
+                        Everthing else is Go from there: Vugu receives the event and makes the appropriate call to your code.
                     </p>
                   </div>
                 </div>

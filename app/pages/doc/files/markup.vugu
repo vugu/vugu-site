@@ -51,15 +51,15 @@ type Root struct { // component for "root"
         For example:
       </p>
 
-<div vg-html='codefmt.Show("html",`<div>
+<div vg-content='codefmt.Show("html",`<div>
     <p vg-for=&apos;i := 0; i < 10; i++&apos;>
-        <div vg-html="i"></div>
+        <div vg-content="i"></div>
     </p>
 </div>`)'></div>
 
-<div vg-html='codefmt.Show("html",`<div>
+<div vg-content='codefmt.Show("html",`<div>
     <p vg-for=&apos;_, item := range c.Items&apos;>
-        <div vg-html="item"></div>
+        <div vg-content="item"></div>
     </p>
 </div>
 
@@ -69,7 +69,7 @@ type Root struct {
 }
 </script>`)'></div>
 
-      <p>Note that the vg-html attribute outputs the value as HTML, using <code>fmt.Sprint()</code>, see below.</p>
+      <p>Note that the vg-content attribute outputs the value as HTML inside the element. See below.</p>
 
       <p>
         As a special case and for convenience, if the expression contains no whitespace it will be expanded to
@@ -79,8 +79,8 @@ type Root struct {
 <div vg-html='codefmt.Show("html",`<div>
     <div vg-for=&apos;c.Items&apos;>
         <div>
-            Key: <span vg-html="key"></span>
-            Value: <span vg-html="value"></span>
+            Key: <span vg-content="key"></span>
+            Value: <span vg-content="value"></span>
         </div>
     </div>
 </div>
@@ -104,23 +104,32 @@ type Root struct {
         This can then be overridden on individual component references as needed.
       </p>
 
-      <h3 id="vg-html">Raw HTML with <code>vg-html</code></h3>
+      <h3 id="vg-html">HTML content with <code id="vg-content">vg-content</code></h3>
 
-      <p>The vg-html attribute is used to output an expression as HTML into the contents of an element.
-        (It corresponds to the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML">innerHTML</a> property.)
-        The expression is converted to a string using 
-        <a target="_blank" href="https://golang.org/pkg/fmt/#Sprint">fmt.Sprint()</a>.  Example:
+      <p>The vg-content attribute is used to output an expression to the contents of an element.
+        It corresponds to the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML">innerHTML</a> property.
+        The attribute vg-html is a synonym for vg-content and has the exact same behavior.
+      </p>
+      <p>
+
+        The expression you provided is converted to a string and represented as HTML according to the rules described in 
+        <a href="https://godoc.org/github.com/vugu/vugu#VGNode.SetInnerHTML" target="_blank">SetInnerHTML</a>.
+        Generally speaking, the value will be converted to text and HTML escaped (both for security against
+        XSS attacks, and for convenience).  If you wish to override the HTML escaping and provide raw unescaped
+        HTML, you need only provide a value that implements the 
+        <a href="https://godoc.org/github.com/vugu/vugu#HTMLer" target="_blank">HTMLer</a>
+        interface.  This is easily done by casting to <code>vugu.HTML</code>.
+
+        <!-- The expression is converted to a string using  -->
+        <!-- <a target="_blank" href="https://golang.org/pkg/fmt/#Sprint">fmt.Sprint()</a>.  Example: -->
       </p>
 
-<div vg-html='codefmt.Show("html",`<div>
-    <p vg-html=&apos;"<b>an HTML string</b>"&apos;>
-    <p vg-html=&apos;123&apos;> &lt;!-- will be output according to fmt.Sprint rules -->
-    <p vg-html=&apos;html.EscapeString("escaping & arbitrary text is easy like so")&apos;>
+<div vg-content='codefmt.Show("html",`<div>
+    <p vg-content=&apos;"this content <will be> escaped"&apos;>
+    <p vg-content=&apos;vugu.HTML("this will output directly as <em>raw HTML</em>, no escaping")&apos;>
+    <p vg-content=&apos;123&apos;> &lt;!-- number will be output according to fmt.Sprintf %v rules -->
 </div>
-
-<script type="application/x-go">
-import "html"
-</script>`)'></div>
+`)'></div>
 
       <p>
           You may use variable names declared in earlier constructs (such as <code>key</code> or <code>value</code> from a for/range loop).
@@ -204,6 +213,24 @@ func (c *Root) makeAttrs() (ret []vugu.VGAttribute) {
 <p><code>:=</code> is shorthand for <code>vg-attr</code>, e.g. <code>&lt;p :=&apos;vugu.VGAttributeListerFunc(c.makeAttrs)&apos;></code>
 is also valid with the same behavior.</p>
 
+      <h3 id="vg-template">Template Elements with <code>&lt;vg-template></code></h3>
+
+      <p>In some situations it is useful to attach a condition or a loop to to an element without 
+        emitting a corresponding tag into the final output.  For these cases you can use the <nobr>vg-template</nobr> tag.
+        You can put <code>vg-for</code> and <code>vg-if</code> attributes on it which have the usual 
+        meaning but only its contents, not the tag itself, are included in the final output.  Example:
+      </p>
+
+<div vg-html='codefmt.Show("html",`<ul>
+  <li>An item here</li>
+  <li>Another item here</li>
+  <vg-template vg-if="c.ShowExtra">
+    <li>A conditional item here</li>
+    <li>And another one</li>
+    <li>And something else too</li>
+  </vg-template>
+</ul>
+`)'></div>
 
       <h3 id="property-assignment">Property Assignment with <code>.</code></h3>
 
@@ -240,7 +267,7 @@ is also valid with the same behavior.</p>
         You may use variable names declared in earlier constructs (such as <code>key</code> or <code>value</code> from a for/range loop).
         Regular Go variable scoping rules apply, where each nested DOM element is equivalent to a Go <code>{</code> code block <code>}</code>.
         The special variable <code>event</code>, of type
-        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a>
+        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">vugu.DOMEvent</a>
         is declared in this scope and available to access the context of the event.
         See <a href="/doc/dom-events">DOM Events</a> for more info.
         Example:
@@ -253,7 +280,7 @@ is also valid with the same behavior.</p>
 
 <script type="application/x-go">
 import "log"
-func (c *Root) Toggle(e *vugu.DOMEvent) {
+func (c *Root) Toggle(e vugu.DOMEvent) {
     c.Show = !c.Show
     log.Printf("Toggled! Show is now %t", c.Show)
 }
@@ -262,7 +289,30 @@ type Root struct {
 }
 </script>`)'></div>
 
-      <p>You can also place statements directly in the event tag.  For example <code>@click=&apos;c.Show=!c.Show&apos;</code> is valid.</p>
+      <p>You can also place statements directly in the event attribute value.  For example <code>@click=&apos;c.Show=!c.Show&apos;</code> is valid.</p>
+
+      <h3 id="dom-element-access">DOM Element Access with <code id="vg-js-create">vg-js-create</code> and <code id="vg-js-populate">vg-js-populate</code></h3>
+
+      <p>In some situations direct access to DOM elements via <code>js.Value</code> is needed.  Two callbacks are provided for this: <code>vg-js-create</code>
+      is called when the DOM element is created but before any children are populated.  And <code>vg-js-populate</code> is called after 
+      all child elements exist.  The DOM reference is passed in a variable named <code>value</code> and can then be used to handle the 
+      DOM node directly.  Note that strictly speaking the value provided is only guaranteed to be valid until the next render pass starts.
+      Depending on various factors, subsequent renders may or may not return the same value.  Example:</p>
+
+<div vg-html='codefmt.Show("html",`<div>
+  <canvas width="300" height="100"
+    vg-js-populate="c.canvasPopulate(value)"
+    ></canvas>
+</div>
+
+<script type="application/x-go">
+type Root struct {}
+func (c *Root) canvasPopulate(value js.Value) {
+    drawCtx := value.Call("getContext", "2d")
+    drawCtx.Set("font", "30px Arial")
+    drawCtx.Call("strokeText", "Hello from Vugu!", 10, 50)
+}
+</script>`)'></div>
 
       <h3 id="special-variable-names">Special Variable Names</h3>
 
@@ -276,16 +326,18 @@ type Root struct {
           struct pointer.  This is the proper place to house the state of your component.
         By default the type of <code>c</code> is a named but empty struct.  However, it is common to create your own struct with 
         the data you need on it.  See more at <a href="/doc/components">Components</a></li>
-        <li><code>event</code> - This is a placeholder for a 
-          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">*vugu.DOMEvent</a> 
+        <li><code>event</code> - This is the variable name for a 
+          <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DOMEvent">vugu.DOMEvent</a> 
           instance that is 
           created when a DOM event is triggered and your handler is called.  This also provides 
           some other needed functionality such as the 
           <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv</a>, which is important for synchronizing 
           goroutines that need to update data after an event completes.  See more at 
           <a href="/doc/dom-events">DOM Events</a>.</li>
+        <li><code>value</code> is used as the variable name in vg-js-create and vg-js-populate.  See above.</li>
         <li><code>key</code> and <code>value</code> - See section covering vg-for above.  These are the 
-          default names used for implied range expressions.
+          default names used for implied range expressions.</li>
+
       </ul>
       
       <p>Please note that variables that your code declares, e.g. in a vg-for loop, should not start with <code>vg</code>, in order 
@@ -299,7 +351,7 @@ type Root struct {
       <ul>
         <li><strong>Attributes (with no prefix character) are just strings.</strong>  Given <code>&lt;div id="blah"></code>, "blah" is just a string (no quotes included).</li>
         <li><strong>Attribute names preceded with a colon are Go expressions.</strong>  Given <code>&lt;div :id='"bl"+"ah"'>`</code>, <code>"bl"+"ah"</code> is a Go expression.</li>
-        <li><strong>Attributes beginning with <code>vg-</code> contain Go code, according to their named purpose.</strong>  E.g. <code>vg-html</code> is used for an expression that gets <code>fmt.Sprint</code>ed, <code>vg-for</code> contains the loop of a for statement, and <code>vg-if</code> contains the condition of an if statement.</li>
+        <li><strong>Attributes beginning with <code>vg-</code> contain Go code, according to their named purpose.</strong>  E.g. <code>vg-content</code> is used for an expression that converted and used as the contents of an element, <code>vg-for</code> contains the loop of a for statement, and <code>vg-if</code> contains the condition of an if statement.</li>
         <li><strong>Tags that start with <code>vg-</code> can have specialized attributes</strong> which are not prefixed (e.g. <code>&lt;vg-comp expr="....</code>)</li>
         <li><strong>Static component references contain a colon in the element name</strong> in the form of <code>pkg:Component</code>.  E.g. <code>&lt;somepkg:SomeComp></code> corresponds to a struct named <code>SomeComp</code> in a package imported as "somepkg".</li>
         <li><strong>Attribute names that start with an upper case letter correspond to Go struct field names.</strong>  It seems a happy coincidence that modern HTML documents almost always do (and always can) use lower case attribute names.  This leaves attribute names that start with an upper case letter to have the meaning of corresponding to a (exported) Go struct field name.  E.g. given <code>&lt;somepkg:SomeComp :FieldA="1" FieldB="blah"></code>, <code>FieldA</code> and <code>FieldB</code> are struct fields on <code>SomeComp</code>, but notice the colon and so these correspond to <code>someCompInst.FieldA = 1</code> and <code>someCompInst.FieldB = "blah"</code></li>
