@@ -1,0 +1,128 @@
+<div>
+
+    <p>Unlike many Go programs which would benefit from static wiring using tools such as
+        <a href="https://github.com/google/wire" target="_blank">wire</a>,
+        Vugu programs involve UI components which are created and destroyed throughout the lifetime
+        of the application in response to user action. As such, an effective mechanism for wiring
+        applications at runtime is needed, and ideally with as much type-safety and help from
+        the Go compiler as possible.</p>
+
+    <p>Wiring in a Vugu application is accomplished by proving a wire function which is called each time a
+        component is created or re-used. Wire function should be kept lean and simple as they are
+        called a lot.
+    </p>
+
+    <p>If your main package includes a function called <code>vuguSetup</code>, then when 
+        <a href="/doc/tools#vugugen">vugugen</a> creates your main_wasm.go file it will 
+        include a call to that function. (You can also easily add this manually.)  The call 
+        from main_wasm.go is pretty simple:
+        <nobr><code>rootBuilder := vuguSetup(buildEnv, renderer.EventEnv())</code></nobr>.
+        And we'll take a look at the contents of <code>vuguSetup</code> in a moment.
+    </p>
+
+    <p>In this example we're going to have a simple shared counter which can be injected 
+        into any UI component which wants a reference to it.  The counter.go file looks like so:
+    </p>
+
+<div vg-html='codefmt.Show("go",`// counter.go
+package main
+
+type Counter struct { c int }
+
+func (c *Counter) NextCount() int { c.c++; return c.c }
+
+type CounterRef struct{ *Counter }
+type CounterSetter interface{ CounterSet(c *Counter) }
+
+func (cr *CounterRef) CounterSet(c *Counter) { cr.Counter = c }
+`)'></div>
+
+    <p>The <code>Counter</code> type is what we want to inject an instance of into UI components.  And the
+    CounterRef and CounterSetter are tools to help us do this.  In setup.go, vuguSetup looks like so:</p>
+
+<div vg-html='codefmt.Show("go",`// setup.go
+package main
+
+import "github.com/vugu/vugu"
+
+func vuguSetup(buildEnv *vugu.BuildEnv, eventEnv vugu.EventEnv) vugu.Builder {
+
+	var counter Counter
+
+	buildEnv.SetWireFunc(func(b vugu.Builder) {
+		if c, ok := b.(CounterSetter); ok {
+			c.CounterSet(&counter)
+		}
+	})
+
+	ret := &Root{}
+	buildEnv.WireComponent(ret)
+
+	return ret
+}
+`)'></div>
+
+    <p>And then to make the example complete, let's look at a component which needs a reference to Counter.</p>
+
+<div vg-html='codefmt.Show("html",`<!-- demo-comp1.vugu -->
+
+<div class="demo-comp1">
+    <div vg-content="c.NextCount()"></div>
+</div>
+
+<script type="application/x-go">
+type DemoComp1 struct {
+    CounterRef
+}
+</script>
+`)'></div>
+
+    <p>The <code>SetWireFunc</code> call provides a function to wire up each component as it created.
+    Vugu handles calling this function automatically for each component that is instanciated or re-used. 
+    In this example, you can see that <code>DemoComp1</code> embeds a CounterRef, which holds 
+    a pointer to a Counter and implements the <code>CounterSetter</code> interface.
+    And this interface is what is checked for in <code>vuguSetup</code>.</p>
+
+    <p>The above shows a useful pattern that can be applied keep wiring clean:</p>
+
+    <ul>
+        <li>given <code>type X struct { /* ... */ }</code></li>
+        <li>there is also a <code>type XRef struct { *X }</code>
+            (which components can embed)</li>
+        <li>an interface <code>XSetter</code></li>
+        <li>and a method on XRef that
+            implements the interface i.e. <nobr><code>func (r *XRef) XSet(x *X)</code></nobr></li>
+    </ul>
+
+    <p>TODO: It might be appropriate to have a <code>//vugugen:wireref X</code> or similar mechanism that
+        would alleviate most of the boiler plate.</p>
+
+    <div class="alert alert-warning" role="alert">
+        <i class="icon-alert-circle"></i>
+        <h4 class="fs-22">NOTE: Wiring and Granularity</h4>
+        <p>
+            While it is tempting to place the various pieces of your application needed by components into one
+            large struct which is then made available to components via the above mechanism, this can quickly
+            lead to unnecessarily tight coupling in your application. Given several different pieces of
+            your application such e.g. a Router, an APIClient and a ObjectStore (just a made-up example),
+            it is likely better to inject each of these into your UI components separately, rather than having
+            one big "App" struct which each of these as members and only injecting the App. As your application
+            grows this allows each component to only be aware of the individual things it needs, which can
+            greatly simplify program design and other concerns like testing.
+        </p>
+    </div>
+
+
+</div>
+
+<script type="application/x-go">
+
+// import "github.com/vugu/vugu-site/app/codefmt"
+
+type Wiring struct {}
+
+func (c *Wiring) Title() string { return "Wiring Vugu Applications" }
+func (c *Wiring) ShortTitle() string { return "Wiring" }
+// TODO: func (c *Wiring) MetaDescription() string { return "" }
+
+</script>
