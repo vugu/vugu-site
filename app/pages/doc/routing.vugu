@@ -136,6 +136,6 @@ type Routing struct {}
 
 func (c *Routing) Title() string { return "URL Routing with Vugu" }
 func (c *Routing) ShortTitle() string { return "Routing (URLs)" }
-// TODO: func (c *Routing) MetaDescription() string { return "" }
+func (c *Routing) MetaDescription() string { return "The package github.com/vugu/vgrouter provides routing functionality for Vugu applications." }
 
 </script>
