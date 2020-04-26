@@ -1,0 +1,114 @@
+<div>
+
+    <div class="alert alert-warning" role="alert">
+        <i class="icon-alert-circle"></i>
+        <h4 class="fs-22">Note</h4>
+        <p>
+            Forms are a work-in-progress as of Q2 2020.
+            The package <a href="https://godoc.org/github.com/vugu/vugu/vgform" target="_blank">vgform</a>
+            has initial work to handle binding data to form controls, but please beware this code is still quite volatile
+            and likely to change signicantly (more so than the rest of the Vugu code&nbsp;base).
+        </p>
+    </div>
+
+    <p>
+        Form controls provided by Vugu are intended to provide useful binding of Go data to form controls.
+        Other than that, the idea is that they stay out of your way and act as much like the underlying
+        HTML element they wrap as possible.
+    </p>
+
+    <h2 id="input">Input Controls</h2>
+
+    <p><code>vgform:Input</code> can be used to output an <code>&lt;input></code> tag and bind data to its value.  Example:</p>
+
+<div vg-html='codefmt.Show("html",`<!-- root.vugu-->
+
+<form>
+
+    <vgform:Input type="email" class="some-class-here"
+        :Value=&apos;vgform.StringPtr{&c.TextValue}&apos;
+        ></vgform:Input>
+
+    <div>You entered: <span vg-html="c.TextValue"></span></div>
+
+</form>
+
+<script type="application/x-go">
+import "github.com/vugu/vugu/vgform"
+type Root struct {
+    TextValue string
+}
+</script>
+`)'></div> 
+
+    <p>The <code>vgform.StringPtr</code> type adapts a <code>*string</code> so it can be used to get and set form values with vgform:Input. 
+    Note that the class attribute here (and any others that you provide) are passed through to the underlying HTML element and the normal 
+    attribute value rules apply.</p>
+
+    <h2 id="select">Select Control</h2>
+
+    <p><code>vgform:Select</code> can be used to wrap a <code>&lt;select></code> element and its options with useful binding.  Example:</p>
+
+<div vg-html='codefmt.Show("html",`<!-- root.vugu-->
+
+<form>
+
+    <vgform:Select id="food_group" class="form-control" 
+        :Value=&apos;vgform.StringPtrDefault(&c.TextValue, "jungle_group")&apos;
+        :Options=&apos;vgform.SliceOptions{"sandwich_group","cow_group","jungle_group","butterfinger_group"}.Title()&apos;
+        ></vgform:Select>
+
+    <div>You selected: <span vg-html="c.TextValue"></span></div>
+
+</form>
+
+<script type="application/x-go">
+import "github.com/vugu/vugu/vgform"
+type Root struct {
+    TextValue string
+}
+</script>
+`)'></div> 
+
+    <p>NOTE: The select control will be updated to allow custom slot content so things like option groups can be used by
+        providing a slot which gives the contents of the <code>&lt;select></code>.
+    </p>
+
+    <h2 id="textarea">Textarea Control</h2>
+
+    <p><code>vgform:Textarea</code> can be used to wrap a <code>&lt;textarea></code> element with binding.  Example:</p>
+
+<div vg-html='codefmt.Show("html",`<!-- root.vugu-->
+
+<form>
+
+    <vgform:Textarea id="textarea1" class="form-control" rows="10"
+                :Value=&apos;vgform.StringPtrDefault(&c.TextValue, "testing")&apos;
+                ></vgform:Textarea>
+
+    <div>You entered: <span vg-html="c.TextValue"></span></div>
+
+</form>
+
+<script type="application/x-go">
+import "github.com/vugu/vugu/vgform"
+type Root struct {
+    TextValue string
+}
+</script>
+`)'></div> 
+
+
+</div>
+
+<script type="application/x-go">
+
+// import "github.com/vugu/vugu-site/app/codefmt"
+
+type Forms struct {}
+
+func (c *Forms) Title() string { return "Vugu Forms" }
+func (c *Forms) ShortTitle() string { return "Forms" }
+// TODO: func (c *Forms) MetaDescription() string { return "" }
+
+</script>
