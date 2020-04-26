@@ -103,12 +103,12 @@ type Root struct {
 
 <script type="application/x-go">
 
-// import "github.com/vugu/vugu-site/app/codefmt"
+import "github.com/vugu/vugu-site/app/codefmt"
 
 type Forms struct {}
 
 func (c *Forms) Title() string { return "Vugu Forms" }
 func (c *Forms) ShortTitle() string { return "Forms" }
-// TODO: func (c *Forms) MetaDescription() string { return "" }
+func (c *Forms) MetaDescription() string { return "Form controls provided by Vugu are intended to provide useful binding of Go data to form controls." }
 
 </script>

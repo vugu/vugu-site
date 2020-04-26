@@ -1,0 +1,141 @@
+<div>
+
+    <!-- <p>
+        Router registers routes
+        has code for server-side (reads http.Request) and client side (reads from browser path or fragment)
+        processed in sequence, can have exact or non-exact matches 
+        generally you'll want to set a field with type vugu.Builder to the component that should be displayed and then reference it with vg-comp
+        Navigator interface is just the methods that components need in order tell the application to go to another screen
+        BindParams
+    </p> -->
+
+    <h2>The Router</h2>
+
+    <p>The package <a href="https://godoc.org/github.com/vugu/vgrouter">github.com/vugu/vgrouter</a> 
+        provides routing functionality for Vugu applications. 
+        A <code>vgrouter.Router</code> provides functionality for both 
+        server-side (by reading an http.Request) and client-side (by reading the browser's path or #fragment) routing.
+        If you're not yet familiar with Vugu <a href="/doc/wiring">wiring</a>, you'll likely want to read up on that before continuing.
+    </p>
+
+    <p>
+        Routes are registered and when processing are examined in the sequence they were registered.
+        Matches for routes can be exact or partial and the code for that route can then perform an appropriate action.
+        The usual approach will be to have one or more sections of your user interface be dynamic based on 
+        which route is currently active.  Then the route handler(s) which match for a given route assign those
+        sections as fields of type <code>vugu.Builder</code>, which are then rendered via a 
+        <a href="/doc/components#vg-comp">vg-comp</a> tag.  Let's look at an example. Follow the comments for a 
+        an as-you-go explanation of the parts:
+    </p>
+
+<div vg-html='codefmt.Show("go",`// setup.go
+
+package main
+
+import (
+    "path"
+    "strings"
+
+    "github.com/vugu/vgrouter"
+    "github.com/vugu/vugu"
+    "github.com/vugu/vugu/js"
+)
+
+// OVERALL APPLICATION WIRING IN vuguSetup
+func vuguSetup(buildEnv *vugu.BuildEnv, eventEnv vugu.EventEnv) vugu.Builder {
+
+    // CREATE A NEW ROUTER INSTANCE
+    router := vgrouter.New(eventEnv)
+
+    // MAKE OUR WIRE FUNCTION POPULATE ANYTHING THAT WANTS A "NAVIGATOR".
+    buildEnv.SetWireFunc(func(b vugu.Builder) {
+        if c, ok := b.(vgrouter.NavigatorSetter); ok {
+            c.NavigatorSet(router)
+        }
+    })
+
+    // CREATE THE ROOT COMPONENT
+    root := &Root{}
+    buildEnv.WireComponent(root) // WIRE IT
+
+    // ADD ROUTES FOR EACH PAGE.  NOTE THAT THESE ARE "EXACT" ROUTES.
+    // YOU CAN ALSO ADD ROUTES THAT MATCH ANYTHING WITH THE SPECIFIED PREFIX.
+    router.MustAddRouteExact("/", 
+        vgrouter.RouteHandlerFunc(func(rm *vgrouter.RouteMatch) {
+        root.Body = &Page1{} // A COMPONENT WITH PAGE CONTENTS
+    }))
+    router.MustAddRouteExact("/page2", 
+        vgrouter.RouteHandlerFunc(func(rm *vgrouter.RouteMatch) {
+        root.Body = &Page2{} // A COMPONENT WITH PAGE CONTENTS
+    }))
+    router.SetNotFound(vgrouter.RouteHandlerFunc(
+        func(rm *vgrouter.RouteMatch) {
+        root.Body = &PageNotFound{} // A PAGE FOR THE NOT-FOUND CASE
+    }))
+
+    // TELL THE ROUTER TO LISTEN FOR THE BROWSER CHANGING URLS
+    err := router.ListenForPopState()
+    if err != nil {
+        panic(err)
+    }
+
+    // GRAB THE CURRENT BROWSER URL AND PROCESS IT AS A ROUTE
+    err = router.Pull()
+    if err != nil {
+        panic(err)
+    }
+
+    return root
+}
+`)'></div>
+
+    <p>And our Root component which houses the Body field and renders it.</p>
+
+<div vg-html='codefmt.Show("html",`<!-- root.vugu -->
+
+<div>
+    <h1>Test App</h1>
+
+    <!-- RENDER THE BODY -->
+    <vg-comp expr="c.Body"/>
+
+    <!-- USE Navigator.Navigate() TO CHANGE TO A DIFFERENT URL-->
+    <button @click="c.Navigate("/", nil)">Home</button>
+    <button @click="c.Navigate("/page2", nil)">Page2</button>
+
+</div>
+
+<script type="application/x-go">
+
+import "github.com/vugu/vgrouter"
+
+type Root struct {
+
+    // ANYTHING THAT MUST NAVIGATE NEED ONLY EMBED THIS
+    vgrouter.NavigatorRef
+
+    // THE BODY COMPONENT, GETS SET BY THE APPROPRIATE ROUTE ABOVE
+    Body vugu.Builder
+}
+
+</script>
+`)'></div>
+
+    <p>TODO: <a href="https://godoc.org/github.com/vugu/vgrouter#BindParam" target="_blank">BindParam</a>s also exist and should be documented.
+    Also give a more detailed explanation of the 
+    <a href="https://godoc.org/github.com/vugu/vgrouter#Navigator" target="_blank">Navigator</a> interface (minimal interface 
+    of Router that pages need to know about to perform navigation).</p>
+
+</div>
+
+<script type="application/x-go">
+
+import "github.com/vugu/vugu-site/app/codefmt"
+
+type Routing struct {}
+
+func (c *Routing) Title() string { return "URL Routing with Vugu" }
+func (c *Routing) ShortTitle() string { return "Routing (URLs)" }
+// TODO: func (c *Routing) MetaDescription() string { return "" }
+
+</script>

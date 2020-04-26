@@ -8,7 +8,7 @@
         the Go compiler as possible.</p>
 
     <p>Wiring in a Vugu application is accomplished by proving a wire function which is called each time a
-        component is created or re-used. Wire function should be kept lean and simple as they are
+        component is created or re-used. The wire function should be kept lean and simple as they are
         called a lot.
     </p>
 
@@ -117,12 +117,12 @@ type DemoComp1 struct {
 
 <script type="application/x-go">
 
-// import "github.com/vugu/vugu-site/app/codefmt"
+import "github.com/vugu/vugu-site/app/codefmt"
 
 type Wiring struct {}
 
 func (c *Wiring) Title() string { return "Wiring Vugu Applications" }
 func (c *Wiring) ShortTitle() string { return "Wiring" }
-// TODO: func (c *Wiring) MetaDescription() string { return "" }
+func (c *Wiring) MetaDescription() string { return "Wiring in a Vugu application is accomplished by proving a wire function which is called each time a component is created or re-used." }
 
 </script>
