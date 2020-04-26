@@ -299,7 +299,7 @@ type ClickEvent struct {
                       hidden fields, that's exactly the thing.  Can be implemented with an unexported domEvent struct. -->
                   
 
-                      <h2>Dynamic Component References</h2>
+                      <h2 id="vg-comp">Dynamic Component References</h2>
 
                       <p>Component references can also be done dynamically based on an arbitrary Go expression.  This is done with 
                         a <code>&lt;vg-comp expr="">&lt;vg-comp></code> tag, and the expression must 
@@ -327,9 +327,96 @@ func (c *Root) BeforeBuild() {
 </script>
 `)'></div>
 
-                      <h2>Slots</h2>
+                      <h2 id="slots">Slots</h2>
 
-                      <p>TODO</p>
+                      <p>Slots are a mechanism that allow you to pass content (or logic that generates content) into another 
+                        component, so it can output it in the appropriate place.  Slots are implemented by emitting 
+                        a Go anonymous function which outputs the markup you specify, converts it to a 
+                        <a href="https://godoc.org/github.com/vugu/vugu#Builder" target="_blank">vugu.Builder</a>, 
+                        and assigns it to a field on a component struct.  Example:
+                      </p>
+
+<div vg-content='codefmt.Show("html",`<!-- root.vugu -->
+<div>
+    <!-- content placed directly inside a component is "DefaultSlot"-->
+    <main:MySlottedComp>
+      <div>This goes in the DefaultSlot</div>
+    </main:MySlottedComp>
+
+    <!-- or we can specify mutliple slots with names-->
+    <main:MySlottedComp vg-var=&apos;myParentComp&apos;>
+
+      <vg-slot name="DefaultSlot">
+        <div>This goes in the DefaultSlot</div>
+      </vg-slot>
+
+      <vg-slot name="AfterSlot">
+        <div>This goes in the AfterSlot: 
+          <span vg-content=&apos;fmt.Sprintf(myParentComp)&apos;></span></div>
+      </vg-slot>
+
+    </main:MySlottedComp>
+
+</div>
+`)'></div>
+
+<div vg-content='codefmt.Show("html",`<!-- my-slotted-comp.vugu -->
+<div>
+
+    <!-- will render DefaultSlot here if not-nil-->
+    <vg-comp expr=&apos;c.DefaultSlot&apos;></vg-comp>
+
+    <!-- will render AfterSlot here if not-nil-->
+    <vg-comp expr=&apos;c.AfterSlot&apos;></vg-comp>
+
+</div>
+
+<script type="application/x-go">
+
+type MySlottedComp struct {
+    DefaultSlot vugu.Builder
+    AfterSlot vugu.Builder
+}    
+
+</script>
+`)'></div>
+
+                      <p>As you can see above, content directly inside a component tag is assigned to the "DefaultSlot". 
+                        Or the <code>&lt;vg-slot></code> tag can be used to assign to an explicitly named slot.
+                        Inside in the implementation of the slotted component, <code>&lt;vg-comp></code>
+                        is used to output the slot content (see above for more info on vg-comp).  You can also see 
+                        in the example that slots can access the component they are "inside" via a variable name 
+                        declared with <code>vg-var</code>.
+                      </p>
+
+                      <p>Dynamic slot names are also available using the syntax <code>Field[IndexExpr]</code> as the 
+                      slot name.  In this case, <code>Field</code> must be of type <code>map[string]vugu.Builder</code>
+                      and <code>IndexExpr</code> must be a valid expression to be used for assignment into the map.</p>
+
+                      <p><small>TODO: Once a "data table" component is created this will provide a good example for 
+                        how dynamic slots are handled and this documentation should be updated accordingly.
+                        But the core idea is that slots are just functions, and since they can access the parent 
+                        component from the scope they are declared in (via the vg-var attr), 
+                        a data table can for example have a field 
+                        like <code>CurrentIndex int</code> and a slot that handles an individual row can read 
+                        that field upon each iteration to determine which record it's supposed to output.
+                        This is in contrast to how Vue deals with "scoped slots". 
+                        In Vugu, you don't "pass" things into slots,
+                        instead they just read from the scope they are declared in.  This sounds strange 
+                        initially but it allows the various references to be type-safe and avoids passing 
+                        around interface{}s with type assertions.  Slots can understand the context in which 
+                        they are called and the input data, the component that has the slot itself should 
+                        understand as little about its input as possible.  A similar approach is used
+                        for things like sort.Slice in the Go standard library - where the caller understands
+                        what it is sorting, and the code in the sort package knows only how to sort.
+                        It works well there. Likewise, components with slots only know where and in what sequence
+                        they output slot content, not all the details about what data they are dealing with.
+                        (This even applies if there is a bunch of crazy reflection code to provide nice 
+                        pretty output by default by inspecting, e.g. a slice that is passed to a data table -
+                        it still doesn't change the basic idea.)
+                        This whole concept should be explained clearly and in detail with examples 
+                        once some more experience is gained.</small>
+                      </p>
 
                       <h2>BeforeBuild()</h2>
 
