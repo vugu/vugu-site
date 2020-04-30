@@ -1,0 +1,167 @@
+<div>
+
+<h1>The Case for WebAssembly</h1>
+
+<!-- Hi there, Grover the Gopher here. My average life span ranges from one to three years and I want to make the most of it, so let’s dive right into my argument for WebAssembly. -->
+
+<p>In this article we’ll cover the following:</p>
+
+<ul>
+    <li><a href="#what-is-wasm">What is WebAssembly?</a></li>
+    <li><a href="#wasm-and-javascript">Relationship with JavaScript</a></li>
+    <!-- <li><a href="#adoption">Adoption and Support</a></li> -->
+    <li><a href="#performance">Peformance</a></li>
+    <li><a href="#future">The Future of WebAssembly</a></li>
+</ul>
+
+<h2 id="what-is-wasm">What is WebAssembly?</h2>
+
+<p>
+WebAssembly gives us a platform-independent way for programs to run directly and efficiently in browsers. 
+Not dissimilar to an .exe file for your browser that works on Mac/Win/Linux, etc.
+</p>
+<p>
+<!-- It provides a way to write code in many programming languages that can then be run in a web browser.  -->
+For any developer who has ever wished for a way to write 
+efficient code for web apps in their language of choice, 
+<!-- without having to learn an entirely new programming language, -->
+the implications are immense.
+</p>
+
+<p>
+    More specifically, WebAssembly is a binary format with its own layout and set of instructions.  
+    This aspect is similar to how compiled Java code is stored in a <em>.class</em> file, or Python bytecode 
+    is stored in a <em>.pyc</em> file.  The big difference is that Python and Java each require their own 
+    interpreters to be present when running, and are not normally available in a browser.
+    WebAssembly's format was designed from the ground up to be available in a browser and is made to 
+    be translated into your local machine's native instruction format and executed directly and with access to a web page
+    (with appropriate security precautions of course).
+</p>
+
+<p>A fan of writing <a href="https://golang.org" title="Golang.org">Go</a> code?  That's awesome.  And now you can build a Wasm executable from your Go program and run it in your browser.</p>
+
+<!-- <p>
+As for some real-world examples:
+for those familiar with AutoCAD or Figma, each of these companies were able to 
+https://www.figma.com/
+port their desktop applications
+to the web. 
+Figma, for example, was originally written in C++, and based on my own experience with it as a Gopheric Designer, the web app runs just as fast as the desktop app.
+</p> -->
+
+<p>
+But what about JavaScript, you might ask? 
+Virtually everything web-UI is written in JS, 
+and it is by some measures the most 
+<a href="https://madnight.github.io/githut/#/pull_requests/2020/1" 
+    title="I'm not certain having the most pull requests is always a disireable quality">commonly used programming language.</a>
+</p>
+
+<h2 id="wasm-and-javascript">Relationship with JavaScript</h2>
+
+<p>
+Whether you see it as exciting or sad news, JavaScript is not going away any time in the 
+foreseeable future.
+<!-- This is no rant against JavaScript. It’s never going away,  -->
+<!-- Even the Mozilla devs who created wasm stated they have no intent to “put an end” to JS. -->
+</p>
+
+<p>
+    That said, for a long time we've had little choice but to write web UIs in JavaScript.
+    And whether one likes the tooling and ecosystem provided by Node, NPM, Yarn and other 
+    related tools, hasn't really been all that relevant since viable alternatives have 
+    been so scarce.  But, with wasm that is situation is (albiet gradually) changing.
+    <!-- perhaps use solutions like <a href="https://emscripten.org/">Emscripten</a>. -->
+</p>
+
+<!-- <p>  -->
+<!-- Unfortunately, the modern web is a tangled mess of dependencies. For a long time, we had no choice but to write in JS.  -->
+
+<!-- And while asm.js was an attempt to speed things up, WebAssembly can be decoded an order of magnitude faster than JavaScript. (More on this in a moment.) -->
+<!-- </p> -->
+
+<p>To make sense of the relationship between JavaScript and Wasm, it is important to understand that a lot of the surrounding pieces of technology are the exact same pieces for both JS and Wasm.  Things like how <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">localStorage,</a> <a href="https://www.quirksmode.org/js/cookies.html" target="_blank">cookies</a> and <a href="https://www.w3.org/TR/cors/" target="_blank">CORS</a> work - Wasm applications use these things exactly the same as their JS counterparts.  
+    <!-- In fact, much of the <a href="https://github.com/WebAssembly/design">future development of Wasm</a> is devoted to taking existing services and parts of the web browser environment and making them more available to Wasm applications. -->
+</p>
+
+<!-- <p>As things move forward, it is likely that we will see new browser APIs introduced both with a JS API and, where applicable, a corresopnding wasm API.</p> -->
+
+<p>Also bear in mind that Wasm and JS can call back and forth to each other.  As it stands today it is not necessarily the smoothest workflow but it does work. And Wasm applications are doing this in modern browsers as we speak.</p>
+
+<p>So as the gap between Wasm and JS narrows in terms of what browser functionality is available with what effort, the question begins to turn into, simply, what language do you want to write in?  Granted, there are still some bumps on the WebAssembly road to iron out, but it's getting better all the time. (And libraries like <a href="/">Vugu</a> help bridge the gap and smooth out the experience.)</p>
+
+<!-- <p> 
+It is possible for WebAssembly and JavaScript to play nice together. While wasm performs best with the entire code base in WebAssembly, there are viable use cases for a wasm mainframe with a UI in JavaScript / HTML, or reusing code by embedding wasm in an existing JS web app.
+</p> -->
+
+<!-- <h2 id="adoption">Adoption and Support</h2> -->
+
+<!-- <p>  -->
+<!-- WebAssembly is supported by Firefox, Chrome, Edge, and Safari, with <a href="https://caniuse.com/#feat=wasm" target="_blank">90.5% global adoption across all platforms</a>.  -->
+<!-- Wasm has been on our radar since November 2017, when it was first adopted by all major browsers. -->
+<!-- </p> -->
+
+<!-- <p>TODO: we can say something here about how each of the major browsers is involved and pushing things forward.  Maybe list out some of the major features being worked on.</p> -->
+
+<!-- <p> 
+I love digging into new technologies as much as I love digging tunnels, and wasm has been on my radar since November 2017, when it was first adopted by all major browsers.
+</p><p> 
+If you do the math on that, I might not have long to live. That’s why speed and efficiency are so important to me.
+</p> -->
+
+<h2 id="performance">Peformance</h2> 
+
+<p>
+    The question of how to make web applications faster has been on people's minds for long while.  A sort of older cousin to Wasm is
+    <a href="http://asmjs.org/" target="_blank">asm.js</a> which was a subset of JS that supporting browsers could optimize 
+    into more performant code and potentially compile down into machine code.  It was an interesting idea, and the fact that it 
+    worked was certainly part of the motivation for WebAssembly.
+</p>
+
+<!-- <p> 
+One of the biggest benefits of WebAssembly is the unadulterated speed. You could say that wasm is faster than a predatory hawk swooping down to attack a harmless little gopher. 
+</p> -->
+
+<p> 
+WebAssembly is (much) closer to machine code than JavaScript. Which means that it can be faster to fetch, decode, compile, and execute.  And while modern JS intrepreters (<a href="https://v8.dev/" target="_blank">v8</a> for Chrome, <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey" target="_blank">SpiderMonkey</a> for Firefox) are highly optimized pieces of software, there is no getting around the fact that JS is an additional (and thick) layer on top of native machine instructions.  
+Wasm is designed to have instructions that closely resemble modern CPUs.  JS, just... isn't that, at all.
+Regardless of the latest benchmarks, it's an easy bet that in the long run Wasm application performance will outstrip that JS, in many cases by orders of magnitude.
+</p>
+
+<!-- <p> 
+Different experiments and benchmarks have demonstrated wasm to be anywhere from 1.6 to 20 times faster than JS, but since the exact figure will change depending on the parameters of the test, suffice it to say that I believe WebAssembly will become the preferred choice for high-performance web apps.
+</p> -->
+
+<h2 id="future">The Future of Wasm</h2>
+
+<p>
+    WebAssembly is supported by Firefox, Chrome, Edge, and Safari.  As it stands today, pick any web-connected machine in the world and there's a 
+    <a href="https://caniuse.com/#feat=wasm" target="_blank">90+% chance</a> it runs Wasm right now. 
+    <!-- <a href="https://caniuse.com/#feat=wasm" target="_blank">90.5% global adoption across all platforms</a>.  -->
+</p>
+
+<p>
+It is exciting to consider upcoming features like multithreading and parallel execution to take advantage of multiple processors.  Wasm is also designed to be compiled to native code <a href="https://developers.google.com/web/updates/2018/04/loading-wasm">as it being downloaded,</a> one of many nifty features.
+<!-- and there is talk that wasm will start compiling even while it is in the process of being downloaded.  -->
+But if we take a step back and look at practical considerations, making wasm productive is really all about having the proper tools to utilize it. And many (or at least some) of them already exist.
+</p>
+
+<p>
+    As far as we can see right now, the consensus seems to be that WebAssembly is here to stay, and it is only going to get faster, more efficient, more capable, and gain better tools.  It's not big a stretch to say that in a relatively few coming years, it will likely be just as common to see a solution using Wasm as it will be using JavaScript.
+</p>
+
+<p>One of the goals of Vugu is to help developers leverage WebAssembly as a technology.  The Go programming language has seen remarkable growth in recent years and now with WebAssembly, the reality is closer than ever of being able to write write Go code that runs in the browser and gives us user interfaces that are: high-quality, maintainable, efficient, and not to mention fun to write.  Vugu was created to help push that vision forward and provide tools to glue some of these powerful technologies together into an effective user interface toolbox for the web.</p>
+
+<!-- <p> 
+Now, considering that I am a GOpher, after all, I’m a fan of Vugu: a modern UI library for Go that targets WebAssembly. The build environment is simple and rational, and type-safe languages like Go are good for the type of large programs wasm excels at.
+</p>
+
+<p> 
+As with any nascent technology, web security best practices must be strictly adhered to when working with WebAssembly — but really, this should go without saying for anyone who sets out to build a web app.
+</p> -->
+
+<!-- <p> 
+WebAssembly has the potential to build a better, faster web, and it is ready to shine. Now if you don’t mind me, I’m going back underground to the comfort of my dark, earthy tunnels.
+</p> -->
+
+</div>

@@ -17,7 +17,7 @@
                         Vugu programs <em>are just Go programs</em>.  Code generation is done via 
                         <a target="_blank" href="https://blog.golang.org/generate">go&nbsp;generate</a>
                         which runs a command called <code>vugugen</code>.  The <code>vgrun</code> tool is a simple 
-                        wrapper around <code>go generate; go build; go run</code> that provides nice features like file watching
+                        wrapper around <code>go generate; go build; ./your_exe</code> that provides nice features like file watching
                         and automatic generate, build and page refresh upon edit.  You are not required to use these tools 
                         and Vugu programs do and will continue to operate as plain old Go programs.
                         That said, the example shown below uses these tools to make things easy to rapidly get started.
