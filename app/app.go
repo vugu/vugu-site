@@ -53,6 +53,10 @@ func VuguSetup(buildEnv *vugu.BuildEnv, eventEnv vugu.EventEnv, opts *VuguSetupO
 	buildEnv.WireComponent(root)
 
 	// changes by section
+	app.Router.MustAddRoute("/", vgrouter.RouteHandlerFunc(func(rm *vgrouter.RouteMatch) {
+		root.Header = &components.Header{}
+		root.Footer = &components.Footer{}
+	}))
 	app.Router.MustAddRoute("/doc", vgrouter.RouteHandlerFunc(func(rm *vgrouter.RouteMatch) {
 		root.Hero = &components.NavHero{}
 		root.Sidebar = &components.DocSidebar{}
