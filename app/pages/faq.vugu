@@ -88,7 +88,7 @@
                     </p>
                     <p>
                         A major refactor was done between Vugu v0.1.0 and v0.2.0, which among other things, involved
-                        a shift from dynamically registered components to all component references being expressed 
+                        a shift from dynamically registered components to component references being expressed 
                         statically so they are resolved at Go compile time.  This was a major breaking change but was necessary to handle some fundamental
                         issues that came up with the initial prototype for this project.  While major breaking changes
                         are unfortunate, the goal is to get those out of the way early, so 

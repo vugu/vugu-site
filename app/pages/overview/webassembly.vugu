@@ -29,7 +29,9 @@ the implications are immense.
 </p>
 
 <p>
-    More specifically, WebAssembly is a binary format with its own layout and set of instructions.  
+    More specifically, WebAssembly is a 
+    <a href="https://webassembly.github.io/spec/core/binary/index.html" target="_blank">binary format</a>
+    with its own layout and set of instructions.  
     This aspect is similar to how compiled Java code is stored in a <em>.class</em> file, or Python bytecode 
     is stored in a <em>.pyc</em> file.  The big difference is that Python and Java each require their own 
     interpreters to be present when running, and are not normally available in a browser.
@@ -38,7 +40,7 @@ the implications are immense.
     (with appropriate security precautions of course).
 </p>
 
-<p>A fan of writing <a href="https://golang.org" title="Golang.org">Go</a> code?  That's awesome.  And now you can build a Wasm executable from your Go program and run it in your browser.</p>
+<p>A fan of writing <a href="https://golang.org" title="Golang.org">Go</a> code?  That's awesome.  And now you can build a Wasm executable from your Go source code and run it in your browser.</p>
 
 <!-- <p>
 As for some real-world examples:
@@ -70,7 +72,7 @@ foreseeable future.
     That said, for a long time we've had little choice but to write web UIs in JavaScript.
     And whether one likes the tooling and ecosystem provided by Node, NPM, Yarn and other 
     related tools, hasn't really been all that relevant since viable alternatives have 
-    been so scarce.  But, with wasm that is situation is (albiet gradually) changing.
+    been so scarce.  But, with Wasm that is situation is (albiet gradually) changing.
     <!-- perhaps use solutions like <a href="https://emscripten.org/">Emscripten</a>. -->
 </p>
 
@@ -165,3 +167,13 @@ WebAssembly has the potential to build a better, faster web, and it is ready to 
 </p> -->
 
 </div>
+
+<script type="application/x-go">
+
+type Webassembly struct {}
+
+func (c *Webassembly) Title() string { return "The Case for WebAssembly" }
+func (c *Webassembly) ShortTitle() string { return "WebAssembly" }
+func (c *Webassembly) MetaDescription() string { return "WebAssembly gives us a platform-independent way for programs to run directly and efficiently in browsers. Not dissimilar to an .exe file for your browser that works on Mac/Win/Linux, etc." }
+
+</script>
