@@ -95,13 +95,13 @@ type Root struct {
     </p>
 
 <div vg-html='codefmt.Show("html",`<div><form>
-    <input type="text" @changed="c.HandleChanged(event)">
+    <input type="text" @change="c.HandleChange(event)">
 </form></div>
         
 <script type="application/x-go">
 import "log"
 
-func (c *Root) HandleChanged(event vugu.DOMEvent) {
+func (c *Root) HandleChange(event vugu.DOMEvent) {
     log.Print(event.PropString("target", "value"))
 }
 </script>`)'></div>
