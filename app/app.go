@@ -117,5 +117,6 @@ var SiteNavPathList = []string{
 	"/doc/routing",
 	"/doc/program",
 	"/doc/tools",
+	"/doc/tinygo",
 	"/doc/build-and-dist",
 }

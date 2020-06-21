@@ -52,8 +52,12 @@
                 </div>
                 <div not-vg-if='data.SelectedID=="too-big-and-slow"'>
                   <div class="card-body">
+                      <p>Vugu now supports, in addition to the default Go compiler, <a href="/doc/tinygo">compilation with TinyGo</a>.
+                      This significantly reduces the size of WebAssembly executables and often produces .wasm files measured in 
+                      hundreds of kilobytes.</p>
                       <p>
-                          The binaries can be big, yes.  However, they gzip better than one might expect for a binary.  The average 
+                          Using the default Go compiler, the binaries can be big, yes.  
+                          However, they gzip better than one might expect for a binary.  The average 
                           browser download of compressed content for a reasonably-sized program is several megabytes.
                           For some use cases this is completely workable, others it's a problem.
                           Future improvements in size can be expected as the WebAssembly spec and Go's support for it both evolve.

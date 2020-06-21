@@ -1,0 +1,99 @@
+<div>
+
+    <p>
+        Vugu programs can alternatively be compiled using <a target="_blank" href="https://tinygo.org/">TinyGo</a>, which produces significantly smaller output than the default Go compiler.
+        Many Vugu programs can be compiled with TinyGo to several hundred kilobytes, as opposed to sizes measured in megabytes.
+    </p>
+
+    <h3 id="generate">Update Go Generate</h3>
+
+    <p>Your <code>vugugen</code> Go Generate comment will need to have the <code>-tinygo</code> option added to it, as shown below.  The <code>main_wasm.go</code> that 
+        is generated is also slightly different so you'll need to remove that file and let it get re-created by vugugen:</p>
+    
+    <div vg-html='codefmt.Show("go",`package yourpackage
+
+//go:generate vugugen -tinygo
+`)'></div>
+
+    <p>Once that is done, you can proceed with the next steps below.</p>
+
+    <h3 id="installation">Making TinyGo Available</h3>
+
+    <p>The current recommendation (and default) is to run TinyGo compilation via Docker.  This means you will need a working 
+        <a target="_blank" href="https://docs.docker.com/get-docker/">Docker installation</a>.</p>
+
+    <p>You can also install and use TinyGo on your system without docker.  See 
+        <a target="_blank" href="https://tinygo.org/getting-started/">TinyGo getting started instructions</a> and the
+        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#TinygoCompiler.NoDocker">NoDocker()</a> option.
+        Please note that as of this writing only the <code>dev</code> branch supports Vugu. 
+        When TinyGo version 0.14 is released, that build should&nbsp;work.
+    </p>
+
+    <h3 id="compile">Enabling TinyGo Compilation</h3>
+
+    <p>
+        Although Vugu programs are fundamentally just Go programs, the nature of WebAssembly requires a separate .wasm executable to be built from the source code, in addition to the Go server.
+        To make this simple, Vugu provides some convenience around this Wasm compilation in the <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil">devutil</a> package.
+        The basic idea is there is a <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#Compiler">Compiler</a> with an <code>Execute()</code> method on it, 
+        which the development server calls in order to build and then serve the .wasm file.  You can swap out the
+        default Compiler implementation from 
+        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#WasmCompiler">WasmCompiler</a> to 
+        <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#TinygoCompiler">TinygoCompiler</a>.
+    </p>
+    
+    <p>
+        A working <a target="_blank" href="https://github.com/vugu-examples/tinygo">Vugu+TinyGo example program can be found here.</a>  The relevant portion that needs to change for most programs
+        (for simple examples this lives in devserver.go) is like so:
+    </p>
+
+    <div vg-html='codefmt.Show("go",`
+    wc := devutil.MustNewTinygoCompiler().SetDir(".")
+    wc.AddGoGet("go get -u github.com/vugu/vugu github.com/vugu/vjson")
+    defer wc.Close()
+`)'></div>
+
+    <p>Some other common options include:</p>
+
+    <ul>
+        <li>For now, external packages required for building need to be explicitly specified with 
+            <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#AddGoGet">AddGoGet</a>, 
+            for example: <br/><code>wc.AddGoGet("go get -u -x github.com/vugu/xxhash")</code></li>
+        <li>Similarly, to override the directory used for specific packages, use 
+            <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#AddPkgReplace">AddPkgReplace</a>,
+            example: <br/><code>wc.AddPkgReplace("github.com/vugu/vugu", "../vugu")</code></li>
+        <li>By default Docker is used to call TinyGo.  You can use
+            <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#TinygoCompiler.NoDocker">wc.NoDocker()</a> to disable this and have Vugu
+            call the local <code>tinygo</code> executable from your path. Note that for now this results in various additional temporary folder
+            structures being created during compilation to get the GOPATH setup correctly and thus is usually slower.
+            Once TinyGo supports Go Modules, this limitation should go away.
+        </li>
+        <li>To make file sizes even smaller, you can tell TinyGo to remove debug information with <code>wc.SetTinygoArgs("-no-debug")</code></li>
+    </ul>
+    
+    
+    <div class="alert alert-warning" role="alert">
+        <i class="icon-alert-circle"></i>
+        <h4 class="fs-22">Caveats</h4>
+        <p>
+            Both Vugu and TinyGo are works in progress.  Compatibility is expected to improve over time but some features may not compile or possibly panic at runtime.
+        </p>
+        <ul>
+            <li>The Vugu test suite has tests for TinyGo included however not everything is passing as of this writing.  However, the majority of the tests do work and basic functionality
+                is operational.</li>
+            <li>TinyGo itself is continually improving its language and standard library support and the same 
+                <a target="_blank" href="https://tinygo.org/lang-support/">compatibility information</a> applies to Vugu programs compiled with TinyGo as well. </li>
+        </ul>
+
+      </div>
+
+</div>
+
+<script type="application/x-go">
+
+type Tinygo struct {}
+
+func (c *Tinygo) Title() string { return "Building Vugu Programs with TinyGo" }
+func (c *Tinygo) ShortTitle() string { return "TinyGo Support" }
+//func (c *Tinygo) MetaDescription() string { return "Let's make a basic working Vugu application that runs in your browser. It only takes three small files to start." }
+
+</script>
