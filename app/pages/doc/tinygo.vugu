@@ -25,7 +25,7 @@
     <p>You can also install and use TinyGo on your system without docker.  See 
         <a target="_blank" href="https://tinygo.org/getting-started/">TinyGo getting started instructions</a> and the
         <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#TinygoCompiler.NoDocker">NoDocker()</a> option.
-        Please note that as of this writing only the <code>dev</code> branch supports Vugu. 
+        Please note that as of this writing only the <code>dev</code> branch is compatible with Vugu. 
         When TinyGo version 0.14 is released, that build should&nbsp;work.
     </p>
 
@@ -63,9 +63,9 @@
             example: <br/><code>wc.AddPkgReplace("github.com/vugu/vugu", "../vugu")</code></li>
         <li>By default Docker is used to call TinyGo.  You can use
             <a target="_blank" href="https://godoc.org/github.com/vugu/vugu/devutil#TinygoCompiler.NoDocker">wc.NoDocker()</a> to disable this and have Vugu
-            call the local <code>tinygo</code> executable from your path. Note that for now this results in various additional temporary folder
+            call the local <code>tinygo</code> executable from your path. At the moment, this results in various additional temporary folder
             structures being created during compilation to get the GOPATH setup correctly and thus is usually slower.
-            Once TinyGo supports Go Modules, this limitation should go away.
+            Vugu should be updated soon to remove this limitation and utilize TinyGo's module support.
         </li>
         <li>To make file sizes even smaller, you can tell TinyGo to remove debug information with <code>wc.SetTinygoArgs("-no-debug")</code></li>
     </ul>
@@ -78,7 +78,7 @@
             Both Vugu and TinyGo are works in progress.  Compatibility is expected to improve over time but some features may not compile or possibly panic at runtime.
         </p>
         <ul>
-            <li>The Vugu test suite has tests for TinyGo included however not everything is passing as of this writing.  However, the majority of the tests do work and basic functionality
+            <li>The Vugu test suite has tests for TinyGo included but not everything is passing as of this writing.  However, the majority of the tests do work and basic functionality
                 is operational.</li>
             <li>TinyGo itself is continually improving its language and standard library support and the same 
                 <a target="_blank" href="https://tinygo.org/lang-support/">compatibility information</a> applies to Vugu programs compiled with TinyGo as well. </li>
