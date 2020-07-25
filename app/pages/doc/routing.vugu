@@ -100,8 +100,8 @@ func vuguSetup(buildEnv *vugu.BuildEnv, eventEnv vugu.EventEnv) vugu.Builder {
     <vg-comp expr="c.Body"/>
 
     <!-- USE Navigator.Navigate() TO CHANGE TO A DIFFERENT URL-->
-    <button @click='c.Navigate("/", nil)'>Home</button>
-    <button @click='c.Navigate("/page2", nil)'>Page2</button>
+    <button @click=&apos;c.Navigate("/", nil)&apos;>Home</button>
+    <button @click=&apos;c.Navigate("/page2", nil)&apos;>Page2</button>
 
 </div>
 
