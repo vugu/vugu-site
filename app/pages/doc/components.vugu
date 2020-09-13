@@ -170,6 +170,141 @@ type MyLine struct {
                         in a loop the behavior is undefined (but I can promise you it won't be good).
                       </p>
 
+                      <h2 id="lifecycle">Component Lifecycle</h2>
+
+                      <p>
+                        At runtime, components are created and destroyed as needed, based on the logic in your application that declares what is supposed to be 
+                        displayed at a given moment.  For example, a <code>vg-if</code> expression can be used to turn a section of output on or off.  If this section
+                        includes one or more components, the necessary components are created as needed.  Other mechanisms such as <code>vg-for</code>
+                        (and in combination with the <code>vg-key</code> attribute) are used to describe more complex cases of where a component needs to exist multiple
+                        times and indicates the exact key used to identify which component is which.
+                      </p>
+
+                      <p>
+                        Regardless of the exact logic for each case, the concept is the same: Components are created when needed, remain as long as they are needed, and destroyed
+                        as soon as a render occurs where that component was not needed.
+                      </p>
+
+                      <p>
+                        The following methods can be defined on a component and will be called at the appropriate time during the build/render process:
+                      </p>
+
+                      <ul>
+                        <li><strong><code>Init(ctx <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#InitCtx">vugu.InitCtx</a>)</code></strong> 
+                          is called when a component is created before any other callbacks and gives an opportunity to <em>initialize</em>.</li>
+                        <li><strong><code>Compute(ctx <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#ComputeCtx">vugu.ComputeCtx</a>)</code></strong>
+                          is called each time before the output of a given component is built.
+                          It provides an opportunity to <em>compute</em> any necessary information for each render pass.
+                          (NOTE: this was previously called <em>BeforeBuild</em>.)</li>
+                        <li><strong><code>Rendered(ctx <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#RenderedCtx">vugu.RenderedCtx</a>)</code></strong>
+                          is called <em>after each render</em> pass has completed and all DOM elements have been synchronized with the page.</li>
+                        <li><strong><code>Destroy(ctx <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#DestroyCtx">vugu.DestroyCtx</a>)</code></strong>
+                          is called when build/render pass occurs and it is discovered that a component is no longer needed and gives an opportunity to 
+                          <em>destroy</em> any resources no longer used.</li>
+                      </ul>
+
+                      <p>
+                        For convenience, on each of these the <code>ctx</code> paramter is optional and if omitted it will be called without it.  E.g <code>Init()</code> can be used if you don't need the context.
+                        The context on each does provide an <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#EventEnv">EventEnv</a>, which is useful if you need to trigger a re-render (see next).
+                      </p>
+
+                      <p>
+                        Here's an example of a component that defines each of these lifecycle callback methods and gives an idea of their intended use:
+                      </p>
+
+<div vg-content='codefmt.Show("html",`<!-- my-comp.vugu -->
+<div>
+
+  <ul vg-for=&apos;_, item := range c.Items&apos;>
+    <li vg-content="item"></li>
+  </ul>
+
+  <div>Short count: <span vg-content=&apos;c.shortItemCount&apos;></span></div>
+
+</div>
+
+<script type="application/x-go">
+
+import (
+    "net/http"
+    "encoding/json"
+)
+
+type MyComp struct {
+    Loading bool `+"`"+`vugu:"data"`+"`"+`
+    Items []string `+"`"+`vugu:"data"`+"`"+`
+
+    shortItemCount int
+}
+
+func (c *MyComp) Init(ctx vugu.InitCtx) {
+
+    // kick of loading data from an endpoint
+  
+    c.Loading = true
+    go func() {
+
+      resp, err := http.Get("/some/endpoint")
+      if err != nil {
+          log.Printf("Error fetching: %v", err)
+          return
+      }
+      defer resp.Body.Close()
+      var items []string
+      err =json.NewDecoder(resp.Body).Decode(&items)
+      if err != nil {
+          log.Printf("Error decoding response: %v", err)
+          return
+      }
+
+      ctx.EventEnv().Lock()
+      c.Loading = false
+      c.Items = items
+      ctx.EventEnv().UnlockRender()
+    }()
+}
+
+func (c *MyComp) Compute() {
+
+    // recompute each render
+
+    count := 0
+    for _, item := range c.Items {
+      if len(item) &lt; 5 {
+        count++
+      }
+    }
+    c.shortItemCount = count
+
+}
+
+func (c *MyComp) Rendered(ctx vugu.RenderedCtx) {
+
+    // if you really need to manipulate DOM directly after it is rendered, you can do it here
+
+    if ctx.First() { // only after first render
+      el := js.Global().Get("document").Call("getElementById", "some_id_here")
+      _ = el // do something with an element manually after the first render
+    }
+
+}
+
+func (c *MyComp) Destroy() {
+    // some teardown code here
+}
+
+</script>
+
+`)'></div>
+
+                      <div class="alert alert-warning" role="alert">
+                        <i class="icon-alert-circle"></i>
+                        <h4 class="fs-22">Note: main_wasm.go change</h4>
+                        <p>
+                          With the implementation of these lifecycle events, some minor changes were made to the generated main_wasm.go file.  If you are updating an existing
+                          project from a prior Vugu version you may need to delete main_wasm.go and let it get regenerated using the latest Vugu version.
+                        </p>
+                      </div>
 
                       <h2 id="component-events">Component Events</h2>
 
@@ -318,10 +453,8 @@ type Root struct {
     MyChildComp vugu.Builder
 }
 
-func (c *Root) BeforeBuild() {
-    if c.MyChildComp == nil {
-        c.MyChildComp = &someother.ComponentHere{}
-    }
+func (c *Root) Init() {
+    c.MyChildComp = &someother.ComponentHere{}
 }
 
 </script>
@@ -418,12 +551,14 @@ type MySlottedComp struct {
                         once some more experience is gained.</small>
                       </p>
 
+                      <!--
                       <h2>BeforeBuild()</h2>
 
                       <p>For a component, after any field assignments are done and before the actual virtual DOM building occurs, the 
                         <a target="_blank" href="https://godoc.org/github.com/vugu/vugu#BeforeBuilder">BeforeBuild()</a> method is called on a component if it exists.</p>
 
                       <p>This is for use in implementing "computed fields" (to use Vue's terminology), and doing any precomputation prior to building.</p>
+                      -->
 
                       <h2 id="modification-tracking">Modification Tracking</h2>
 
