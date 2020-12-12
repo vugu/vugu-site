@@ -61,7 +61,7 @@ Note that this also starts a file watcher to automatically reload the page when 
                         </p>
                         <p>
                           Again, all vgrun is doing here is providing some additional convenience.
-                          You can just also just <code>go run devserver.go</code> you'd like.
+                          You can just also just <code>go run devserver.go</code> if you'd like.
                         </p>
                       </div></li>
 
