@@ -33,8 +33,16 @@
                       <li><div>
                         <p>
                           <strong>Install vgrun and related utilities</strong> with the commands:
-<div vg-html='codefmt.Show("bash",`go get -u github.com/vugu/vgrun
-vgrun -install-tools`)'></div>                            
+                        </p>
+                        <p>
+                          <strong>go1.17 and newer:</strong>
+<div vg-html='codefmt.Show("bash",`go install github.com/vugu/vgrun
+vgrun -install-tools`)'></div>                   
+                        </p>
+                        <p>
+                          <strong>go versions earlier than 1.17:</strong>         
+                          <div vg-html='codefmt.Show("bash",`go get -u github.com/vugu/vgrun
+vgrun -install-tools`)'></div>                   
                         </p>
                       </div></li>
 
