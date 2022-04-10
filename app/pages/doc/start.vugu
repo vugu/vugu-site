@@ -75,7 +75,7 @@ Note that this also starts a file watcher to automatically reload the page when 
                         <p><strong>Aside from familiar files</strong> like <code>.gitignore</code> and <code>README.md</code>
                           and <code>go.mod</code>,
                           there is a <code>generate.go</code> file which just has the appropriate Go generate comment in it to
-                          invokve the Vugu code generator:
+                          invoke the Vugu code generator:
                           <div vg-html='codefmt.Show("text",`//go:generate vugugen -s`)'></div> 
                           (The <code>-s</code> flag tells it to put the generated code in a single file.  <code>-r</code>
                           is available too for recursive operation.)
